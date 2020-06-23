@@ -33,6 +33,8 @@ namespace TCPF
 
         private static void OnDataReceive(IAsyncResult result)
         {
+            DateTime TimeStamp = DateTime.Now;
+
             var state = (State)result.AsyncState;
 
             IPEndPoint SLocalIPEndPoint = state.SourceSocket.LocalEndPoint as IPEndPoint;
@@ -51,8 +53,8 @@ namespace TCPF
                     //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
 
-                    Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
-                    Console.WriteLine("--------------------------------------------------");
+                    Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ")");
+                    Console.WriteLine("---------------------------------------------------------------------");
 
                     Console.WriteLine(System.Text.Encoding.ASCII.GetString(state.Buffer));
                     Console.WriteLine("");
