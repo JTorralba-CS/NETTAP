@@ -99,7 +99,14 @@ namespace TCPF
         }
         static void Main(string[] args)
         {
-            Console.Clear();
+            try
+            {
+                Console.Clear();
+            }
+            catch
+            {
+            }
+            
             new TCPF().Start(
                 new IPEndPoint(IPAddress.Parse(args[0]), int.Parse(args[1])),
                 new IPEndPoint(IPAddress.Parse(args[2]), int.Parse(args[3])));
