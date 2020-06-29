@@ -6,4 +6,10 @@
     <StartupObject>TCPF.TCPF</StartupObject>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Update="_TCPF.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

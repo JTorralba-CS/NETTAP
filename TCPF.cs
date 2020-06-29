@@ -46,17 +46,22 @@ namespace TCPF
             try
             {
                 var bytesRead = state.SourceSocket.EndReceive(result);
+
                 if (bytesRead > 0)
                 {
-                    AppendAllBytes(GetExecutingDirectoryName()+"\\TCPF.log", state.Buffer).ConfigureAwait(false);
+                    var bytesData = new byte[bytesRead];
+
+                    Buffer.BlockCopy(state.Buffer, 0, bytesData, 0, bytesRead);
+
+                    AppendAllBytes(GetExecutingDirectoryName()+"\\_TCP.log", bytesData).ConfigureAwait(false);
 
                     //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
 
-                    Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ")");
+                    Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + bytesRead.ToString() + " Byte(s)");
                     Console.WriteLine("---------------------------------------------------------------------");
 
-                    Console.WriteLine(System.Text.Encoding.ASCII.GetString(state.Buffer));
+                    Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesData));
                     Console.WriteLine("");
 
                     state.DestinationSocket.Send(state.Buffer, bytesRead, SocketFlags.None);
