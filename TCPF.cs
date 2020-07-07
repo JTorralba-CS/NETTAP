@@ -59,7 +59,7 @@ namespace TCPF
                     if (Strip_LN)
                     {
                         int pos = 0;
-                        while (pos < bytesData.Length)
+                        while (pos < (bytesData.Length - 1))
                         {
                             if (bytesData[pos] != '\n')
                             {
