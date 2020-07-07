@@ -68,6 +68,7 @@ namespace TCPF
                             pos++;
                         }
 
+                        Array.Reverse(bytesClean, 0, bytesClean.Length);
                         AppendAllBytes(GetExecutingDirectoryName() + "\\_TCP.log", bytesClean).ConfigureAwait(false);
                     }
                     else
