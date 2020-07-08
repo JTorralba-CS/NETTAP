@@ -10,7 +10,7 @@ namespace TCPF
 {
     class TCPF
     {
-        public static Boolean Strip_LN = false;
+        public static Boolean CCC = false;
 
         private readonly Socket _mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         public void Start(IPEndPoint local, IPEndPoint remote)
@@ -56,19 +56,30 @@ namespace TCPF
 
                     Buffer.BlockCopy(state.Buffer, 0, bytesData, 0, bytesRead);
 
-                    if (Strip_LN)
+                    if (CCC)
                     {
                         int pos = 0;
-                        while (pos < (bytesData.Length - 1))
+                        while (pos < (bytesRead))
                         {
-                            if (bytesData[pos] != '\n')
+                            if (bytesData[pos] != 10)
                             {
                                 bytesClean = addByteToArray(bytesClean, bytesData[pos]);
+                            }
+
+                            try
+                            {
+                                if (bytesData[pos + 1] == 3)
+                                {
+                                    bytesData[pos + 1] = 10;
+                                }
+                            }
+                            catch
+                            {
                             }
                             pos++;
                         }
 
-                        Array.Reverse(bytesClean, 0, bytesClean.Length);
+                        //Array.Reverse(bytesClean, 0, bytesClean.Length);
                         AppendAllBytes(GetExecutingDirectoryName() + "\\_TCP.log", bytesClean).ConfigureAwait(false);
                     }
                     else
@@ -81,7 +92,7 @@ namespace TCPF
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
 
                     Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + bytesRead.ToString() + " Byte(s)");
-                    Console.WriteLine("---------------------------------------------------------------------");
+                    Console.WriteLine("-----------------------------------------------------------------------------------------");
 
                     Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesData));
                     Console.WriteLine("");
@@ -133,9 +144,9 @@ namespace TCPF
             try
             {
                 Console.WriteLine(args[4]);
-                if (args[4] == "TACMAP")
+                if (args[4] == "CCC")
                 {
-                    Strip_LN = true;
+                    CCC = true;
                 }
             }
             catch
