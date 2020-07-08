@@ -51,29 +51,29 @@ namespace TCPF
 
                 if (bytesRead > 0)
                 {
-                    var bytesData = new byte[bytesRead];
-                    var bytesClean = new byte[0];
+                    var bytesRaw = new byte[bytesRead];
+                    var bytesCCC = new byte[0];
 
-                    Buffer.BlockCopy(state.Buffer, 0, bytesData, 0, bytesRead);
+                    Buffer.BlockCopy(state.Buffer, 0, bytesRaw, 0, bytesRead);
 
                     if (CCC)
                     {
                         int pos = 0;
                         while (pos < (bytesRead))
                         {
-                            if (bytesData[pos] != 10)
+                            if (bytesRaw[pos] != 10)
                             {
-                                bytesClean = addByteToArray(bytesClean, bytesData[pos]);
+                                bytesCCC = addByteToArray(bytesCCC, bytesRaw[pos]);
                                 try
                                 {
                                     // ETX Check
-                                    if (bytesData[pos] == 3)
+                                    if (bytesRaw[pos] == 3)
                                     {
-                                        bytesData[pos + 1] = 10;
+                                        bytesRaw[pos + 1] = 10;
 
                                         // Add END-OF-LINE Control Code
-                                        bytesClean = addByteToArray(bytesClean, 13);
-                                        bytesClean = addByteToArray(bytesClean, 10);
+                                        bytesCCC = addByteToArray(bytesCCC, 13);
+                                        bytesCCC = addByteToArray(bytesCCC, 10);
                                     }
                                 }
                                 catch
@@ -84,12 +84,12 @@ namespace TCPF
                             pos++;
                         }
 
-                        Array.Reverse(bytesClean, 0, bytesClean.Length);
-                        AppendAllBytes(GetExecutingDirectoryName() + "\\_TCP.log", bytesClean).ConfigureAwait(false);
+                        Array.Reverse(bytesCCC, 0, bytesCCC.Length);
+                        AppendAllBytes(GetExecutingDirectoryName() + "\\_CCC.log", bytesCCC).ConfigureAwait(false);
                     }
                     else
                     {
-                        AppendAllBytes(GetExecutingDirectoryName() + "\\_TCP.log", bytesData).ConfigureAwait(false);
+                        AppendAllBytes(GetExecutingDirectoryName() + "\\_Raw.log", bytesRaw).ConfigureAwait(false);
                     }
                     
 
@@ -101,13 +101,13 @@ namespace TCPF
 
                     if (CCC)
                     {
-                        state.DestinationSocket.Send(bytesClean, bytesClean.Length, SocketFlags.None);
-                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesClean));
+                        state.DestinationSocket.Send(bytesCCC, bytesCCC.Length, SocketFlags.None);
+                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesCCC));
                     }
                     else
                     {
-                        state.DestinationSocket.Send(bytesData, bytesData.Length, SocketFlags.None);
-                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesData));
+                        state.DestinationSocket.Send(bytesRaw, bytesRaw.Length, SocketFlags.None);
+                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesRaw));
                     }
 
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
