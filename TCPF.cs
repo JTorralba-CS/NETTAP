@@ -66,9 +66,14 @@ namespace TCPF
                                 bytesClean = addByteToArray(bytesClean, bytesData[pos]);
                                 try
                                 {
+                                    // ETX Check
                                     if (bytesData[pos] == 3)
                                     {
                                         bytesData[pos + 1] = 10;
+
+                                        // Add END-OF-LINE Control Code
+                                        bytesClean = addByteToArray(bytesClean, 13);
+                                        bytesClean = addByteToArray(bytesClean, 10);
                                     }
                                 }
                                 catch
