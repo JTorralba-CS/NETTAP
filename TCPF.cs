@@ -64,18 +64,18 @@ namespace TCPF
                             if (bytesData[pos] != 10)
                             {
                                 bytesClean = addByteToArray(bytesClean, bytesData[pos]);
-                            }
-
-                            try
-                            {
-                                if (bytesData[pos + 1] == 3)
+                                try
                                 {
-                                    bytesData[pos + 1] = 10;
+                                    if (bytesData[pos] == 3)
+                                    {
+                                        bytesData[pos + 1] = 10;
+                                    }
+                                }
+                                catch
+                                {
                                 }
                             }
-                            catch
-                            {
-                            }
+
                             pos++;
                         }
 
