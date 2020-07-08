@@ -94,10 +94,17 @@ namespace TCPF
                     Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + bytesRead.ToString() + " Byte(s)");
                     Console.WriteLine("-----------------------------------------------------------------------------------------");
 
-                    Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesData));
-                    Console.WriteLine("");
+                    if (CCC)
+                    {
+                        state.DestinationSocket.Send(bytesClean, bytesClean.Length, SocketFlags.None);
+                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesClean));
+                    }
+                    else
+                    {
+                        state.DestinationSocket.Send(bytesData, bytesData.Length, SocketFlags.None);
+                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesData));
+                    }
 
-                    state.DestinationSocket.Send(state.Buffer, bytesRead, SocketFlags.None);
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
                 }
             }
