@@ -63,7 +63,15 @@ namespace TCPF
                         {
                             if (bytesRaw[pos] != 10)
                             {
-                                bytesCCC = addByteToArray(bytesCCC, bytesRaw[pos]);
+                                if (bytesRaw[pos] == 44)
+                                {
+                                    bytesCCC = addByteToArray(bytesCCC, 32);
+                                }
+                                else
+                                {
+                                    bytesCCC = addByteToArray(bytesCCC, bytesRaw[pos]);
+                                }
+                                
                                 try
                                 {
                                     // ETX Check
@@ -87,27 +95,23 @@ namespace TCPF
                         Array.Reverse(bytesCCC, 0, bytesCCC.Length);
                         AppendAllBytes(GetExecutingDirectoryName() + "\\_CCC.log", bytesCCC).ConfigureAwait(false);
                     }
-                    else
-                    {
-                        AppendAllBytes(GetExecutingDirectoryName() + "\\_Raw.log", bytesRaw).ConfigureAwait(false);
-                    }
-                    
+
+                    AppendAllBytes(GetExecutingDirectoryName() + "\\_Raw.log", bytesRaw).ConfigureAwait(false);
 
                     //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
 
                     Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + bytesRead.ToString() + " Byte(s)");
                     Console.WriteLine("-----------------------------------------------------------------------------------------");
+                    Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesRaw));
 
                     if (CCC)
                     {
                         state.DestinationSocket.Send(bytesCCC, bytesCCC.Length, SocketFlags.None);
-                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesCCC));
                     }
                     else
                     {
                         state.DestinationSocket.Send(bytesRaw, bytesRaw.Length, SocketFlags.None);
-                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesRaw));
                     }
 
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
