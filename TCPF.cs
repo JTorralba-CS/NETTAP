@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace TCPF
@@ -53,6 +54,8 @@ namespace TCPF
                 {
                     var bytesRaw = new byte[bytesRead];
                     var bytesCCC = new byte[0];
+                    var bytesTimeStamp = new byte[0];
+                    var stringTimeStamp = "";
 
                     Buffer.BlockCopy(state.Buffer, 0, bytesRaw, 0, bytesRead);
 
@@ -104,6 +107,11 @@ namespace TCPF
                     Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + bytesRead.ToString() + " Byte(s)");
                     Console.WriteLine("-----------------------------------------------------------------------------------------");
                     Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesRaw));
+
+                    stringTimeStamp = SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + bytesRead.ToString() + " Byte(s)" + Convert.ToChar(13) + Convert.ToChar(10) + "-----------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + System.Text.Encoding.ASCII.GetString(bytesRaw) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+
+                    bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
+                    AppendAllBytes(GetExecutingDirectoryName() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
 
                     if (CCC)
                     {
