@@ -96,10 +96,10 @@ namespace TCPF
                         }
 
                         Array.Reverse(bytesCCC, 0, bytesCCC.Length);
-                        AppendAllBytes(GetExecutingDirectoryName() + "\\_CCC.log", bytesCCC).ConfigureAwait(false);
+                        AppendAllBytes(Directory.GetCurrentDirectory() + "\\_CCC.log", bytesCCC).ConfigureAwait(false);
                     }
 
-                    AppendAllBytes(GetExecutingDirectoryName() + "\\_Raw.log", bytesRaw).ConfigureAwait(false);
+                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_Raw.log", bytesRaw).ConfigureAwait(false);
 
                     //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
@@ -111,7 +111,7 @@ namespace TCPF
                     stringTimeStamp = SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + bytesRead.ToString() + " Byte(s)" + Convert.ToChar(13) + Convert.ToChar(10) + "-----------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + System.Text.Encoding.ASCII.GetString(bytesRaw) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
 
                     bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
-                    AppendAllBytes(GetExecutingDirectoryName() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
+                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
 
                     if (CCC)
                     {

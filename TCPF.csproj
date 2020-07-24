@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Update="_.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </None>
   </ItemGroup>
 
