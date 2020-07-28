@@ -105,8 +105,14 @@ namespace TCPF
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
 
                     Console.WriteLine(SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + String.Format("{0:000000}", bytesRead) + " Byte(s)");
-                    Console.WriteLine("------------------------------------------------------------------------------------");
-                    Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesRaw));
+
+                    if (!CCC)
+                    {
+                        Console.WriteLine("------------------------------------------------------------------------------------");
+                        Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesRaw));
+                        Console.WriteLine();
+                        Console.WriteLine();
+                    }
 
                     stringTimeStamp = SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + String.Format("{0:000000}", bytesRead) + " Byte(s)" + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + System.Text.Encoding.ASCII.GetString(bytesRaw) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
 
@@ -167,7 +173,6 @@ namespace TCPF
 
             try
             {
-                Console.WriteLine(args[4]);
                 if (args[4] == "CCC")
                 {
                     CCC = true;
