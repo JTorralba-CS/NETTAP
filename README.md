@@ -28,7 +28,7 @@ Utility does the following:
 Windows 10 Professional\
 Visual Studio 2019 CE\
 C#\
-.NET Core 2.2
+.NET Core 3.1
 
 ## Usage:
 
