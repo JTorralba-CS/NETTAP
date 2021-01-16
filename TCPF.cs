@@ -146,7 +146,7 @@ namespace TCPF
             {
                 SourceSocket = source;
                 DestinationSocket = destination;
-                Buffer = new byte[8192];
+                Buffer = new byte[16384];
             }
         }
         public static async Task AppendAllBytes(string path, byte[] bytes)
