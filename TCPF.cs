@@ -151,7 +151,7 @@ namespace TCPF
         }
         public static async Task AppendAllBytes(string path, byte[] bytes)
         {
-            using (var stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.None,bufferSize:4096, useAsync:true))
+            using (var stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.None,bufferSize:32768, useAsync:true))
             {
                 await stream.WriteAsync(bytes, 0, bytes.Length);
             }
