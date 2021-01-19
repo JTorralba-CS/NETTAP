@@ -108,13 +108,13 @@ namespace TCPF
 
                     if (!CCC)
                     {
-                        Console.WriteLine("-----------------------------------------------------------------------------------");
+                        Console.WriteLine("------------------------------------------------------------------------------------");
                         Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytesRaw));
                         Console.WriteLine();
                         Console.WriteLine();
                     }
 
-                    stringTimeStamp = SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + String.Format("{0:000000}", bytesRead) + " Byte(s)" + Convert.ToChar(13) + Convert.ToChar(10) + "-----------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + System.Text.Encoding.ASCII.GetString(bytesRaw) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+                    stringTimeStamp = SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + String.Format("{0:000000}", bytesRead) + " Byte(s)" + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + System.Text.Encoding.ASCII.GetString(bytesRaw) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
 
                     bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
                     AppendAllBytes(Directory.GetCurrentDirectory() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
