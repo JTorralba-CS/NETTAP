@@ -16,6 +16,8 @@ namespace TCPF
         private readonly Socket _mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         public void Start(IPEndPoint local, IPEndPoint remote)
         {
+            DateTime TimeStamp = DateTime.Now;
+
             _mainSocket.Bind(local);
             _mainSocket.Listen(10);
 
@@ -24,7 +26,22 @@ namespace TCPF
                 var source = _mainSocket.Accept();
                 var destination = new TCPF();
                 var state = new State(source, destination._mainSocket);
-                destination.Connect(remote, source);
+
+                try
+                {
+                    destination.Connect(remote, source);
+                }
+                catch (Exception E)
+                {
+                    var bytesTimeStamp = new byte[0];
+                    var stringTimeStamp = "";
+
+                    stringTimeStamp = "Exception_Start (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + E.ToString() + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+
+                    bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
+                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
+                }
+
                 source.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
             }
         }
@@ -40,14 +57,14 @@ namespace TCPF
 
             var state = (State)result.AsyncState;
 
-            IPEndPoint SLocalIPEndPoint = state.SourceSocket.LocalEndPoint as IPEndPoint;
-            IPEndPoint SRemoteIPEndPoint = state.SourceSocket.RemoteEndPoint as IPEndPoint;
-
-            IPEndPoint DLocalIPEndPoint = state.DestinationSocket.LocalEndPoint as IPEndPoint;
-            IPEndPoint DRemoteIPEndPoint = state.DestinationSocket.RemoteEndPoint as IPEndPoint;
-            
             try
             {
+                IPEndPoint SLocalIPEndPoint = state.SourceSocket.LocalEndPoint as IPEndPoint;
+                IPEndPoint SRemoteIPEndPoint = state.SourceSocket.RemoteEndPoint as IPEndPoint;
+
+                IPEndPoint DLocalIPEndPoint = state.DestinationSocket.LocalEndPoint as IPEndPoint;
+                IPEndPoint DRemoteIPEndPoint = state.DestinationSocket.RemoteEndPoint as IPEndPoint;
+
                 var bytesRead = state.SourceSocket.EndReceive(result);
 
                 if (bytesRead > 0)
@@ -131,8 +148,15 @@ namespace TCPF
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
                 }
             }
-            catch
+            catch (Exception E)
             {
+                var bytesTimeStamp = new byte[0];
+                var stringTimeStamp = "";
+
+                stringTimeStamp = "Exception_OnDataReceive (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + E.ToString() + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+
+                bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
+                AppendAllBytes(Directory.GetCurrentDirectory() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
                 state.DestinationSocket.Close();
                 state.SourceSocket.Close();
             }
