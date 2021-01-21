@@ -39,7 +39,7 @@ namespace TCPF
                     stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Exception_Start (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + E.ToString() + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
 
                     bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
-                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
+                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_Exception.log", bytesTimeStamp).ConfigureAwait(false);
                     Console.WriteLine(stringTimeStamp);
                 }
 
@@ -157,7 +157,7 @@ namespace TCPF
                 stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Exception_OnDataReceive (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + E.ToString() + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
 
                 bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
-                AppendAllBytes(Directory.GetCurrentDirectory() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
+                AppendAllBytes(Directory.GetCurrentDirectory() + "\\_Exception.log", bytesTimeStamp).ConfigureAwait(false);
                 Console.WriteLine(stringTimeStamp);
 
                 state.DestinationSocket.Close();
