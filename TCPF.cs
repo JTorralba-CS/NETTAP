@@ -71,27 +71,6 @@ namespace TCPF
 
             try
             {
-                if (state.DestinationSocket.Connected)
-                {
-                    var bytesTimeStamp = new byte[0];
-                    var stringTimeStamp = "";
-
-                    stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Connected (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
-
-                    bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
-                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_OnDataReceive.log", bytesTimeStamp).ConfigureAwait(false);
-                }
-                else
-                {
-                    var bytesTimeStamp = new byte[0];
-                    var stringTimeStamp = "";
-
-                    stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Disconnected (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
-
-                    bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
-                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_OnDataReceive.log", bytesTimeStamp).ConfigureAwait(false);
-                }
-
                 IPEndPoint SLocalIPEndPoint = state.SourceSocket.LocalEndPoint as IPEndPoint;
                 IPEndPoint SRemoteIPEndPoint = state.SourceSocket.RemoteEndPoint as IPEndPoint;
 
