@@ -36,7 +36,7 @@ namespace TCPF
                     var bytesTimeStamp = new byte[0];
                     var stringTimeStamp = "";
 
-                    stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Exception_Start (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + E.ToString() + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+                    stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Start (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + E.ToString() + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
 
                     bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
                     AppendAllBytes(Directory.GetCurrentDirectory() + "\\_Exception.log", bytesTimeStamp).ConfigureAwait(false);
@@ -48,9 +48,20 @@ namespace TCPF
         }
         private void Connect(EndPoint remoteEndpoint, Socket destination)
         {
+            DateTime TimeStamp = DateTime.Now;
+
             var state = new State(_mainSocket, destination);
+
             _mainSocket.Connect(remoteEndpoint);
             _mainSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, SocketFlags.None, OnDataReceive, state);
+
+            var bytesTimeStamp = new byte[0];
+            var stringTimeStamp = "";
+
+            stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "_mainSocket (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+
+            bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
+            AppendAllBytes(Directory.GetCurrentDirectory() + "\\_Connect.log", bytesTimeStamp).ConfigureAwait(false);
         }
         private static void OnDataReceive(IAsyncResult result)
         {
@@ -60,6 +71,27 @@ namespace TCPF
 
             try
             {
+                if (state.DestinationSocket.Connected)
+                {
+                    var bytesTimeStamp = new byte[0];
+                    var stringTimeStamp = "";
+
+                    stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Connected (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+
+                    bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
+                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_OnDataReceive.log", bytesTimeStamp).ConfigureAwait(false);
+                }
+                else
+                {
+                    var bytesTimeStamp = new byte[0];
+                    var stringTimeStamp = "";
+
+                    stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Disconnected (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+
+                    bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
+                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_OnDataReceive.log", bytesTimeStamp).ConfigureAwait(false);
+                }
+
                 IPEndPoint SLocalIPEndPoint = state.SourceSocket.LocalEndPoint as IPEndPoint;
                 IPEndPoint SRemoteIPEndPoint = state.SourceSocket.RemoteEndPoint as IPEndPoint;
 
@@ -154,7 +186,7 @@ namespace TCPF
                 var bytesTimeStamp = new byte[0];
                 var stringTimeStamp = "";
 
-                stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "Exception_OnDataReceive (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + E.ToString() + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
+                stringTimeStamp = "" + Convert.ToChar(13) + Convert.ToChar(10) + "OnDataReceive (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + E.ToString() + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
 
                 bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
                 AppendAllBytes(Directory.GetCurrentDirectory() + "\\_Exception.log", bytesTimeStamp).ConfigureAwait(false);
