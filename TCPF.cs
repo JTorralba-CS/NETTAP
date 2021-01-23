@@ -32,7 +32,7 @@ namespace TCPF
 
                 try
                 {
-                    if (PreviousSocket != null)
+                    if (PreviousSocket != null & CCC)
                     {
                         PreviousSocket.Close();
                     }
