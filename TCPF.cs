@@ -13,7 +13,6 @@ namespace TCPF
     {
         public static Boolean CCC = false;
         public static Socket PreviousSocket = null;
-        public static String MessageNotSent = null;
 
         private readonly Socket _mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -37,7 +36,7 @@ namespace TCPF
                         PreviousSocket.Close();
                     }
 
-                    Log("Status", TimeStamp, "Start", "Destination.Connect");
+                    Log("Status", TimeStamp, "Start:Destination.Connect", null);
 
                     destination.Connect(remote, source);
 
@@ -45,7 +44,7 @@ namespace TCPF
                 }
                 catch (Exception E)
                 {
-                    Log("Exception", TimeStamp, "Start", E.ToString());
+                    Log("Exception", TimeStamp, "Start:Destination.Connect", E.ToString());
                 }
 
                 source.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
@@ -57,15 +56,15 @@ namespace TCPF
 
             var state = new State(_mainSocket, destination);
 
+            Log("Status", TimeStamp, "Connect:_mainSocket.Connect", null);
             _mainSocket.Connect(remoteEndpoint);
             _mainSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, SocketFlags.None, OnDataReceive, state);
-
-            Log("Status", TimeStamp, "Connect", "_mainSocket");
         }
         private static void OnDataReceive(IAsyncResult result)
         {
             DateTime TimeStamp = DateTime.Now;
-            MessageNotSent = null;
+
+            Byte[] NotForwarded = null;
 
             var state = (State)result.AsyncState;
 
@@ -130,33 +129,21 @@ namespace TCPF
 
                     Capture("Raw", bytesRaw);
 
+                    NotForwarded = bytesRaw;
+
                     //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
 
                     if (!CCC)
                     {
+                        state.DestinationSocket.Send(bytesRaw, bytesRaw.Length, SocketFlags.None);
                         Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port +" " + String.Format("{0:000000}", bytesRead) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesRaw));
                     }
                     else
                     {
+                        state.DestinationSocket.Send(bytesCCC, bytesCCC.Length, SocketFlags.None);
                         Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + String.Format("{0:000000}", bytesRead) + " Byte(s)", null);
                     }
-
-                    stringTimeStamp = SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + String.Format("{0:000000}", bytesRead) + " Byte(s)" + Convert.ToChar(13) + Convert.ToChar(10) + "------------------------------------------------------------------------------------" + Convert.ToChar(13) + Convert.ToChar(10) + System.Text.Encoding.ASCII.GetString(bytesRaw) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10) + Convert.ToChar(13) + Convert.ToChar(10);
-
-                    MessageNotSent = stringTimeStamp;
-
-                    if (CCC)
-                    {
-                        state.DestinationSocket.Send(bytesCCC, bytesCCC.Length, SocketFlags.None);
-                    }
-                    else
-                    {
-                        state.DestinationSocket.Send(bytesRaw, bytesRaw.Length, SocketFlags.None);
-                    }
-
-                    bytesTimeStamp = Encoding.ASCII.GetBytes(stringTimeStamp);
-                    AppendAllBytes(Directory.GetCurrentDirectory() + "\\_TimeStamp.log", bytesTimeStamp).ConfigureAwait(false);
 
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
                 }
@@ -166,10 +153,11 @@ namespace TCPF
 
                 Log("Exception", TimeStamp, "OnDataReceive", E.ToString());
 
-                if (MessageNotSent != null)
+                if (NotForwarded != null)
                 {
-                    Log("Exception", TimeStamp, "OnDataReceive:MessageNotSent:String", MessageNotSent);
+                    Log("Exception", TimeStamp, "OnDataReceive:UnableToFordward", System.Text.Encoding.ASCII.GetString(NotForwarded));
                 }
+                
 
                 state.DestinationSocket.Close();
                 state.SourceSocket.Close();
@@ -233,26 +221,26 @@ namespace TCPF
             return newArray;
         }
 
-        public static void Log(String File, DateTime TimeStamp, String Header, String Message)
+        public static void Log(String File, DateTime TimeStamp, String Basic, String Verbose)
         {
             String CR = "" + Convert.ToChar(13) + Convert.ToChar(10);
             String Detail_String = null;
             Byte[] Detail_Bytes = new Byte[0];
 
-            if (Header + Message != "")
+            if (Basic + Verbose != "")
             {
-                Detail_String += TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + Header;
-                Detail_String += CR;
+                Detail_String += TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + Basic;
 
-                if (Message != null)
+                if (Verbose != null)
                 {
-                    Detail_String = CR + Detail_String;
+                    Detail_String += CR;
                     Detail_String += "----------------------------------------------------------------------------------";
                     Detail_String += CR;
-                    Detail_String += Message;
-                    Detail_String += CR;
-                    Detail_String += CR;
+                    Detail_String += Verbose;
                 }
+
+                Detail_String += CR;
+                Detail_String += CR;
 
                 Detail_Bytes = Encoding.ASCII.GetBytes(Detail_String);
 
