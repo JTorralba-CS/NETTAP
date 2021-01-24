@@ -64,9 +64,9 @@ namespace TCPF
         {
             DateTime TimeStamp = DateTime.Now;
 
-            Byte[] NotForwarded = null;
+            Byte[] Bytes_Lost = null;
 
-            var state = (State)result.AsyncState;
+            State state = (State)result.AsyncState;
 
             try
             {
@@ -82,10 +82,10 @@ namespace TCPF
                 {
                     var bytesRaw = new byte[bytesRead];
                     var bytesCCC = new byte[0];
-                    var bytesTimeStamp = new byte[0];
-                    var stringTimeStamp = "";
 
                     Buffer.BlockCopy(state.Buffer, 0, bytesRaw, 0, bytesRead);
+
+                    Bytes_Lost = bytesRaw;
 
                     if (CCC)
                     {
@@ -129,20 +129,18 @@ namespace TCPF
 
                     Capture("Raw", bytesRaw);
 
-                    NotForwarded = bytesRaw;
-
                     //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
 
                     if (!CCC)
                     {
                         state.DestinationSocket.Send(bytesRaw, bytesRaw.Length, SocketFlags.None);
-                        Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port +" " + String.Format("{0:000000}", bytesRead) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesRaw));
+                        Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port +" " + String.Format("{0:000000}", bytesRaw.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesRaw));
                     }
                     else
                     {
                         state.DestinationSocket.Send(bytesCCC, bytesCCC.Length, SocketFlags.None);
-                        Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " (" + TimeStamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + ") " + String.Format("{0:000000}", bytesRead) + " Byte(s)", null);
+                        Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", bytesCCC.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesCCC));
                     }
 
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
@@ -153,9 +151,9 @@ namespace TCPF
 
                 Log("Exception", TimeStamp, "OnDataReceive", E.ToString());
 
-                if (NotForwarded != null)
+                if (Bytes_Lost != null)
                 {
-                    Log("Exception", TimeStamp, "OnDataReceive:UnableToFordward", System.Text.Encoding.ASCII.GetString(NotForwarded));
+                    Log("Exception", TimeStamp, "OnDataReceive:Bytes_Lost", System.Text.Encoding.ASCII.GetString(Bytes_Lost));
                 }
                 
 
