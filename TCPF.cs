@@ -64,7 +64,7 @@ namespace TCPF
         {
             DateTime TimeStamp = DateTime.Now;
 
-            Byte[] Bytes_Lost = null;
+            Byte[] Bytes_Current = null;
 
             State state = (State)result.AsyncState;
 
@@ -85,9 +85,20 @@ namespace TCPF
 
                     Buffer.BlockCopy(state.Buffer, 0, bytesRaw, 0, bytesRead);
 
-                    Bytes_Lost = bytesRaw;
+                    Bytes_Current = bytesRaw;
 
-                    if (CCC)
+                    Capture("Raw", bytesRaw);
+
+                    //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
+                    //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
+
+                    if (!CCC)
+                    {
+                        state.DestinationSocket.Send(bytesRaw, bytesRaw.Length, SocketFlags.None);
+
+                        Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port +" " + String.Format("{0:000000}", bytesRaw.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesRaw));
+                    }
+                    else
                     {
                         int pos = 0;
                         while (pos < (bytesRead))
@@ -102,7 +113,7 @@ namespace TCPF
                                 {
                                     bytesCCC = addByteToArray(bytesCCC, bytesRaw[pos]);
                                 }
-                                
+
                                 try
                                 {
                                     // ETX Check
@@ -115,8 +126,9 @@ namespace TCPF
                                         bytesCCC = addByteToArray(bytesCCC, 10);
                                     }
                                 }
-                                catch
+                                catch (Exception E)
                                 {
+                                    Log("Exception", TimeStamp, "OnDataReceive:CCC:ETX", E.ToString());
                                 }
                             }
 
@@ -125,21 +137,9 @@ namespace TCPF
 
                         Array.Reverse(bytesCCC, 0, bytesCCC.Length);
                         Capture("CCC", bytesCCC);
-                    }
 
-                    Capture("Raw", bytesRaw);
-
-                    //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
-                    //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
-
-                    if (!CCC)
-                    {
-                        state.DestinationSocket.Send(bytesRaw, bytesRaw.Length, SocketFlags.None);
-                        Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port +" " + String.Format("{0:000000}", bytesRaw.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesRaw));
-                    }
-                    else
-                    {
                         state.DestinationSocket.Send(bytesCCC, bytesCCC.Length, SocketFlags.None);
+
                         Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", bytesCCC.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesCCC));
                     }
 
@@ -151,9 +151,9 @@ namespace TCPF
 
                 Log("Exception", TimeStamp, "OnDataReceive", E.ToString());
 
-                if (Bytes_Lost != null)
+                if (Bytes_Current != null)
                 {
-                    Log("Exception", TimeStamp, "OnDataReceive:Bytes_Lost", System.Text.Encoding.ASCII.GetString(Bytes_Lost));
+                    Log("Exception", TimeStamp, "OnDataReceive: Byte(s) Lost", System.Text.Encoding.ASCII.GetString(Bytes_Current));
                 }
                 
 
