@@ -13,7 +13,7 @@ namespace TCPF
     class TCPF
     {
         public static Boolean CCC = false;
-        public static Socket PreviousSocket = null;
+        public static Socket CCC_PreviousSocket = null;
 
         private readonly Socket _mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -32,16 +32,16 @@ namespace TCPF
 
                 try
                 {
-                    if (PreviousSocket != null & CCC)
+                    if (CCC_PreviousSocket != null & CCC)
                     {
-                        PreviousSocket.Close();
+                        CCC_PreviousSocket.Close();
                     }
 
                     Log("Status", TimeStamp, "Start:Destination.Connect", null);
 
                     destination.Connect(remote, source);
 
-                    PreviousSocket = destination._mainSocket;
+                    CCC_PreviousSocket = destination._mainSocket;
                 }
                 catch (Exception E)
                 {
