@@ -92,13 +92,7 @@ namespace TCPF
                     //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
                     //Console.WriteLine("DestinationSocket " + DLocalIPEndPoint.Address + ":" + DLocalIPEndPoint.Port + " <---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port);
 
-                    if (!CCC)
-                    {
-                        state.DestinationSocket.Send(bytesRaw, bytesRaw.Length, SocketFlags.None);
-
-                        Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port +" " + String.Format("{0:000000}", bytesRaw.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesRaw));
-                    }
-                    else
+                    if (CCC)
                     {
                         int pos = 0;
                         while (pos < (bytesRead))
@@ -136,12 +130,15 @@ namespace TCPF
                         }
 
                         Array.Reverse(bytesCCC, 0, bytesCCC.Length);
+
+                        Bytes_Current = bytesCCC;
+
                         Capture("CCC", bytesCCC);
-
-                        state.DestinationSocket.Send(bytesCCC, bytesCCC.Length, SocketFlags.None);
-
-                        Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", bytesCCC.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(bytesCCC));
                     }
+
+                    state.DestinationSocket.Send(Bytes_Current, Bytes_Current.Length, SocketFlags.None);
+
+                    Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", Bytes_Current.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(Bytes_Current));
 
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
                 }
