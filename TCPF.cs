@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TCPF
@@ -218,8 +219,11 @@ namespace TCPF
 
         public static void Log(String File, DateTime TimeStamp, String Basic, String Verbose)
         {
-            String CR = "" + Convert.ToChar(13) + Convert.ToChar(10);
+            String CR = "" + Convert.ToChar(13);
+            String CRLF = "" + Convert.ToChar(13) + Convert.ToChar(10);
+
             String Detail_String = null;
+
             Byte[] Detail_Bytes = new Byte[0];
 
             if (Basic + Verbose != "")
@@ -228,18 +232,23 @@ namespace TCPF
 
                 if (Verbose != null)
                 {
-                    Detail_String += CR;
+                    Detail_String += CRLF;
                     Detail_String += "----------------------------------------------------------------------------------";
-                    Detail_String += CR;
+                    Detail_String += CRLF;
                     Detail_String += Verbose;
                 }
 
-                Detail_String += CR;
-                Detail_String += CR;
+                Detail_String += CRLF;
+                Detail_String += CRLF;
 
                 Detail_Bytes = Encoding.ASCII.GetBytes(Detail_String);
 
                 AppendAllBytes(Directory.GetCurrentDirectory() + "\\LOG_" + File + ".txt", Detail_Bytes).ConfigureAwait(false);
+
+                // Make Readable In Terminal
+                Detail_String = Regex.Replace(Detail_String, @"\r\n", CR);
+                Detail_String = Regex.Replace(Detail_String, @"\n", CR);
+                Detail_String = Regex.Replace(Detail_String, @"\r", CRLF);
 
                 Console.Write(Detail_String);
             }
