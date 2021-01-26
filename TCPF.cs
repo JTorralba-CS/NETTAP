@@ -15,6 +15,9 @@ namespace TCPF
         public static Boolean CCC = false;
         public static Socket CCC_PreviousSocket = null;
 
+        public static String HB = "" + Convert.ToChar(02) + Convert.ToChar(72) + Convert.ToChar(03);
+        public static String ACK = "" + Convert.ToChar(02) + Convert.ToChar(06) + Convert.ToChar(03);
+
         private readonly Socket _mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         public void Start(IPEndPoint local, IPEndPoint remote)
@@ -140,6 +143,15 @@ namespace TCPF
                     state.DestinationSocket.Send(Bytes_Current, Bytes_Current.Length, SocketFlags.None);
 
                     Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", Bytes_Current.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(Bytes_Current));
+
+                    // Acknowledge HEARTBEAT
+                    if (System.Text.Encoding.ASCII.GetString(Bytes_Current).Contains(HB))
+                    {
+                        Byte[] ACK_Bytes = Encoding.ASCII.GetBytes(ACK);
+                        state.SourceSocket.Send(ACK_Bytes, ACK_Bytes.Length, SocketFlags.None);
+
+                        Log("Status", TimeStamp, "TCPF" + " ---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", ACK_Bytes.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(ACK_Bytes));
+                    }
 
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
                 }
