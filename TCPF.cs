@@ -13,7 +13,6 @@ namespace TCPF
     class TCPF
     {
         public static Boolean CCC = false;
-        public static Socket CCC_PreviousSocket = null;
 
         public static String HB = "" + Convert.ToChar(02) + Convert.ToChar(72) + Convert.ToChar(03);
         public static String ACK = "" + Convert.ToChar(02) + Convert.ToChar(06) + Convert.ToChar(03);
@@ -35,16 +34,8 @@ namespace TCPF
 
                 try
                 {
-                    if (CCC_PreviousSocket != null & CCC)
-                    {
-                        CCC_PreviousSocket.Close();
-                    }
-
                     Log("Status", TimeStamp, "Start:Destination.Connect", null);
-
                     destination.Connect(remote, source);
-
-                    CCC_PreviousSocket = destination._mainSocket;
                 }
                 catch (Exception E)
                 {
