@@ -14,14 +14,18 @@ namespace TCPF
     {
         public static Boolean CCC = false;
 
-        public static String HB = "" + Convert.ToChar(02) + Convert.ToChar(72) + Convert.ToChar(03);
-        public static String ACK = "" + Convert.ToChar(02) + Convert.ToChar(06) + Convert.ToChar(03);
+        public static String HEARTBEAT_REQUEST = "" + Convert.ToChar(02) + Convert.ToChar(72) + Convert.ToChar(03);
+        public static String HEARTBEAT_ACKNOWLEDGEMENT = "" + Convert.ToChar(02) + Convert.ToChar(06) + Convert.ToChar(03);
+        public static Byte[] HEARTBEAT_ACKNOWLEDGEMENT_Bytes = Encoding.ASCII.GetBytes(HEARTBEAT_ACKNOWLEDGEMENT);
+
+        public static String CR = "" + Convert.ToChar(13);
+        public static String CRLF = "" + Convert.ToChar(13) + Convert.ToChar(10);
 
         private readonly Socket _mainSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         public void Start(IPEndPoint local, IPEndPoint remote)
         {
-            DateTime TimeStamp = DateTime.Now;
+            DateTime TimeStamp;
 
             _mainSocket.Bind(local);
             _mainSocket.Listen(10);
@@ -34,34 +38,45 @@ namespace TCPF
 
                 try
                 {
+                    TimeStamp = DateTime.Now;
                     Log("Status", TimeStamp, "Start:Destination.Connect", null);
+
                     destination.Connect(remote, source);
                 }
                 catch (Exception E)
                 {
+                    TimeStamp = DateTime.Now;
                     Log("Exception", TimeStamp, "Start:Destination.Connect", E.ToString());
                 }
 
                 source.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
             }
         }
+
         private void Connect(EndPoint remoteEndpoint, Socket destination)
         {
-            DateTime TimeStamp = DateTime.Now;
+            DateTime TimeStamp;
 
             var state = new State(_mainSocket, destination);
 
+            TimeStamp = DateTime.Now;
             Log("Status", TimeStamp, "Connect:_mainSocket.Connect", null);
+
             _mainSocket.Connect(remoteEndpoint);
             _mainSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, SocketFlags.None, OnDataReceive, state);
         }
+
         private static void OnDataReceive(IAsyncResult result)
         {
-            DateTime TimeStamp = DateTime.Now;
+            DateTime TimeStamp;
 
-            Byte[] Bytes_Current = null;
+            Byte[] Packet_Bytes = null;
+
+            String Packet_String = null;
 
             State state = (State)result.AsyncState;
+
+            TimeStamp = DateTime.Now;
 
             try
             {
@@ -80,8 +95,7 @@ namespace TCPF
 
                     Buffer.BlockCopy(state.Buffer, 0, bytesRaw, 0, bytesRead);
 
-                    Bytes_Current = bytesRaw;
-
+                    Packet_Bytes = bytesRaw;
                     Capture("Raw", bytesRaw);
 
                     //Console.WriteLine("SourceSocket " + SLocalIPEndPoint.Address + ":" + SLocalIPEndPoint.Port + " <---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port);
@@ -117,7 +131,8 @@ namespace TCPF
                                 }
                                 catch (Exception E)
                                 {
-                                    Log("Exception", TimeStamp, "OnDataReceive:CCC:ETX", E.ToString());
+                                    TimeStamp = DateTime.Now;
+                                    Log("Exception", TimeStamp, "OnDataReceive:CCC", E.ToString());
                                 }
                             }
 
@@ -126,22 +141,33 @@ namespace TCPF
 
                         Array.Reverse(bytesCCC, 0, bytesCCC.Length);
 
-                        Bytes_Current = bytesCCC;
-
+                        Packet_Bytes = bytesCCC;
                         Capture("CCC", bytesCCC);
                     }
 
-                    state.DestinationSocket.Send(Bytes_Current, Bytes_Current.Length, SocketFlags.None);
+                    Packet_String = System.Text.Encoding.ASCII.GetString(Packet_Bytes);
 
-                    Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", Bytes_Current.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(Bytes_Current));
+                    TimeStamp = DateTime.Now;
 
-                    // Acknowledge HEARTBEAT
-                    if (System.Text.Encoding.ASCII.GetString(Bytes_Current).Contains(HB))
+                    state.DestinationSocket.Send(Packet_Bytes, Packet_Bytes.Length, SocketFlags.None);
+
+                    Log("Status", TimeStamp, SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " ---> " + DRemoteIPEndPoint.Address + ":" + DRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
+
+                    // HEARTBEAT_REQUEST Check
+                    if (Packet_String.Contains(HEARTBEAT_REQUEST))
                     {
-                        Byte[] ACK_Bytes = Encoding.ASCII.GetBytes(ACK);
-                        state.SourceSocket.Send(ACK_Bytes, ACK_Bytes.Length, SocketFlags.None);
+                        TimeStamp = DateTime.Now;
 
-                        Log("Status", TimeStamp, "TCPF" + " ---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", ACK_Bytes.Length) + " Byte(s)", System.Text.Encoding.ASCII.GetString(ACK_Bytes));
+                        try
+                        {
+                            state.SourceSocket.Send(HEARTBEAT_ACKNOWLEDGEMENT_Bytes, HEARTBEAT_ACKNOWLEDGEMENT_Bytes.Length, SocketFlags.None);
+
+                            Log("Status", TimeStamp, "TCPF" + " ---> " + SRemoteIPEndPoint.Address + ":" + SRemoteIPEndPoint.Port + " " + String.Format("{0:000000}", HEARTBEAT_ACKNOWLEDGEMENT_Bytes.Length) + " Byte(s)", HEARTBEAT_ACKNOWLEDGEMENT);
+                        }
+                        catch (Exception E)
+                        {
+                            Log("Exception", TimeStamp, "OnDataReceive", E.ToString());
+                        }
                     }
 
                     state.SourceSocket.BeginReceive(state.Buffer, 0, state.Buffer.Length, 0, OnDataReceive, state);
@@ -152,9 +178,9 @@ namespace TCPF
 
                 Log("Exception", TimeStamp, "OnDataReceive", E.ToString());
 
-                if (Bytes_Current != null)
+                if (Packet_Bytes != null)
                 {
-                    Log("Exception", TimeStamp, "OnDataReceive: Byte(s) Lost", System.Text.Encoding.ASCII.GetString(Bytes_Current));
+                    Log("Exception", TimeStamp, "OnDataReceive: (Packet Loss)", Packet_String);
                 }
                 
 
@@ -162,6 +188,7 @@ namespace TCPF
                 state.SourceSocket.Close();
             }
         }
+
         private class State
         {
             public Socket SourceSocket { get; private set; }
@@ -174,6 +201,7 @@ namespace TCPF
                 Buffer = new byte[16384];
             }
         }
+
         public static async Task AppendAllBytes(string path, byte[] bytes)
         {
             using (var stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.None,bufferSize:32768, useAsync:true))
@@ -181,11 +209,13 @@ namespace TCPF
                 await stream.WriteAsync(bytes, 0, bytes.Length);
             }
         }
+
         public static string GetExecutingDirectoryName()
         {
             var location = new Uri(Assembly.GetEntryAssembly().GetName().CodeBase);
             return new FileInfo(location.AbsolutePath).Directory.FullName;
         }
+
         static void Main(string[] args)
         {
             try
@@ -222,12 +252,8 @@ namespace TCPF
 
         public static void Log(String File, DateTime TimeStamp, String Basic, String Verbose)
         {
-            String CR = "" + Convert.ToChar(13);
-            String CRLF = "" + Convert.ToChar(13) + Convert.ToChar(10);
-
             String Detail_String = null;
-
-            Byte[] Detail_Bytes = new Byte[0];
+            Byte[] Detail_Bytes = null;
 
             if (Basic + Verbose != "")
             {
