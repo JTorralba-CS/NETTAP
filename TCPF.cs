@@ -110,6 +110,7 @@ namespace TCPF
                             {
                                 if (bytesRaw[pos] == 44)
                                 {
+                                    // Convert COMMA To SPACEBAR
                                     bytesCCC = addByteToArray(bytesCCC, 32);
                                 }
                                 else
