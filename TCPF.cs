@@ -278,12 +278,6 @@ namespace TCPF
             Write_To_File(Directory.GetCurrentDirectory() + "\\Packet_" + File_Name + ".txt", Packet_Bytes).ConfigureAwait(false);
         }
 
-        public static String Get_Executing_Directory()
-        {
-            var Location = new Uri(Assembly.GetEntryAssembly().GetName().CodeBase);
-            return new FileInfo(Location.AbsolutePath).Directory.FullName;
-        }
-
         static void Main(String[] Arguments)
         {
             DateTime Time_Stamp;
