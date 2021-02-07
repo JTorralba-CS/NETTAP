@@ -35,9 +35,13 @@ namespace TCPF
                 Time_Stamp = DateTime.Now;
                 Log("Status", Time_Stamp, "Start: Source = _Main_Socket.Accept()", null);
 
-                var Source = _Main_Socket.Accept();
-                var Destination = new TCPF();
-                var State = new Socket_State(Source, Destination._Main_Socket);
+                //var Source = _Main_Socket.Accept();
+                //var Destination = new TCPF();
+                //var State = new Socket_State(Source, Destination._Main_Socket);
+
+                Socket Source = _Main_Socket.Accept();
+                TCPF Destination = new TCPF();
+                Socket_State State = new Socket_State(Source, Destination._Main_Socket);
 
                 try
                 {
@@ -91,7 +95,8 @@ namespace TCPF
 
         public static async Task Write_To_File(String Path, Byte[] Bytes)
         {
-            using (var File = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
+            //using (var File = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
+            using (FileStream File = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
             {
                 await File.WriteAsync(Bytes, 0, Bytes.Length);
             }
@@ -129,7 +134,9 @@ namespace TCPF
         {
             DateTime Time_Stamp;
 
-            var State = new Socket_State(_Main_Socket, Destination);
+            //var State = new Socket_State(_Main_Socket, Destination);
+
+            Socket_State State = new Socket_State(_Main_Socket, Destination);
 
             Time_Stamp = DateTime.Now;
             Log("Status", Time_Stamp, "Connect: _Main_Socket.Connect", null);
@@ -158,12 +165,17 @@ namespace TCPF
                 IPEndPoint Destination_Local_IPEndPoint = State.Socket_Destination.LocalEndPoint as IPEndPoint;
                 IPEndPoint Destination_Remote_IPEndPoint = State.Socket_Destination.RemoteEndPoint as IPEndPoint;
 
-                var Packet_Read = State.Socket_Source.EndReceive(result);
+                //var Packet_Read = State.Socket_Source.EndReceive(result);
+
+                int Packet_Read = State.Socket_Source.EndReceive(result);
 
                 if (Packet_Read > 0)
                 {
-                    var Packet_Raw = new byte[Packet_Read];
-                    var Packet_CCC = new byte[0];
+                    //var Packet_Raw = new byte[Packet_Read];
+                    //var Packet_CCC = new byte[0];
+
+                    Byte[] Packet_Raw = new byte[Packet_Read];
+                    Byte[] Packet_CCC = new byte[0];
 
                     Buffer.BlockCopy(State.Buffer, 0, Packet_Raw, 0, Packet_Read);
 
