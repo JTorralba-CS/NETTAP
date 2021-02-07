@@ -158,14 +158,14 @@ namespace TCPF
                 IPEndPoint Destination_Local_IPEndPoint = State.Socket_Destination.LocalEndPoint as IPEndPoint;
                 IPEndPoint Destination_Remote_IPEndPoint = State.Socket_Destination.RemoteEndPoint as IPEndPoint;
 
-                int Packet_Read = State.Socket_Source.EndReceive(result);
+                int Packet_Size = State.Socket_Source.EndReceive(result);
 
-                if (Packet_Read > 0)
+                if (Packet_Size > 0)
                 {
-                    Byte[] Packet_Raw = new byte[Packet_Read];
+                    Byte[] Packet_Raw = new byte[Packet_Size];
                     Byte[] Packet_CCC = new byte[0];
 
-                    Buffer.BlockCopy(State.Buffer, 0, Packet_Raw, 0, Packet_Read);
+                    Buffer.BlockCopy(State.Buffer, 0, Packet_Raw, 0, Packet_Size);
 
                     Packet_Bytes = Packet_Raw;
                     Capture("Raw", Packet_Bytes);
@@ -174,7 +174,7 @@ namespace TCPF
                     {
                         int Index = 0;
 
-                        while (Index < (Packet_Read))
+                        while (Index < (Packet_Size))
                         {
                             if (Packet_Raw[Index] != 10)
                             {
