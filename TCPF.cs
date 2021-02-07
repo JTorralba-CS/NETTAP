@@ -35,10 +35,6 @@ namespace TCPF
                 Time_Stamp = DateTime.Now;
                 Log("Status", Time_Stamp, "Start: Source = _Main_Socket.Accept()", null);
 
-                //var Source = _Main_Socket.Accept();
-                //var Destination = new TCPF();
-                //var State = new Socket_State(Source, Destination._Main_Socket);
-
                 Socket Source = _Main_Socket.Accept();
                 TCPF Destination = new TCPF();
                 Socket_State State = new Socket_State(Source, Destination._Main_Socket);
@@ -95,7 +91,6 @@ namespace TCPF
 
         public static async Task Write_To_File(String Path, Byte[] Bytes)
         {
-            //using (var File = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
             using (FileStream File = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
             {
                 await File.WriteAsync(Bytes, 0, Bytes.Length);
@@ -134,8 +129,6 @@ namespace TCPF
         {
             DateTime Time_Stamp;
 
-            //var State = new Socket_State(_Main_Socket, Destination);
-
             Socket_State State = new Socket_State(_Main_Socket, Destination);
 
             Time_Stamp = DateTime.Now;
@@ -165,15 +158,10 @@ namespace TCPF
                 IPEndPoint Destination_Local_IPEndPoint = State.Socket_Destination.LocalEndPoint as IPEndPoint;
                 IPEndPoint Destination_Remote_IPEndPoint = State.Socket_Destination.RemoteEndPoint as IPEndPoint;
 
-                //var Packet_Read = State.Socket_Source.EndReceive(result);
-
                 int Packet_Read = State.Socket_Source.EndReceive(result);
 
                 if (Packet_Read > 0)
                 {
-                    //var Packet_Raw = new byte[Packet_Read];
-                    //var Packet_CCC = new byte[0];
-
                     Byte[] Packet_Raw = new byte[Packet_Read];
                     Byte[] Packet_CCC = new byte[0];
 
@@ -181,9 +169,6 @@ namespace TCPF
 
                     Packet_Bytes = Packet_Raw;
                     Capture("Raw", Packet_Bytes);
-
-                    //Console.WriteLine("Socket_Source " + Source_Local_IPEndPoint.Address + ":" + Source_Local_IPEndPoint.Port + " <---> " + Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port);
-                    //Console.WriteLine("Socket_Destination " + Destination_Local_IPEndPoint.Address + ":" + Destination_Local_IPEndPoint.Port + " <---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port);
 
                     if (CCC)
                     {
