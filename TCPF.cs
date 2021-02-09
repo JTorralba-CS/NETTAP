@@ -56,21 +56,21 @@ namespace TCPF
             }
         }
 
-        public static void Log(String File, DateTime Time_Stamp, String General, String Specfic)
+        public static void Log(String File, DateTime Time_Stamp, String General, String Specific)
         {
             String Detail_String = null;
             Byte[] Detail_Bytes = null;
 
-            if (General + Specfic != "")
+            if (General + Specific != "")
             {
                 Detail_String += Time_Stamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + General;
 
-                if (Specfic != null)
+                if (Specific != null)
                 {
                     Detail_String += CRLF;
                     Detail_String += "-----------------------------------------------------------------------------------";
                     Detail_String += CRLF;
-                    Detail_String += Specfic;
+                    Detail_String += Specific;
                 }
 
                 Detail_String += CRLF;
