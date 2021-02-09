@@ -14,11 +14,11 @@ namespace TCPF
     {
         public static Boolean CCC = false;
 
-        public static String CR = "" + Convert.ToChar(13);
-        public static String CRLF = "" + Convert.ToChar(13) + Convert.ToChar(10);
+        public static String CR = Convert.ToChar(13).ToString();
+        public static String CRLF = Convert.ToChar(13).ToString() + Convert.ToChar(10).ToString();
 
-        public static String HB_Request = "" + Convert.ToChar(02) + Convert.ToChar(72) + Convert.ToChar(03);
-        public static String HB_Acknowledgement = "" + Convert.ToChar(02) + Convert.ToChar(06) + Convert.ToChar(03);
+        public static String HB_Request = Convert.ToChar(02).ToString() + Convert.ToChar(72).ToString() + Convert.ToChar(03).ToString();
+        public static String HB_Acknowledgement = Convert.ToChar(02).ToString() + Convert.ToChar(06).ToString() + Convert.ToChar(03).ToString();
         public static Byte[] HB_Acknowledgement_Bytes = Encoding.ASCII.GetBytes(HB_Acknowledgement);
 
         private readonly Socket _Main_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -33,7 +33,7 @@ namespace TCPF
             while (true)
             {
                 Time_Stamp = DateTime.Now;
-                Log("Status", Time_Stamp, "Start: Source = _Main_Socket.Accept()", null);
+                Log("Status", Time_Stamp, "Start: _Main_Socket.Accept()", null);
 
                 Socket Source = _Main_Socket.Accept();
                 TCPF Destination = new TCPF();
@@ -42,35 +42,35 @@ namespace TCPF
                 try
                 {
                     Time_Stamp = DateTime.Now;
-                    Log("Status", Time_Stamp, "Start: Destination.Connect", null);
+                    Log("Status", Time_Stamp, "Start: Destination.Connect()", null);
 
                     Destination.Connect(Remote, Source);
                 }
                 catch (Exception E)
                 {
                     Time_Stamp = DateTime.Now;
-                    Log("Exception", Time_Stamp, "Start: Destination.Connect", E.ToString());
+                    Log("Exception", Time_Stamp, "Start: Destination.Connect()", E.ToString());
                 }
 
                 Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
             }
         }
 
-        public static void Log(String File, DateTime Time_Stamp, String Basic, String Verbose)
+        public static void Log(String File, DateTime Time_Stamp, String General, String Specfic)
         {
             String Detail_String = null;
             Byte[] Detail_Bytes = null;
 
-            if (Basic + Verbose != "")
+            if (General + Specfic != "")
             {
-                Detail_String += Time_Stamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + Basic;
+                Detail_String += Time_Stamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + General;
 
-                if (Verbose != null)
+                if (Specfic != null)
                 {
                     Detail_String += CRLF;
                     Detail_String += "-----------------------------------------------------------------------------------";
                     Detail_String += CRLF;
-                    Detail_String += Verbose;
+                    Detail_String += Specfic;
                 }
 
                 Detail_String += CRLF;
@@ -132,13 +132,13 @@ namespace TCPF
             Socket_State State = new Socket_State(_Main_Socket, Destination);
 
             Time_Stamp = DateTime.Now;
-            Log("Status", Time_Stamp, "Connect: _Main_Socket.Connect", null);
+            Log("Status", Time_Stamp, "Connect: _Main_Socket.Connect()", null);
 
             _Main_Socket.Connect(Remote_Endpoint);
             _Main_Socket.BeginReceive(State.Buffer, 0, State.Buffer.Length, SocketFlags.None, OnDataReceive, State);
         }
 
-        private static void OnDataReceive(IAsyncResult result)
+        private static void OnDataReceive(IAsyncResult Result)
         {
             DateTime Time_Stamp;
 
@@ -146,7 +146,7 @@ namespace TCPF
 
             String Packet_String = null;
 
-            Socket_State State = (Socket_State)result.AsyncState;
+            Socket_State State = (Socket_State)Result.AsyncState;
 
             Time_Stamp = DateTime.Now;
 
@@ -158,7 +158,7 @@ namespace TCPF
                 IPEndPoint Destination_Local_IPEndPoint = State.Socket_Destination.LocalEndPoint as IPEndPoint;
                 IPEndPoint Destination_Remote_IPEndPoint = State.Socket_Destination.RemoteEndPoint as IPEndPoint;
 
-                int Packet_Size = State.Socket_Source.EndReceive(result);
+                int Packet_Size = State.Socket_Source.EndReceive(Result);
 
                 if (Packet_Size > 0)
                 {
@@ -203,7 +203,7 @@ namespace TCPF
                                 catch (Exception E)
                                 {
                                     Time_Stamp = DateTime.Now;
-                                    Log("Exception", Time_Stamp, "OnDataReceive: CCC", E.ToString());
+                                    Log("Exception", Time_Stamp, "OnDataReceive: ETX Check", E.ToString());
                                 }
                             }
 
@@ -237,7 +237,7 @@ namespace TCPF
                         }
                         catch (Exception E)
                         {
-                            Log("Exception", Time_Stamp, "OnDataReceive", E.ToString());
+                            Log("Exception", Time_Stamp, "OnDataReceive: State.Socket_Source.Send()", E.ToString());
                         }
                     }
 
@@ -270,9 +270,9 @@ namespace TCPF
             return Packet_Bytes_New;
         }
 
-        public static void Capture(string File_Name, byte[] Packet_Bytes)
+        public static void Capture(string File_Name, byte[] Bytes)
         {
-            Write_To_File(Directory.GetCurrentDirectory() + "\\Packet_" + File_Name + ".txt", Packet_Bytes).ConfigureAwait(false);
+            Write_To_File(Directory.GetCurrentDirectory() + "\\Packet_" + File_Name + ".txt", Bytes).ConfigureAwait(false);
         }
 
         static void Main(String[] Arguments)
@@ -301,7 +301,7 @@ namespace TCPF
             try
             {
                 Time_Stamp = DateTime.Now;
-                Log("Status", Time_Stamp, "Main: TCPF().Start", null);
+                Log("Status", Time_Stamp, "Main: TCPF().Start()", null);
 
                 new TCPF().Start(
                     new IPEndPoint(IPAddress.Parse(Arguments[0]), int.Parse(Arguments[1])),
@@ -311,7 +311,7 @@ namespace TCPF
             catch (Exception E)
             {
                 Time_Stamp = DateTime.Now;
-                Log("Exception", Time_Stamp, "Main: TCPF().Start", E.ToString());
+                Log("Exception", Time_Stamp, "Main: TCPF().Start()", E.ToString());
             }
         }
     }
