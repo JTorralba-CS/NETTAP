@@ -49,7 +49,7 @@ namespace TCPF
                 catch (Exception E)
                 {
                     Time_Stamp = DateTime.Now;
-                    Log("Exception", Time_Stamp, "Start: Destination.Connect()", E.ToString());
+                    Log("Exception", Time_Stamp, "Start: Destination.Connect()", E.Message);
                 }
 
                 Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
@@ -91,9 +91,29 @@ namespace TCPF
 
         public static async Task Write_To_File(String Path, Byte[] Bytes)
         {
-            using (FileStream File = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
+            DateTime Time_Stamp;
+
+            Time_Stamp = DateTime.Now;
+
+            String Detail_String = null;
+
+            try
             {
-                await File.WriteAsync(Bytes, 0, Bytes.Length);
+                using (FileStream File = new FileStream(Path, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
+                {
+                    await File.WriteAsync(Bytes, 0, Bytes.Length);
+                }
+            }
+            catch (Exception E)
+            {
+                Detail_String += Time_Stamp.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " Exception: Write_To_File";
+                Detail_String += CRLF;
+                Detail_String += "-----------------------------------------------------------------------------------";
+                Detail_String += CRLF;
+                Detail_String += E.Message;
+                Detail_String += CRLF;
+                Detail_String += CRLF;
+                Console.Write(Detail_String);
             }
         }
 
@@ -203,7 +223,7 @@ namespace TCPF
                                 catch (Exception E)
                                 {
                                     Time_Stamp = DateTime.Now;
-                                    Log("Exception", Time_Stamp, "OnDataReceive: ETX Check", E.ToString());
+                                    Log("Exception", Time_Stamp, "OnDataReceive: ETX Check", E.Message);
                                 }
                             }
 
@@ -237,7 +257,7 @@ namespace TCPF
                         }
                         catch (Exception E)
                         {
-                            Log("Exception", Time_Stamp, "OnDataReceive: State.Socket_Source.Send()", E.ToString());
+                            Log("Exception", Time_Stamp, "OnDataReceive: State.Socket_Source.Send()", E.Message);
                         }
                     }
 
@@ -247,7 +267,7 @@ namespace TCPF
             catch (Exception E)
             {
 
-                Log("Exception", Time_Stamp, "OnDataReceive", E.ToString());
+                Log("Exception", Time_Stamp, "OnDataReceive", E.Message);
 
                 if (Packet_Bytes != null)
                 {
@@ -311,7 +331,7 @@ namespace TCPF
             catch (Exception E)
             {
                 Time_Stamp = DateTime.Now;
-                Log("Exception", Time_Stamp, "Main: TCPF().Start()", E.ToString());
+                Log("Exception", Time_Stamp, "Main: TCPF().Start()", E.Message);
             }
         }
     }
