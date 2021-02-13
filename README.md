@@ -42,31 +42,3 @@ C#\
 ## Syntax:
 
 TCPF Local-IP Local-Port Destination-IP Destination-Port [CCC]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
