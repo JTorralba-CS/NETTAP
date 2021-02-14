@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -276,6 +277,8 @@ namespace TCPF
 
         static void Main(String[] Arguments)
         {
+            int Port = 35263;
+
             try
             {
                 Console.Clear();
@@ -286,28 +289,47 @@ namespace TCPF
 
             try
             {
-                if (Arguments[4] == "CCC")
+                if (Arguments[2] == "CCC")
                 {
                     CCC = true;
                 }
             }
-            catch
+            catch (Exception E)
             {
+                Log("Exception", "Main: Arguments[]", null);
             }
 
             try
             {
                 Log("Status", "Main: TCPF().Start()", null);
 
-                new TCPF().Start(
-                    new IPEndPoint(IPAddress.Parse(Arguments[0]), int.Parse(Arguments[1])),
-                    new IPEndPoint(IPAddress.Parse(Arguments[2]), int.Parse(Arguments[3]))
-                );
+                foreach (String IP in IP4_List())
+                {
+                    new TCPF().Start(
+                        new IPEndPoint(IPAddress.Parse(IP), int.Parse(Port.ToString())),
+                        new IPEndPoint(IPAddress.Parse(Arguments[0]), int.Parse(Arguments[1]))
+                        );
+                }
             }
             catch (Exception E)
             {
                 Log("Exception", "Main: TCPF().Start()", E.Message);
             }
+        }
+
+        public static String[] IP4_List()
+        {
+            String HostName = Dns.GetHostName();
+            List <String> IP4_List = new List <String> ();
+
+            IPAddress[] IP_List = Dns.GetHostAddresses(HostName);
+
+            foreach (IPAddress IP4 in IP_List.Where(IP => IP.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork))
+            {
+                IP4_List.Add(IP4.ToString());
+            }
+
+            return IP4_List.ToArray();
         }
     }
 }
