@@ -41,4 +41,4 @@ C#\
 
 TCPF Destination-IP Destination-Port [Listen-Port]
 
-Default listen port is 35263. You specify a custom [Listen-Port].
+Default listen port is 35263. An optional custom [Listen-Port] can be specified.
