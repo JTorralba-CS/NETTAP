@@ -5,13 +5,13 @@ TCP logger and forwarder.
 
 What does TCPF do? 
 
-This utility is used as a troubleshooting tool to review and analyze what data is being passed between TCP systems.  It captures the data from source TCP system, stores the data to a log file (TCP_Raw.txt), then relays the data to the destination TCP system.  (HEARTBEATs are managed between source and destination TCP system.)
+This utility is used as a troubleshooting tool to review and analyze what data is being passed between TCP systems.  It captures the data from source TCP system, stores the data to a log file (TCP_Raw.txt), then relays the data to the destination TCP system.
 
-What does the "CCC" optional parameter do?
+What does the "CCC" feature process do?
 
-ESRI GeoEvent service was built for modern data communication.  It has no native support for legacy serial data communication over TCP.  With the "CCC" option, the utility has been modified to adopt to the inconsistent ANIALI data coming from the vendors.  Basically, it takes the raw ANIALI data from the vendors (CARRIERS/PROVIDERS, INTRADO, CENTRAL SQAURE, etc.) and makes it clean before the GeoEvent server can digest the ANIALI data for plotting on a map.
+ESRI GeoEvent service was built for modern data communication.  It has no native support for legacy serial data communication over TCP that utilizes the STC & ETX ASCII control codes.  With the "CCC" feature, the utility has been modified to adopt to the inconsistent ANIALI data coming from the vendors.  Basically, it takes the raw ANIALI data and makes it clean before the GeoEvent server can digest the ANIALI data for plotting on a map.
 
-When "CCC" is enabled, the utility performs the following: 
+When STX ASCII control code is initially detected the "CCC" (Clean-Control-Code) feature will be automatically enabled. The utility performs the following: 
 
 1) Strips LINE-FEED (LF) ASCII control code in between the START-OF-TEXT (STX) and the END-OF-TEXT (ETX) ASCII control codes. LN in the data causes issues for GeoEvent service parsing.
 
@@ -41,4 +41,4 @@ C#\
 
 ## Syntax:
 
-TCPF Local-IP Local-Port Destination-IP Destination-Port [CCC]
+TCPF Destination-IP Destination-Port
