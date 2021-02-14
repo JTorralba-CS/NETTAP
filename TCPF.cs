@@ -27,7 +27,9 @@ namespace TCPF
         public void Start(IPEndPoint Local, IPEndPoint Remote)
         {
             _Main_Socket.Bind(Local);
-            _Main_Socket.Listen(10);
+            _Main_Socket.Listen(0);
+
+            Log("Status", "Start: Listening On " + Local.Address.ToString() + ":" + Local.Port.ToString(), null);
 
             while (true)
             {
@@ -275,6 +277,21 @@ namespace TCPF
             Write_To_File(Directory.GetCurrentDirectory() + "\\Packet_" + File_Name + ".txt", Bytes).ConfigureAwait(false);
         }
 
+        public static String[] IP4_List()
+        {
+            String HostName = Dns.GetHostName();
+            List<String> IP4_List = new List<String>();
+
+            IPAddress[] IP_List = Dns.GetHostAddresses(HostName);
+
+            foreach (IPAddress IP4 in IP_List.Where(IP => IP.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork))
+            {
+                IP4_List.Add(IP4.ToString());
+            }
+
+            return IP4_List.ToArray();
+        }
+
         static void Main(String[] Arguments)
         {
             int Port = 35263;
@@ -315,21 +332,6 @@ namespace TCPF
             {
                 Log("Exception", "Main: TCPF().Start()", E.Message);
             }
-        }
-
-        public static String[] IP4_List()
-        {
-            String HostName = Dns.GetHostName();
-            List <String> IP4_List = new List <String> ();
-
-            IPAddress[] IP_List = Dns.GetHostAddresses(HostName);
-
-            foreach (IPAddress IP4 in IP_List.Where(IP => IP.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork))
-            {
-                IP4_List.Add(IP4.ToString());
-            }
-
-            return IP4_List.ToArray();
         }
     }
 }
