@@ -304,11 +304,19 @@ namespace TCPF
 
         static void Main(String[] Arguments)
         {
-            int Port = 35263;
+            int Listen_Port = 35263;
 
             try
             {
                 Console.Clear();
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                Listen_Port = int.Parse(Arguments[2]);
             }
             catch
             {
@@ -321,7 +329,7 @@ namespace TCPF
                 foreach (String IP in IP4_List())
                 {
                     new TCPF().Start(
-                        new IPEndPoint(IPAddress.Parse(IP), int.Parse(Port.ToString())),
+                        new IPEndPoint(IPAddress.Parse(IP), int.Parse(Listen_Port.ToString())),
                         new IPEndPoint(IPAddress.Parse(Arguments[0]), int.Parse(Arguments[1]))
                         );
                 }

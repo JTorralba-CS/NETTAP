@@ -1,4 +1,8 @@
+REM Purge logs.
+
 del *.log
 del *.txt
 
-TCPF Listen_IP Listen_Port Target_IP Target_Port CCC
+TCPF Destination_IP Destination_Port [Listen-Port]
+
+REM Default listen port is 35263. You specify a custom [Listen-Port].

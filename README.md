@@ -39,4 +39,6 @@ C#\
 
 ## Syntax:
 
-TCPF Destination-IP Destination-Port
+TCPF Destination-IP Destination-Port [Listen-Port]
+
+Default listen port is 35263. You specify a custom [Listen-Port].
