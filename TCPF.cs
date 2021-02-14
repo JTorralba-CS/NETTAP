@@ -13,8 +13,6 @@ namespace TCPF
 {
     class TCPF
     {
-        public static Boolean CCC = false;
-
         public static String CR = Convert.ToChar(13).ToString();
         public static String CRLF = Convert.ToChar(13).ToString() + Convert.ToChar(10).ToString();
 
@@ -131,11 +129,18 @@ namespace TCPF
                 private set;
             }
 
+            public Boolean CCC
+            {
+                get;
+                set;
+            }
+
             public Socket_State(Socket Source, Socket Destination)
             {
                 Socket_Source = Source;
                 Socket_Destination = Destination;
                 Buffer = new Byte[16384];
+                CCC = false;
             }
         }
 
@@ -169,6 +174,11 @@ namespace TCPF
 
                 if (Packet_Size > 0)
                 {
+                    if (State.CCC != true && State.Buffer[0] == 02)
+                    {
+                        State.CCC = true;
+                    }
+
                     Byte[] Packet_Raw = new byte[Packet_Size];
                     Byte[] Packet_CCC = new byte[0];
 
@@ -177,7 +187,7 @@ namespace TCPF
                     Packet_Bytes = Packet_Raw;
                     Capture("Raw", Packet_Bytes);
 
-                    if (CCC)
+                    if (State.CCC)
                     {
                         int Index = 0;
 
@@ -302,18 +312,6 @@ namespace TCPF
             }
             catch
             {
-            }
-
-            try
-            {
-                if (Arguments[2] == "CCC")
-                {
-                    CCC = true;
-                }
-            }
-            catch (Exception E)
-            {
-                Log("Exception", "Main: Arguments[]", null);
             }
 
             try
