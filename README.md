@@ -5,7 +5,7 @@ TCP logger and forwarder.
 
 What does TCPF do? 
 
-This utility is used as a troubleshooting tool to review and analyze what data is being passed between TCP systems.  It captures the data from source TCP system, stores the data to a log file (TCP_Raw.txt), then relays the data to the destination TCP system.
+This utility is used as a troubleshooting tool to review and analyze what data is being passed between TCP systems.  It listens and captures the data from source TCP system, stores the data to a log file (Packet_Raw.txt), then relays the data to the destination TCP system.
 
 What does the "CCC" feature process do?
 
