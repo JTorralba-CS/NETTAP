@@ -21,9 +21,7 @@ When STX ASCII control code is initially detected the "CCC" (Clean-Control-Code)
 
 4) Adds CARRAGIE-RETURN + LINE-FEED to minimize overlapping of received records causing extra processing for GeoEvent service.  GeoEvent service uses the ETX as record separator but sometimes receives short status messages like "STXE99ETX".
 
-5) Stores the "cleansed" data in the TCP_CCC.txt file.
-
-6) Exclusive mode - only one active socket between source and destination TCP system.
+5) Stores the "cleansed" data in the Packet_CCC.txt file.
 
 
 ## Stack:
