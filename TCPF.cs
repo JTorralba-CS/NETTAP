@@ -304,7 +304,9 @@ namespace TCPF
 
         static void Main(String[] Arguments)
         {
-            int Listen_Port = 35263;
+            String Destination_IP = null;
+            int Destination_Port = 0;
+            int Listen_Port = 0;
 
             try
             {
@@ -316,7 +318,34 @@ namespace TCPF
 
             try
             {
-                Listen_Port = int.Parse(Arguments[2]);
+                if (Arguments.Length > 2)
+                {
+                    Destination_IP = Arguments[0];
+                    Destination_Port = int.Parse(Arguments[1]);
+                    Listen_Port = int.Parse(Arguments[2]);
+                }
+                else if (Arguments.Length == 2)
+                {
+                    Destination_IP = Arguments[0];
+                    Destination_Port = int.Parse(Arguments[1]);
+                    Listen_Port = 35263;
+                }
+                else
+                {
+                    while (Destination_IP == null || Destination_Port == 0 || Listen_Port == 0)
+                    {
+                        Console.Write("Destination-IP:    ");
+                        Destination_IP = Console.ReadLine();
+
+                        Console.Write("Destination-Port:  ");
+                        Destination_Port = int.Parse(Console.ReadLine());
+
+                        Console.Write("Listen-Port:       ");
+                        Listen_Port = int.Parse(Console.ReadLine());
+
+                        Console.WriteLine();
+                    }
+                }
             }
             catch
             {
@@ -330,7 +359,7 @@ namespace TCPF
                 {
                     new TCPF().Start(
                         new IPEndPoint(IPAddress.Parse(IP), int.Parse(Listen_Port.ToString())),
-                        new IPEndPoint(IPAddress.Parse(Arguments[0]), int.Parse(Arguments[1]))
+                        new IPEndPoint(IPAddress.Parse(Destination_IP), Destination_Port)
                         );
                 }
             }
