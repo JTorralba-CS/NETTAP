@@ -64,7 +64,7 @@ namespace TCPF
                 if (Specific != null)
                 {
                     Detail_String += CRLF;
-                    Detail_String += "-----------------------------------------------------------------------------------";
+                    Detail_String += "------------------------------------------------------------------------------------";
                     Detail_String += CRLF;
                     Detail_String += Specific;
                 }
@@ -74,7 +74,7 @@ namespace TCPF
 
                 Detail_Bytes = Encoding.ASCII.GetBytes(Detail_String);
 
-                Write_To_File(Directory.GetCurrentDirectory() + "\\Log_" + File + ".txt", Detail_Bytes).ConfigureAwait(false);
+                Write_To_File(Directory.GetCurrentDirectory() + "\\" + File + ".txt", Detail_Bytes).ConfigureAwait(false);
 
                 // Make Readable In Terminal
                 Detail_String = Regex.Replace(Detail_String, @"\r\n", CR);
@@ -100,7 +100,7 @@ namespace TCPF
             {
                 Detail_String += DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " Exception: Write_To_File";
                 Detail_String += CRLF;
-                Detail_String += "-----------------------------------------------------------------------------------";
+                Detail_String += "------------------------------------------------------------------------------------";
                 Detail_String += CRLF;
                 Detail_String += E.Message;
                 Detail_String += CRLF;
@@ -162,10 +162,18 @@ namespace TCPF
 
             Socket_State State = (Socket_State)Result.AsyncState;
 
+            String File = null;
+
             try
             {
                 IPEndPoint Source_Local_IPEndPoint = State.Socket_Source.LocalEndPoint as IPEndPoint;
                 IPEndPoint Source_Remote_IPEndPoint = State.Socket_Source.RemoteEndPoint as IPEndPoint;
+
+                File = Source_Local_IPEndPoint.Address.ToString() + "_" + Source_Remote_IPEndPoint.Port + "\\";
+                if (!Directory.Exists(Directory.GetCurrentDirectory() + "\\" + File))
+                {
+                    Directory.CreateDirectory(Directory.GetCurrentDirectory() + "\\" + File);
+                }
 
                 IPEndPoint Destination_Local_IPEndPoint = State.Socket_Destination.LocalEndPoint as IPEndPoint;
                 IPEndPoint Destination_Remote_IPEndPoint = State.Socket_Destination.RemoteEndPoint as IPEndPoint;
@@ -185,7 +193,7 @@ namespace TCPF
                     Buffer.BlockCopy(State.Buffer, 0, Packet_Raw, 0, Packet_Size);
 
                     Packet_Bytes = Packet_Raw;
-                    Capture("Raw", Packet_Bytes);
+                    Capture(File + "Raw", Packet_Bytes);
 
                     if (State.CCC)
                     {
@@ -219,7 +227,7 @@ namespace TCPF
                                 }
                                 catch (Exception E)
                                 {
-                                    Log("Exception", "OnDataReceive: ETX Check", E.Message);
+                                    Log(File + "Exception", "OnDataReceive: ETX Check", E.Message);
                                 }
                             }
 
@@ -229,14 +237,14 @@ namespace TCPF
                         Array.Reverse(Packet_CCC, 0, Packet_CCC.Length);
 
                         Packet_Bytes = Packet_CCC;
-                        Capture("CCC", Packet_Bytes);
+                        Capture(File + "CCC", Packet_Bytes);
                     }
 
                     Packet_String = System.Text.Encoding.ASCII.GetString(Packet_Bytes);
 
                     State.Socket_Destination.Send(Packet_Bytes, Packet_Bytes.Length, SocketFlags.None);
 
-                    Log("Status", Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
+                    Log(File + "Status", Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
 
                     // HB_Request Check
                     if (Packet_String.Contains(HB_Request))
@@ -245,11 +253,11 @@ namespace TCPF
                         {
                             State.Socket_Source.Send(HB_Acknowledgement_Bytes, HB_Acknowledgement_Bytes.Length, SocketFlags.None);
 
-                            Log("Status", "TCPF" + " ---> " + Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", HB_Acknowledgement_Bytes.Length) + " Byte(s)", HB_Acknowledgement);
+                            Log(File + "Status", "TCPF" + " ---> " + Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", HB_Acknowledgement_Bytes.Length) + " Byte(s)", HB_Acknowledgement);
                         }
                         catch (Exception E)
                         {
-                            Log("Exception", "OnDataReceive: State.Socket_Source.Send()", E.Message);
+                            Log(File + "Exception", "OnDataReceive: State.Socket_Source.Send()", E.Message);
                         }
                     }
 
@@ -258,14 +266,12 @@ namespace TCPF
             }
             catch (Exception E)
             {
-
-                Log("Exception", "OnDataReceive", E.Message);
+                Log(File + "Exception", "OnDataReceive", E.Message);
 
                 if (Packet_Bytes != null)
                 {
-                    Log("Exception", "OnDataReceive: (Packet Loss)", Packet_String);
+                    Log(File + "Exception", "OnDataReceive: (Packet Loss)", Packet_String);
                 }
-                
 
                 State.Socket_Destination.Close();
                 State.Socket_Source.Close();
@@ -284,7 +290,7 @@ namespace TCPF
 
         public static void Capture(string File_Name, byte[] Bytes)
         {
-            Write_To_File(Directory.GetCurrentDirectory() + "\\Packet_" + File_Name + ".txt", Bytes).ConfigureAwait(false);
+            Write_To_File(Directory.GetCurrentDirectory() + "\\" + File_Name + ".txt", Bytes).ConfigureAwait(false);
         }
 
         public static String[] IP4_List()
