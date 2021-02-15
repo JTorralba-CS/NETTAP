@@ -169,7 +169,7 @@ namespace TCPF
                 IPEndPoint Source_Local_IPEndPoint = State.Socket_Source.LocalEndPoint as IPEndPoint;
                 IPEndPoint Source_Remote_IPEndPoint = State.Socket_Source.RemoteEndPoint as IPEndPoint;
 
-                File = Source_Local_IPEndPoint.Address.ToString() + "_" + Source_Remote_IPEndPoint.Port + "\\";
+                File = Source_Remote_IPEndPoint.Address.ToString() + "_" + Source_Remote_IPEndPoint.Port + "\\";
                 if (!Directory.Exists(Directory.GetCurrentDirectory() + "\\" + File))
                 {
                     Directory.CreateDirectory(Directory.GetCurrentDirectory() + "\\" + File);
