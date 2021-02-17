@@ -14,6 +14,7 @@
   <ItemGroup>
     <None Update="Settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </None>
     <None Update="_.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
