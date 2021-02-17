@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
@@ -261,6 +263,19 @@ namespace TCPF
                         }
                     }
 
+                    // Anomaly Check
+                    if (Packet_String.Contains("303-911-0000"))
+                    {
+                        try
+                        {
+                            EMail(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
+                        }
+                        catch (Exception E)
+                        {
+                            Log(File + "Exception", "OnDataReceive: EMail()", E.Message);
+                        }
+                    }
+
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
                 }
             }
@@ -306,6 +321,37 @@ namespace TCPF
             }
 
             return IP4_List.ToArray();
+        }
+
+        public static void EMail(String General, String Specific)
+        {
+            String Detail_String = null;
+
+            ConfigurationBuilder Settings_File = new ConfigurationBuilder();
+            Settings_File.AddJsonFile("AppSettings.json");
+            IConfiguration Settings_SMTP = Settings_File.Build();
+
+            SmtpClient SMTP_Client = new SmtpClient(Settings_SMTP["SMTP:Host"])
+            {
+                Port = int.Parse(Settings_SMTP["SMTP:Port"]),
+                Credentials = new NetworkCredential(Settings_SMTP["SMTP:Username"], Settings_SMTP["SMTP:Password"]),
+                EnableSsl = true,
+            };
+
+            if (General + Specific != "")
+            {
+                Detail_String += DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + General;
+
+                if (Specific != null)
+                {
+                    Detail_String += CRLF;
+                    Detail_String += "------------------------------------------------------------------------------------";
+                    Detail_String += CRLF;
+                    Detail_String += Specific;
+                }
+            }
+
+            SMTP_Client.Send(Settings_SMTP["SMTP:Sender"], Settings_SMTP["SMTP:Recipient"], "Anomaly Detected", Detail_String);
         }
 
         static void Main(String[] Arguments)
