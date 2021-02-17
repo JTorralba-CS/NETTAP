@@ -328,7 +328,7 @@ namespace TCPF
             String Detail_String = null;
 
             ConfigurationBuilder Settings_File = new ConfigurationBuilder();
-            Settings_File.AddJsonFile("Settings.json");
+            Settings_File.AddJsonFile(Directory.GetCurrentDirectory() + "\\" + "Settings" + ".json");
             IConfiguration Settings_SMTP = Settings_File.Build();
 
             SmtpClient SMTP_Client = new SmtpClient(Settings_SMTP["SMTP:Host"])

@@ -9,11 +9,11 @@
   ],
 
   "SMTP": {
-    "Host": "<SERVER>",
-    "Port": 0,
-    "Username": "<USERNAME>",
-    "Password": "<PASSWORD>",
-    "Sender": "<Sender E-Mail>",
-    "Recipient": "<Recipient E-Mail>"
+    "Host": "SMTP.SocketLabs.com",
+    "Port": 587,
+    "Username": "server35205",
+    "Password": "f6T3Akn5GCt9d2",
+    "Sender": "AUTOMATE01@EPTPaging.Info",
+    "Recipient": "JTorralba@EPTC911.org"
   }
 }
