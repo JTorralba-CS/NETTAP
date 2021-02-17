@@ -24,6 +24,21 @@ namespace TCPF
 
         private readonly Socket _Main_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
+        public static String[] IP4_List()
+        {
+            String HostName = Dns.GetHostName();
+            List<String> IP4_List = new List<String>();
+
+            IPAddress[] IP_List = Dns.GetHostAddresses(HostName);
+
+            foreach (IPAddress IP4 in IP_List.Where(IP => IP.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork))
+            {
+                IP4_List.Add(IP4.ToString());
+            }
+
+            return IP4_List.ToArray();
+        }
+
         public void Start(IPEndPoint Local, IPEndPoint Remote)
         {
             _Main_Socket.Bind(Local);
@@ -306,21 +321,6 @@ namespace TCPF
         public static void Capture(string File_Name, byte[] Bytes)
         {
             Write_To_File(Directory.GetCurrentDirectory() + "\\" + File_Name + ".txt", Bytes).ConfigureAwait(false);
-        }
-
-        public static String[] IP4_List()
-        {
-            String HostName = Dns.GetHostName();
-            List<String> IP4_List = new List<String>();
-
-            IPAddress[] IP_List = Dns.GetHostAddresses(HostName);
-
-            foreach (IPAddress IP4 in IP_List.Where(IP => IP.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork))
-            {
-                IP4_List.Add(IP4.ToString());
-            }
-
-            return IP4_List.ToArray();
         }
 
         public static void EMail(String General, String Specific)
