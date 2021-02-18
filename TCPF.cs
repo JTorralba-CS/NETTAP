@@ -22,6 +22,10 @@ namespace TCPF
         public static String HB_Acknowledgement = Convert.ToChar(02).ToString() + Convert.ToChar(06).ToString() + Convert.ToChar(03).ToString();
         public static Byte[] HB_Acknowledgement_Bytes = Encoding.ASCII.GetBytes(HB_Acknowledgement);
 
+        public static ConfigurationBuilder Settings_File = null;
+        public static IConfiguration Settings_Data = null;
+        public static SmtpClient SMTP_Client = null;
+
         private readonly Socket _Main_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
         public static String[] IP4_List()
@@ -39,8 +43,28 @@ namespace TCPF
             return IP4_List.ToArray();
         }
 
-        public void Start(IPEndPoint Local, IPEndPoint Remote)
+        public void Start(String IP, int Listen_Port, IPEndPoint Remote)
         {
+            IPEndPoint Local = null;
+
+            Settings_File = new ConfigurationBuilder();
+            Settings_File.AddJsonFile(Directory.GetCurrentDirectory() + "\\" + "Settings" + ".json");
+            Settings_Data = Settings_File.Build();
+
+            SMTP_Client = new SmtpClient(Settings_Data["SMTP:Host"])
+            {
+                Port = int.Parse(Settings_Data["SMTP:Port"]),
+                Credentials = new NetworkCredential(Settings_Data["SMTP:Username"], Settings_Data["SMTP:Password"]),
+                EnableSsl = true,
+            };
+
+            if (Listen_Port == 0)
+            {
+                Listen_Port = int.Parse(Settings_Data["Default:Listen_Port"]);
+            }
+
+            Local = new IPEndPoint(IPAddress.Parse(IP), Listen_Port);
+
             _Main_Socket.Bind(Local);
             _Main_Socket.Listen(0);
 
@@ -327,17 +351,6 @@ namespace TCPF
         {
             String Detail_String = null;
 
-            ConfigurationBuilder Settings_File = new ConfigurationBuilder();
-            Settings_File.AddJsonFile(Directory.GetCurrentDirectory() + "\\" + "Settings" + ".json");
-            IConfiguration Settings_SMTP = Settings_File.Build();
-
-            SmtpClient SMTP_Client = new SmtpClient(Settings_SMTP["SMTP:Host"])
-            {
-                Port = int.Parse(Settings_SMTP["SMTP:Port"]),
-                Credentials = new NetworkCredential(Settings_SMTP["SMTP:Username"], Settings_SMTP["SMTP:Password"]),
-                EnableSsl = true,
-            };
-
             if (General + Specific != "")
             {
                 Detail_String += DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + General;
@@ -351,7 +364,7 @@ namespace TCPF
                 }
             }
 
-            SMTP_Client.Send(Settings_SMTP["SMTP:Sender"], Settings_SMTP["SMTP:Recipient"], "Anomaly Detected", Detail_String);
+            SMTP_Client.Send(Settings_Data["SMTP:Sender"], Settings_Data["SMTP:Recipient"], "Anomaly Detected", Detail_String);
         }
 
         static void Main(String[] Arguments)
@@ -380,7 +393,6 @@ namespace TCPF
                 {
                     Destination_IP = Arguments[0];
                     Destination_Port = int.Parse(Arguments[1]);
-                    Listen_Port = 35263;
                 }
                 else
                 {
@@ -409,10 +421,7 @@ namespace TCPF
 
                 foreach (String IP in IP4_List())
                 {
-                    new TCPF().Start(
-                        new IPEndPoint(IPAddress.Parse(IP), int.Parse(Listen_Port.ToString())),
-                        new IPEndPoint(IPAddress.Parse(Destination_IP), Destination_Port)
-                        );
+                    new TCPF().Start(IP, Listen_Port, new IPEndPoint(IPAddress.Parse(Destination_IP), Destination_Port));
                 }
             }
             catch (Exception E)

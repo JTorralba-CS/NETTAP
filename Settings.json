@@ -8,12 +8,16 @@
     "**/platforms"
   ],
 
+  "Default": {
+    "Listen_Port": 35263
+  },
+
   "SMTP": {
-    "Host": "SMTP.SocketLabs.com",
+    "Host": "<Host>",
     "Port": 587,
-    "Username": "server35205",
-    "Password": "f6T3Akn5GCt9d2",
-    "Sender": "AUTOMATE01@EPTPaging.Info",
-    "Recipient": "JTorralba@EPTC911.org"
+    "Username": "<Username>",
+    "Password": "<Password>",
+    "Sender": "<Sender>",
+    "Recipient": "<Recipient>"
   }
 }
