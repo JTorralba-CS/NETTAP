@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,8 +22,8 @@ namespace TCPF
         public static String HB_Acknowledgement = Convert.ToChar(02).ToString() + Convert.ToChar(06).ToString() + Convert.ToChar(03).ToString();
         public static Byte[] HB_Acknowledgement_Bytes = Encoding.ASCII.GetBytes(HB_Acknowledgement);
 
-        public static ConfigurationBuilder Settings_File = null;
-        public static IConfiguration Settings_Data = null;
+        public static ExeConfigurationFileMap Settings_File = null;
+        public static Configuration Settings_Data = null;
         public static SmtpClient SMTP_Client = null;
 
         private readonly Socket _Main_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -47,20 +47,19 @@ namespace TCPF
         {
             IPEndPoint Local = null;
 
-            Settings_File = new ConfigurationBuilder();
-            Settings_File.AddJsonFile(Directory.GetCurrentDirectory() + "\\" + "Settings" + ".json");
-            Settings_Data = Settings_File.Build();
+            Settings_File = new ExeConfigurationFileMap { ExeConfigFilename = Directory.GetCurrentDirectory() + "\\" + "Settings" + ".xml" };
+            Settings_Data = ConfigurationManager.OpenMappedExeConfiguration(Settings_File, ConfigurationUserLevel.None);
 
-            SMTP_Client = new SmtpClient(Settings_Data["SMTP:Host"])
+            SMTP_Client = new SmtpClient(Settings_Data.AppSettings.Settings["SMTP_Host"].Value)
             {
-                Port = int.Parse(Settings_Data["SMTP:Port"]),
-                Credentials = new NetworkCredential(Settings_Data["SMTP:Username"], Settings_Data["SMTP:Password"]),
+                Port = int.Parse(Settings_Data.AppSettings.Settings["SMTP_Port"].Value),
+                Credentials = new NetworkCredential(Settings_Data.AppSettings.Settings["SMTP_Username"].Value, Settings_Data.AppSettings.Settings["SMTP_Password"].Value),
                 EnableSsl = true,
             };
 
             if (Listen_Port == 0)
             {
-                Listen_Port = int.Parse(Settings_Data["Default:Listen_Port"]);
+                Listen_Port = int.Parse(Settings_Data.AppSettings.Settings["Listen_Port"].Value);
             }
 
             Local = new IPEndPoint(IPAddress.Parse(IP), Listen_Port);
@@ -364,7 +363,7 @@ namespace TCPF
                 }
             }
 
-            SMTP_Client.Send(Settings_Data["SMTP:Sender"], Settings_Data["SMTP:Recipient"], "Anomaly Detected", Detail_String);
+            SMTP_Client.Send(Settings_Data.AppSettings.Settings["SMTP_Sender"].Value, Settings_Data.AppSettings.Settings["SMTP_Recipient"].Value, "Anomaly Detected", Detail_String);
         }
 
         static void Main(String[] Arguments)
@@ -428,6 +427,10 @@ namespace TCPF
             {
                 Log("Exception", "Main: TCPF().Start()", E.Message);
             }
+        }
+
+        public static void DEBUG()
+        {
         }
     }
 }
