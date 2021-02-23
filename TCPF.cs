@@ -69,7 +69,7 @@ namespace TCPF
             _Main_Socket.Bind(Local);
             _Main_Socket.Listen(0);
 
-            Log("Status", "Start: Listening On " + Local.Address.ToString() + ":" + Local.Port.ToString(), null);
+            Log("Status", "Start: Listening On " + Local.Address.ToString() + ":" + String.Format("{0:000000}", Local.Port.ToString()), null);
 
             while (true)
             {
@@ -106,7 +106,7 @@ namespace TCPF
                 if (Specific != null)
                 {
                     Detail_String += CRLF;
-                    Detail_String += "------------------------------------------------------------------------------------";
+                    Detail_String += "--------------------------------------------------------------------------------------";
                     Detail_String += CRLF;
                     Detail_String += Specific;
                 }
@@ -286,7 +286,7 @@ namespace TCPF
 
                     State.Socket_Destination.Send(Packet_Bytes, Packet_Bytes.Length, SocketFlags.None);
 
-                    Log(File + "Status", Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
+                    Log(File + "Status", Source_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Source_Remote_IPEndPoint.Port) + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Destination_Remote_IPEndPoint.Port) + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
 
                     // HB_Request Check
                     if (Packet_String.Contains(HB_Request))
@@ -295,7 +295,7 @@ namespace TCPF
                         {
                             State.Socket_Source.Send(HB_Acknowledgement_Bytes, HB_Acknowledgement_Bytes.Length, SocketFlags.None);
 
-                            Log(File + "Status", "TCPF" + " ---> " + Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", HB_Acknowledgement_Bytes.Length) + " Byte(s)", HB_Acknowledgement);
+                            Log(File + "Status", "TCPF" + " ---> " + Source_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Source_Remote_IPEndPoint.Port) + " " + String.Format("{0:000000}", HB_Acknowledgement_Bytes.Length) + " Byte(s)", HB_Acknowledgement);
                         }
                         catch (Exception E)
                         {
@@ -316,7 +316,7 @@ namespace TCPF
                         }
                     }
 
-                    // Erase Message Check
+                    // Erase_Message Check
                     if (Packet_String.Contains(Erase_Message))
                     {
                         try
@@ -325,7 +325,7 @@ namespace TCPF
                             Detail_String = Regex.Replace(Detail_String, @"\r\n", "");
                             Detail_String = Regex.Replace(Detail_String, @"\n", "");
                             Detail_String = Regex.Replace(Detail_String, @"\r", "");
-                            Log(File + "Erase", Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s) " + Detail_String, null);
+                            Log(File + "Erase", Source_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Source_Remote_IPEndPoint.Port) + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Destination_Remote_IPEndPoint.Port) + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s) " + Detail_String, null);
                         }
                         catch (Exception E)
                         {
