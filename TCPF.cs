@@ -22,6 +22,8 @@ namespace TCPF
         public static String HB_Acknowledgement = Convert.ToChar(02).ToString() + Convert.ToChar(06).ToString() + Convert.ToChar(03).ToString();
         public static Byte[] HB_Acknowledgement_Bytes = Encoding.ASCII.GetBytes(HB_Acknowledgement);
 
+        public static String Erase_Message = Convert.ToChar(02).ToString() + Convert.ToChar(69).ToString();
+
         public static ExeConfigurationFileMap Settings_File = null;
         public static Configuration Settings_Data = null;
         public static SmtpClient SMTP_Client = null;
@@ -222,7 +224,7 @@ namespace TCPF
 
                 if (Packet_Size > 0)
                 {
-                    if (State.CCC != true && State.Buffer[0] == 02)
+                    if (Settings_Data.AppSettings.Settings["CCC"].Value != "Disable" && State.CCC != true && State.Buffer[0] == 02)
                     {
                         State.CCC = true;
                     }
@@ -311,6 +313,23 @@ namespace TCPF
                         catch (Exception E)
                         {
                             Log(File + "Exception", "OnDataReceive: EMail()", E.Message);
+                        }
+                    }
+
+                    // Erase Message Check
+                    if (Packet_String.Contains(Erase_Message))
+                    {
+                        try
+                        {
+                            String Detail_String = Packet_String;
+                            Detail_String = Regex.Replace(Detail_String, @"\r\n", "");
+                            Detail_String = Regex.Replace(Detail_String, @"\n", "");
+                            Detail_String = Regex.Replace(Detail_String, @"\r", "");
+                            Log(File + "Erase", Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s) " + Detail_String, null);
+                        }
+                        catch (Exception E)
+                        {
+                            Log(File + "Exception", "OnDataReceive: Erase Message Check", E.Message);
                         }
                     }
 
@@ -427,10 +446,6 @@ namespace TCPF
             {
                 Log("Exception", "Main: TCPF().Start()", E.Message);
             }
-        }
-
-        public static void DEBUG()
-        {
         }
     }
 }
