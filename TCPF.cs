@@ -231,7 +231,7 @@ namespace TCPF
 
                 if (Packet_Size > 0)
                 {
-                    if (Settings_Data.AppSettings.Settings["CCC"].Value != "Disable" && State.CCC != true && State.Buffer[0] == 02)
+                    if (Settings_Data.AppSettings.Settings["CCC"].Value == "Auto" && State.CCC != true && State.Buffer[0] == 02)
                     {
                         State.CCC = true;
                     }
@@ -302,7 +302,7 @@ namespace TCPF
                     }
 
                     // HB_Request Check
-                    if (Packet_String.Contains(HB_Request))
+                    if (Settings_Data.AppSettings.Settings["ACK"].Value == "Auto" && Packet_String.Contains(HB_Request))
                     {
                         try
                         {
