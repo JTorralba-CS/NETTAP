@@ -142,7 +142,7 @@ namespace TCPF
             {
                 Detail_String += DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " Exception: Write_To_File";
                 Detail_String += CRLF;
-                Detail_String += "------------------------------------------------------------------------------------";
+                Detail_String += "--------------------------------------------------------------------------------------";
                 Detail_String += CRLF;
                 Detail_String += E.Message;
                 Detail_String += CRLF;
@@ -177,12 +177,19 @@ namespace TCPF
                 set;
             }
 
+            public int Packet_Largest
+            {
+                get;
+                set;
+            }
+
             public Socket_State(Socket Source, Socket Destination)
             {
                 Socket_Source = Source;
                 Socket_Destination = Destination;
                 Buffer = new Byte[16384];
                 CCC = false;
+                Packet_Largest = 0;
             }
         }
 
@@ -287,6 +294,12 @@ namespace TCPF
                     State.Socket_Destination.Send(Packet_Bytes, Packet_Bytes.Length, SocketFlags.None);
 
                     Log(File + "Status", Source_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Source_Remote_IPEndPoint.Port) + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Destination_Remote_IPEndPoint.Port) + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
+
+                    if (Packet_Size > State.Packet_Largest)
+                    {
+                        State.Packet_Largest = Packet_Size;
+                        Log(File + "Largest", Source_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Source_Remote_IPEndPoint.Port) + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Destination_Remote_IPEndPoint.Port) + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
+                    }
 
                     // HB_Request Check
                     if (Packet_String.Contains(HB_Request))
