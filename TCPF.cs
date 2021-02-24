@@ -389,7 +389,7 @@ namespace TCPF
                 if (Specific != null)
                 {
                     Detail_String += CRLF;
-                    Detail_String += "------------------------------------------------------------------------------------";
+                    Detail_String += "--------------------------------------------------------------------------------------";
                     Detail_String += CRLF;
                     Detail_String += Specific;
                 }
