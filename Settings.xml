@@ -4,6 +4,7 @@
     <add key="Listen_Port" value="35263"/>
     <add key="CCC" value="Auto"/>
     <add key="ACK" value="Auto"/>
+    <add key="Filter" value=""/>
     <add key="SMTP_Host" value="Host"/>
     <add key="SMTP_Port" value="Port"/>
     <add key="SMTP_Username" value="Username"/>

@@ -346,6 +346,13 @@ namespace TCPF
                         }
                     }
 
+                    // Filter Check
+                    if (Settings_Data.AppSettings.Settings["Filter"].Value != "" && Packet_String.ToUpper().Contains(Settings_Data.AppSettings.Settings["Filter"].Value.ToUpper()))
+                    {
+                        State.Packet_Largest = Packet_Size;
+                        Log(File + "Filter", Source_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Source_Remote_IPEndPoint.Port) + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + String.Format("{0:000000}", Destination_Remote_IPEndPoint.Port) + " " + String.Format("{0:000000}", Packet_Bytes.Length) + " Byte(s)", Packet_String);
+                    }
+
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
                 }
             }
