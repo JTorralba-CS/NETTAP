@@ -1,9 +1,9 @@
 ![Preview](Preview.png?raw=true "Preview")
 
-# TCPF
+# NetTap
 TCP logger and forwarder.
 
-What does TCPF do? 
+What does NetTap do? 
 
 This utility is used as a troubleshooting tool to review and analyze what data is being passed between TCP systems.  It listens and captures the data from source TCP system, stores the data to a log file (Packet_Raw.txt), then relays the data to the destination TCP system.
 
@@ -39,6 +39,6 @@ C#\
 
 ## Syntax:
 
-TCPF Destination-IP Destination-Port [Listen-Port]
+NetTap Destination-IP Destination-Port [Listen-Port]
 
 Default listen port is 35263. An optional custom [Listen-Port] can be specified.
