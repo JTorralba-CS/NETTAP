@@ -18,7 +18,7 @@ namespace NetTap
             _Main_Socket.Bind(Local);
             _Main_Socket.Listen(0);
 
-            Log.Detail(Local.Address.ToString() + ":" + Local.Port.ToString(), "");
+            Log.Terminal(Local.Address.ToString() + ":" + Local.Port.ToString());
 
             while (true)
             {
@@ -32,7 +32,7 @@ namespace NetTap
                 }
                 catch (Exception E)
                 {
-                    Log.Detail("Start: Destination.Connect()", E.Message);
+                    Log.Terminal("Start: Destination.Connect()", E.Message);
                 }
 
                 Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
@@ -79,8 +79,6 @@ namespace NetTap
         {
             Byte[] Packet_Bytes = null;
 
-            String Packet_String = null;
-
             Socket_State State = (Socket_State)Result.AsyncState;
 
             try
@@ -101,22 +99,20 @@ namespace NetTap
 
                     Packet_Bytes = Packet_Raw;
 
-                    Packet_String = System.Text.Encoding.ASCII.GetString(Packet_Bytes);
-
                     State.Socket_Destination.Send(Packet_Bytes, Packet_Bytes.Length, SocketFlags.None);
 
-                    Log.Detail(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString() + " " + Packet_Bytes.Length + " Byte(s)", Packet_String);
+                    Log.Terminal(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), Packet_Bytes);
 
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
                 }
             }
             catch (Exception E)
             {
-                Log.Detail("OnDataReceive", E.Message);
+                Log.Terminal("OnDataReceive", E.Message);
 
                 if (Packet_Bytes != null)
                 {
-                    Log.Detail("OnDataReceive: (Packet Loss)", Packet_String);
+                    Log.Terminal("OnDataReceive: (Packet Loss)", Packet_Bytes);
                 }
 
                 State.Socket_Destination.Close();
@@ -166,14 +162,14 @@ namespace NetTap
 
             try
             {
-                foreach (String Listen_IP in Network.IP4_List())
+                for (int I = Network.IP(4).Length; --I >= 0;)
                 {
-                    new Program().Start(Listen_IP, Listen_Port, new IPEndPoint(IPAddress.Parse(Destination_IP), Destination_Port));
+                    new Program().Start(Network.IP(4)[I], Listen_Port, new IPEndPoint(IPAddress.Parse(Destination_IP), Destination_Port));
                 }
             }
             catch (Exception E)
             {
-                Log.Detail("Main: Program().Start()", E.Message);
+                Log.Terminal("Main: Program().Start()", E.Message);
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Standard
 
     public static class Log
     {
-        public static void Detail(String General, String Specific)
+        public static StringBuilder Detail(String General, String Specific)
         {
             StringBuilder Detail_String = new StringBuilder();
             int Detail_Length = 0;
@@ -23,6 +23,19 @@ namespace Standard
             if (General.Length + Specific.Length != 0)
             {
                 Detail_String.Append(DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + General);
+
+                switch (Specific.Length)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        Detail_String.Append(" " + Specific.Length + " Byte");
+                        break;
+                    default:
+                        Detail_String.Append(" " + Specific.Length + " Bytes");
+                        break;
+                }
+
                 Detail_Length = Detail_String.Length;
 
                 if (Specific.Length != 0)
@@ -33,33 +46,60 @@ namespace Standard
                     Detail_String.Append(Specific);
                 }
 
-                Detail_String.Append(Constant.CRLF);
-                Detail_String.Append(Constant.CRLF);
-
                 Detail_String = Detail_String.Replace(Constant.CRLF, Constant.CR);
                 Detail_String = Detail_String.Replace(Constant.LF, Constant.CR);
                 Detail_String = Detail_String.Replace(Constant.CR, Constant.CRLF);
-
-                Console.Write(Detail_String);
             }
+            return Detail_String;
+        }
+
+        public static void Terminal(String General, String Specific)
+        {
+            Console.WriteLine(Detail(General, Specific));
+            Console.WriteLine();
+        }
+
+        public static void Terminal(String General)
+        {
+            Terminal(General, "");
+        }
+
+        public static void Terminal(String General, Byte[] Specific)
+        {
+            Terminal(General, System.Text.Encoding.ASCII.GetString(Specific));
         }
     }
 
     public static class Network
     {
-        public static String[] IP4_List()
+        public static String[] IP(Byte Version)
         {
-            String HostName = Dns.GetHostName();
-            List<String> IP4_List = new List<String>();
+            IPAddress[] IPAddress = Dns.GetHostAddresses(Dns.GetHostName());
+            List<String> IP = new List<String>();
 
-            IPAddress[] IP_List = Dns.GetHostAddresses(HostName);
-
-            foreach (IPAddress IP4 in IP_List.Where(IP => IP.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork))
+            for (int I = IPAddress.Length; --I >= 0;)
             {
-                IP4_List.Add(IP4.ToString());
+                switch (Version)
+                {
+                    case 4:
+                        if (IPAddress[I].AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                        {
+                            IP.Add(IPAddress[I].ToString());
+                        }
+                        break;
+                    case 6:
+                        if (IPAddress[I].AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+                        {
+                            IP.Add(IPAddress[I].ToString());
+                        }
+                        break;
+                    default:
+                        IP.Add(IPAddress[I].ToString());
+                        break;
+                }
             }
 
-            return IP4_List.ToArray();
+            return IP.ToArray();
         }
     }
 }
