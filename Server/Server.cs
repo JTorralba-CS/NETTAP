@@ -5,6 +5,58 @@ using System.Net.Sockets;
 
 namespace Server
 {
+    public static class Syntax
+    {
+        public static void Check(String[] Arguments)
+        {
+            String Destination_IP = null;
+            int Destination_Port = 0;
+            int Listen_Port = 35263;
+
+            try
+            {
+                if (Arguments.Length > 2)
+                {
+                    Destination_IP = Arguments[0];
+                    Destination_Port = int.Parse(Arguments[1]);
+                    Listen_Port = int.Parse(Arguments[2]);
+                }
+                else if (Arguments.Length == 2)
+                {
+                    Destination_IP = Arguments[0];
+                    Destination_Port = int.Parse(Arguments[1]);
+                }
+                else
+                {
+                    Console.WriteLine("NetTap [Destination_IP] [Destination_Port] [Listen_Port]");
+                    Console.WriteLine();
+
+                    while (Destination_IP == null || Destination_Port == 0 || Listen_Port == 0)
+                    {
+                        Console.Write("Destination-IP:    ");
+                        Destination_IP = Console.ReadLine();
+
+                        Console.Write("Destination-Port:  ");
+                        Destination_Port = int.Parse(Console.ReadLine());
+
+                        Console.Write("Listen-Port:       ");
+                        Listen_Port = int.Parse(Console.ReadLine());
+
+                        Console.WriteLine();
+                    }
+                }
+
+                Listen.Initialize(Destination_IP, Destination_Port, Listen_Port);
+            }
+            catch
+            {
+                Console.WriteLine();
+                Console.WriteLine("NetTap [Destination_IP] [Destination_Port] [Listen_Port]");
+                Console.WriteLine();
+            }
+        }
+    }
+
     public static class Listen
     {
         public static void Initialize(String Destination_IP, int Destination_Port, int Listen_Port)
