@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Settings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </None>
     <None Update="_.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
