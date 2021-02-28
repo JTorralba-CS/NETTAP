@@ -39,25 +39,11 @@ namespace NetTap
             }
         }
 
-        private class Socket_State
+        private struct Socket_State
         {
-            public Socket Socket_Source
-            {
-                get;
-                private set;
-            }
-
-            public Socket Socket_Destination
-            {
-                get;
-                private set;
-            }
-
-            public Byte[] Buffer
-            {
-                get;
-                private set;
-            }
+            public Socket Socket_Source;
+            public Socket Socket_Destination;
+            public Byte[] Buffer;
 
             public Socket_State(Socket Source, Socket Destination)
             {
@@ -77,31 +63,18 @@ namespace NetTap
 
         private static void OnDataReceive(IAsyncResult Result)
         {
-            Byte[] Packet_Bytes = null;
-
             Socket_State State = (Socket_State)Result.AsyncState;
 
             try
             {
-                IPEndPoint Source_Local_IPEndPoint = State.Socket_Source.LocalEndPoint as IPEndPoint;
                 IPEndPoint Source_Remote_IPEndPoint = State.Socket_Source.RemoteEndPoint as IPEndPoint;
-
-                IPEndPoint Destination_Local_IPEndPoint = State.Socket_Destination.LocalEndPoint as IPEndPoint;
                 IPEndPoint Destination_Remote_IPEndPoint = State.Socket_Destination.RemoteEndPoint as IPEndPoint;
 
-                int Packet_Size = State.Socket_Source.EndReceive(Result);
-
-                if (Packet_Size > 0)
+                if (State.Socket_Source.EndReceive(Result) != 0)
                 {
-                    Byte[] Packet_Raw = new byte[Packet_Size];
+                    State.Socket_Destination.Send(State.Buffer, State.Buffer.Length, SocketFlags.None);
 
-                    Buffer.BlockCopy(State.Buffer, 0, Packet_Raw, 0, Packet_Size);
-
-                    Packet_Bytes = Packet_Raw;
-
-                    State.Socket_Destination.Send(Packet_Bytes, Packet_Bytes.Length, SocketFlags.None);
-
-                    Log.Terminal(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), Packet_Bytes);
+                    Log.Terminal(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), State.Buffer);
 
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
                 }
@@ -110,9 +83,9 @@ namespace NetTap
             {
                 Log.Terminal("OnDataReceive", E.Message);
 
-                if (Packet_Bytes != null)
+                if (State.Buffer.Length != 0)
                 {
-                    Log.Terminal("OnDataReceive: (Packet Loss)", Packet_Bytes);
+                    Log.Terminal("OnDataReceive: (Packet Loss)", State.Buffer);
                 }
 
                 State.Socket_Destination.Close();
