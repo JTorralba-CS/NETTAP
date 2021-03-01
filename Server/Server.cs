@@ -11,7 +11,7 @@ namespace Server
         {
             String Destination_IP = null;
             int Destination_Port = 0;
-            int Listen_Port = 35263;
+            int Listen_Port = 0;
 
             try
             {
@@ -25,6 +25,13 @@ namespace Server
                 {
                     Destination_IP = Arguments[0];
                     Destination_Port = int.Parse(Arguments[1]);
+                    Listen_Port = Destination_Port;
+                }
+                else if (Arguments.Length == 1)
+                {
+                    Destination_IP = Arguments[0];
+                    Destination_Port = 80;
+                    Listen_Port = Destination_Port;
                 }
                 else
                 {
