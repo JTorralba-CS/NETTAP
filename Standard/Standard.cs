@@ -16,7 +16,7 @@ namespace Standard
     {
         public static StringBuilder Detail(String General, String Specific)
         {
-            StringBuilder Detail_String = new StringBuilder();
+            StringBuilder Detail_String = new StringBuilder(0);
             int Detail_Length = 0;
 
             if (General.Length + Specific.Length != 0)
@@ -49,6 +49,7 @@ namespace Standard
                 Detail_String = Detail_String.Replace(Constant.LF, Constant.CR);
                 Detail_String = Detail_String.Replace(Constant.CR, Constant.CRLF);
             }
+
             return Detail_String;
         }
 
@@ -63,9 +64,9 @@ namespace Standard
             Terminal(General, "");
         }
 
-        public static void Terminal(String General, Byte[] Specific)
+        public static void Terminal(String General, Byte[] Specific, int Specific_Size)
         {
-            Terminal(General, System.Text.Encoding.ASCII.GetString(Specific));
+            Terminal(General, System.Text.Encoding.ASCII.GetString(Specific, 0, Specific_Size));
         }
     }
 
