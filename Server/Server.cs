@@ -164,7 +164,7 @@ namespace Server
             {
                 Log.Terminal("OnDataReceive", E.Message);
 
-                if (State.Buffer.Length != 0)
+                if (Packet_Size != 0)
                 {
                     Log.Terminal("OnDataReceive: (Packet Loss)", State.Buffer, Packet_Size);
                 }
