@@ -15,47 +15,37 @@ namespace NetTap
         {
             try
             {
-                String[] DLLPaths = new String[]
-                {
-                    //@"Extension\bin\Debug\net5.0\Extension.dll",
-                    Directory.GetCurrentDirectory() + @"\Extension\" + "Extension.dll"
-                };
+                String[] DLLPaths = Directory.GetFiles(Directory.GetCurrentDirectory() + @"\Extension\", "*.dll");
 
-                IEnumerable<Interface.Extension> Commands = DLLPaths.SelectMany(DLLPath =>
+                IEnumerable<Interface.Extension> DLLs = DLLPaths.SelectMany(DLLPath =>
                 {
                     Assembly DLLAssembly = DLLLoadContext.LoadDLL(DLLPath, typeof(Program));
                     return DLLLoadContext.CreateCommands(DLLAssembly);
                 }).ToList();
 
-                if (Arguments.Length == 0)
+                foreach (Interface.Extension DLL in DLLs)
                 {
-                    foreach (Interface.Extension Command in Commands)
-                    {
-                        Console.WriteLine($"{Command.Name} - {Command.Description}");
-                    }
+                    Console.WriteLine($"{DLL.Name} - {DLL.Description}");
+                    Console.WriteLine();
+                    DLL.Execute("Jane Doe");
                 }
-                else
-                {
-                    foreach (String CommandName in Arguments)
-                    {
-                        Console.WriteLine($"{CommandName}:");
-                        Console.WriteLine();
 
-                        Interface.Extension Command = Commands.FirstOrDefault(C => C.Name == CommandName);
+                //foreach (String Argument in Arguments)
+                //{
+                //    Interface.Extension DLL = DLLs.FirstOrDefault(DLL => DLL.Name == Argument);
 
-                        if (Command == null)
-                        {
-                            Console.WriteLine("Invalid Command");
-                            return;
-                        }
+                //    if (DLL == null)
+                //    {
+                //        Console.WriteLine("Invalid extension");
+                //        return;
+                //    }
 
-                        Command.Execute("Jane Smith");
-                    }
-                }
+                //    DLL.Execute("Jane Smith");
+                //}
             }
             catch (Exception E)
             {
-                Console.WriteLine(E);
+                //Console.WriteLine(E);
             }
 
             //Syntax.Check(Arguments);
