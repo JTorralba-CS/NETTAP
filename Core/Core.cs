@@ -49,15 +49,15 @@ namespace Core
 
             String DLLLocation = Path.GetFullPath(Path.Combine(Root, RelativePath.Replace('\\', Path.DirectorySeparatorChar)));
 
-            Console.WriteLine($"Extension = {DLLLocation}");
-            Console.WriteLine();
+            //Console.WriteLine($"Extension = {DLLLocation}");
+            //Console.WriteLine();
 
             DLLLoadContext LoadContext = new DLLLoadContext(DLLLocation);
 
             return LoadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(DLLLocation)));
         }
 
-        public static IEnumerable<Interface.Extension> CreateCommands(Assembly Assembly)
+        public static IEnumerable<Interface.Extension> Integrate(Assembly Assembly)
         {
             int Count = 0;
 
@@ -81,6 +81,19 @@ namespace Core
                     $"Can't find any type which implements ICommand in {Assembly} from {Assembly.Location}.\n" +
                     $"Available types: {AvailableTypes}");
             }
+        }
+
+        public static IEnumerable<Interface.Extension> Initialize(String ExtensionFolder, Type Program)
+        {
+            String[] DLLPaths = Directory.GetFiles(Directory.GetCurrentDirectory() + @"\" + ExtensionFolder + @"\", "*.dll");
+
+            IEnumerable<Interface.Extension> DLLs = DLLPaths.SelectMany(DLLPath =>
+            {
+                Assembly DLLAssembly = DLLLoadContext.LoadDLL(DLLPath, Program);
+                return DLLLoadContext.Integrate(DLLAssembly);
+            }).ToList();
+
+            return DLLs;
         }
     }
 }

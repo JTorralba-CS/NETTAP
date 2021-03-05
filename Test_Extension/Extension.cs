@@ -9,9 +9,7 @@ namespace Extension
 
         public int Execute(String Data)
         {
-            Console.WriteLine("Hi " + Data + "!");
-            Console.WriteLine();
-            Console.WriteLine("The current time is " + DateTime.Now.ToString() + ".");
+            Console.WriteLine("Hi " + Data + "!" + " " + "The current time is " + DateTime.Now.ToString() + ".");
             Console.WriteLine();
             return 0;
         }

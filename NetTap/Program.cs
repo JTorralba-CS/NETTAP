@@ -15,37 +15,27 @@ namespace NetTap
         {
             try
             {
-                String[] DLLPaths = Directory.GetFiles(Directory.GetCurrentDirectory() + @"\Extension\", "*.dll");
-
-                IEnumerable<Interface.Extension> DLLs = DLLPaths.SelectMany(DLLPath =>
-                {
-                    Assembly DLLAssembly = DLLLoadContext.LoadDLL(DLLPath, typeof(Program));
-                    return DLLLoadContext.CreateCommands(DLLAssembly);
-                }).ToList();
+                IEnumerable<Interface.Extension> DLLs = DLLLoadContext.Initialize("Extension", typeof(Program));
 
                 foreach (Interface.Extension DLL in DLLs)
                 {
                     Console.WriteLine($"{DLL.Name} - {DLL.Description}");
                     Console.WriteLine();
-                    DLL.Execute("Jane Doe");
                 }
 
-                //foreach (String Argument in Arguments)
-                //{
-                //    Interface.Extension DLL = DLLs.FirstOrDefault(DLL => DLL.Name == Argument);
-
-                //    if (DLL == null)
-                //    {
-                //        Console.WriteLine("Invalid extension");
-                //        return;
-                //    }
-
-                //    DLL.Execute("Jane Smith");
-                //}
+                Interface.Extension Extension = DLLs.FirstOrDefault(DLL => DLL.Name == "Extension");
+                if (Extension == null)
+                {
+                    Console.WriteLine("Extension not found.");
+                }
+                else
+                {
+                    Extension.Execute("Jane Smith");
+                }                   
             }
             catch (Exception E)
             {
-                //Console.WriteLine(E);
+                Console.WriteLine(E);
             }
 
             //Syntax.Check(Arguments);

@@ -17,13 +17,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Interface\Interface.csproj" />
+    <ProjectReference Include="..\Test_Extension_Interface\Test_Extension_Interface.csproj" />
     <ProjectReference Include="..\Server\Server.csproj" />
     <ProjectReference Include="..\Standard\Standard.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Extension\Extension.dll">
+    <None Update="Extension\Test_Extension.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </None>

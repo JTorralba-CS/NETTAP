@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Standard", "Standard\Standa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{12BD31E8-DAF6-409F-A5D4-8B8C7E195DFB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "Interface\Interface.csproj", "{36809670-674B-4CCD-B4AD-DBAD3B280161}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_Extension_Interface", "Test_Extension_Interface\Test_Extension_Interface.csproj", "{36809670-674B-4CCD-B4AD-DBAD3B280161}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extension", "Extension\Extension.csproj", "{5DEE5363-2815-42B2-8700-E9DD96E44EB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_Extension", "Test_Extension\Test_Extension.csproj", "{5DEE5363-2815-42B2-8700-E9DD96E44EB8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{2C1F7D41-E9DC-45A5-A021-1DD80FA55BA3}"
 EndProject
