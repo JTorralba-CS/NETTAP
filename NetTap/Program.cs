@@ -17,16 +17,16 @@ namespace NetTap
             {
                 IEnumerable<Interface.Extension> DLLs = DLLLoadContext.Initialize("Extension", typeof(Program));
 
-                foreach (Interface.Extension DLL in DLLs)
-                {
-                    Console.WriteLine($"{DLL.Name} - {DLL.Description}");
-                    Console.WriteLine();
-                }
+                //foreach (Interface.Extension DLL in DLLs)
+                //{
+                //    Console.WriteLine($"{DLL.Name} - {DLL.Description}");
+                //    Console.WriteLine();
+                //}
 
                 Interface.Extension Extension = DLLs.FirstOrDefault(DLL => DLL.Name == "Extension");
                 if (Extension == null)
                 {
-                    Console.WriteLine("Extension not found.");
+                    //Console.WriteLine("Extension not found.");
                 }
                 else
                 {
@@ -38,7 +38,7 @@ namespace NetTap
                 Console.WriteLine(E);
             }
 
-            //Syntax.Check(Arguments);
+            Syntax.Check(Arguments);
         }
     }
 }

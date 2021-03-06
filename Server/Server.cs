@@ -148,14 +148,21 @@ namespace Server
             {
                 Packet_Size = State.Socket_Source.EndReceive(Result);
 
-                IPEndPoint Source_Remote_IPEndPoint = State.Socket_Source.RemoteEndPoint as IPEndPoint;
-                IPEndPoint Destination_Remote_IPEndPoint = State.Socket_Destination.RemoteEndPoint as IPEndPoint;
-
                 if (Packet_Size != 0)
                 {
+                    IPEndPoint Source_Remote_IPEndPoint = State.Socket_Source.RemoteEndPoint as IPEndPoint;
+                    IPEndPoint Source_Local_IPEndPoint = State.Socket_Source.LocalEndPoint as IPEndPoint;
+
+                    IPEndPoint Destination_Local_IPEndPoint = State.Socket_Destination.LocalEndPoint as IPEndPoint;
+                    IPEndPoint Destination_Remote_IPEndPoint = State.Socket_Destination.RemoteEndPoint as IPEndPoint;
+
+                    Log.Terminal(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Source_Local_IPEndPoint.Address + ":" + Source_Local_IPEndPoint.Port.ToString() + " (NetTap)", State.Buffer, Packet_Size);
+
                     State.Socket_Destination.Send(State.Buffer, Packet_Size, SocketFlags.None);
 
-                    Log.Terminal(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), State.Buffer, Packet_Size);
+                    Log.Terminal(Destination_Local_IPEndPoint.Address + ":" + Destination_Local_IPEndPoint.Port.ToString() + " (NetTap)" + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), State.Buffer, Packet_Size);
+
+                    //Log.Terminal(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), State.Buffer, Packet_Size);
 
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
                 }
