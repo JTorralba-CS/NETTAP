@@ -4,8 +4,8 @@ namespace Extension
 {
     public class Extension : Interface.Extension
     {
-        public string Name { get => "Extension"; }
-        public string Description { get => "This is a sample extension."; }
+        public string Name { get => "Test_Extension"; }
+        public string Description { get => "This is a test extension."; }
 
         public int Execute(String Data)
         {
