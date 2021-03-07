@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_Extension", "Test_Exte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{2C1F7D41-E9DC-45A5-A021-1DD80FA55BA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_Extension_2", "Test_Extension_2\Test_Extension_2.csproj", "{FDE038AF-6D96-4225-B324-55BB71930370}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_Extension_2", "Test_Extension_2\Test_Extension_2.csproj", "{FDE038AF-6D96-4225-B324-55BB71930370}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,18 +6,23 @@ namespace Test_Extension_2
     {
         public string Name { get => "Test_Extension_2"; }
         public string Description { get => "This is a test extension."; }
-        public int Priority { get; set; }
+        public Byte Priority { get; set; }
+        public int Random_Number { get; set; }
 
         public Extension()
         {
-            Priority = 1;
+            Priority = 107;
+            Random_Number = 7299;
         }
-
 
         public int Execute(String Data)
         {
+            Random RG = new Random();
+
             Console.WriteLine("Bye " + Data + "!" + " " + "The current time is " + DateTime.Now.ToString() + ".");
             Console.WriteLine();
+
+            Random_Number = RG.Next();
             return 0;
         }
     }

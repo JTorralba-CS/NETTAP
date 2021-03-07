@@ -21,7 +21,9 @@ namespace NetTap
                 foreach (Interface.Extension DLL in Priority)
                 {
                     Console.WriteLine($"{DLL.Priority} {DLL.Name} (Extension Loaded)");
+                    Console.WriteLine($"Random Number = {DLL.Random_Number}");
                     DLL.Execute("Jane Smith");
+                    Console.WriteLine($"Random Number = {DLL.Random_Number}");
                     Console.WriteLine();
                 }
 
