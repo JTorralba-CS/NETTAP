@@ -16,10 +16,12 @@ namespace NetTap
             try
             {
                 IEnumerable<Interface.Extension> DLLs = DLLLoadContext.Initialize("Extension", typeof(Program));
+                IEnumerable<Interface.Extension> Priority = DLLs.OrderBy(DLL => DLL.Priority);
 
-                foreach (Interface.Extension DLL in DLLs)
+                foreach (Interface.Extension DLL in Priority)
                 {
-                    Console.WriteLine($"{DLL.Name} (Extension Loaded)");
+                    Console.WriteLine($"{DLL.Priority} {DLL.Name} (Extension Loaded)");
+                    DLL.Execute("Jane Smith");
                     Console.WriteLine();
                 }
 

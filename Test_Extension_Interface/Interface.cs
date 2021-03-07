@@ -6,7 +6,7 @@ namespace Interface
     {
         String Name {get;}
         String Description {get;}
-
+        int Priority { get; set;}
         int Execute(String Data);
     }
 }
