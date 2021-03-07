@@ -4,13 +4,15 @@ namespace Extension
 {
     public class Extension : Interface.Extension
     {
-        public string Name { get => "Test_Extension"; }
-        public string Description { get => "This is a test extension."; }
+        public string Name { get; }
+        public string Description { get; }
         public Byte Priority { get; set; }
         public int Random_Number { get; set; }
 
         public Extension()
         {
+            Name = "Test_Extension";
+            Description = "This is a test extension.";
             Priority = 201;
             Random_Number = 7299;
         }
