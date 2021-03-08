@@ -17,17 +17,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Extension\Test\Test_Interface\Test_Interface.csproj" />
+    <ProjectReference Include="..\Extension\Interface\Interface.csproj" />
     <ProjectReference Include="..\Server\Server.csproj" />
     <ProjectReference Include="..\Standard\Standard.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Extension\Test_I.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </None>
-    <None Update="Extension\Test_II.dll">
+    <None Update="Extension\DEBUG.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
     </None>

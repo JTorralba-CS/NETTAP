@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Extension\Test\Test_Interface\Test_Interface.csproj" />
+    <ProjectReference Include="..\Extension\Interface\Interface.csproj" />
   </ItemGroup>
 
 </Project>

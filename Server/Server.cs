@@ -162,7 +162,7 @@ namespace Server
 
                     //Log.Terminal(Destination_Local_IPEndPoint.Address + ":" + Destination_Local_IPEndPoint.Port.ToString() + " (NetTap)" + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), State.Buffer, Packet_Size);
 
-                    Log.Terminal(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), State.Buffer, Packet_Size);
+                    //Log.Terminal(Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString() + " ---> " + Destination_Remote_IPEndPoint.Address + ":" + Destination_Remote_IPEndPoint.Port.ToString(), State.Buffer, Packet_Size);
 
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
                 }
