@@ -11,7 +11,6 @@ namespace Interface
         Byte[] Mutant { get; set; }
         int Mutant_Size { get; set; }
 
-        //int Execute(IPEndPoint Source, IPEndPoint Destination, Byte[] Packet, int Packet_Size);
-        int Execute(String Data);
+        int Execute(IPEndPoint Source, IPEndPoint Destination, Byte[] Packet, int Packet_Size);
     }
 }
