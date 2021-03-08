@@ -19,7 +19,6 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Extension\Interface\Interface.csproj" />
     <ProjectReference Include="..\Server\Server.csproj" />
-    <ProjectReference Include="..\Standard\Standard.csproj" />
   </ItemGroup>
 
   <ItemGroup>
