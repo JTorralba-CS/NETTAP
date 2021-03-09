@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extension", "Extension", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interface", "Extension\Interface\Interface.csproj", "{71CA6EAB-1433-4369-8CE2-22987E9F9559}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DEMO", "Extension\DEMO\DEMO.csproj", "{E21139A4-30CD-4714-AC6E-885BEF191DD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LOG", "Extension\LOG\LOG.csproj", "{E21139A4-30CD-4714-AC6E-885BEF191DD0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Server\Server.csproj", "{B90D8AB3-05CB-4A84-9409-CBD324C6DFEC}"
 EndProject

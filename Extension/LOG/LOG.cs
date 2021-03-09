@@ -2,9 +2,9 @@
 using System;
 using System.Net;
 
-namespace DEMO
+namespace LOG
 {
-    public class DEMO : Interface.Extension
+    public class LOG : Interface.Extension
     {
         public string Name { get; }
         public string Description { get; }
@@ -12,10 +12,10 @@ namespace DEMO
         public Byte[] Mutant { get; set; }
         public int Mutant_Size { get; set; }
 
-        public DEMO()
+        public LOG()
         {
-            Name = "DEMO";
-            Description = "This is the DEMO extension.";
+            Name = "LOG";
+            Description = "This is the LOG extension.";
             Priority = 20;
         }
 
