@@ -196,4 +196,17 @@ namespace Core
             return DLLs;
         }
     }
+
+    public static class Append
+    {
+        public static Byte[] Byte(Byte[] Byte_Array, Byte Byte)
+        {
+            Byte[] Byte_Array_New = new Byte[Byte_Array.Length + 1];
+
+            Byte_Array.CopyTo(Byte_Array_New, 1);
+            Byte_Array_New[0] = Byte;
+
+            return Byte_Array_New;
+        }
+    }
 }
