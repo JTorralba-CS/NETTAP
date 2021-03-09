@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.Loader;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Core
 {
@@ -71,6 +72,57 @@ namespace Core
         public static void Terminal(String General, Byte[] Specific, int Specific_Size)
         {
             Terminal(General, System.Text.Encoding.ASCII.GetString(Specific, 0, Specific_Size));
+        }
+
+        public static async Task Write_To_File(String File, Byte[] Bytes)
+        {
+            StringBuilder Detail_String = new StringBuilder(0);
+            int Detail_Length = 0;
+
+            try
+            {
+                using (FileStream Target = new FileStream(File, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
+                {
+                    await Target.WriteAsync(Bytes, 0, Bytes.Length);
+                }
+            }
+            catch (Exception E)
+            {
+                Detail_String.Append(DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " Exception: Write_To_File");
+                Detail_Length = Detail_String.Length;
+
+                Detail_String.Append(Constant.CRLF);
+                Detail_String.Append("".PadLeft(Detail_Length, '-'));
+                Detail_String.Append(Constant.CRLF);
+                Detail_String.Append(E.Message);
+                Detail_String.Append(Constant.CRLF);
+                Detail_String.Append(Constant.CRLF);
+                Console.Write(Detail_String);
+            }
+        }
+
+        public static void File(String Path, String General, String Specific)
+        {
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\" + Path))
+            {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\" + Path);
+            }
+
+            StringBuilder Detail_String = Detail(General, Specific);
+            Detail_String.Append(Constant.CRLF);
+            Detail_String.Append(Constant.CRLF);
+
+            Write_To_File(Directory.GetCurrentDirectory() + @"\" + Path + @"\" + "LOG.txt", Encoding.ASCII.GetBytes(Detail_String.ToString())).ConfigureAwait(false);
+        }
+
+        public static void File(String Path, String General)
+        {
+            File(Path, General, "");
+        }
+
+        public static void File(String Path, String General, Byte[] Specific, int Specific_Size)
+        {
+            File(Path, General, System.Text.Encoding.ASCII.GetString(Specific, 0, Specific_Size));
         }
     }
 
