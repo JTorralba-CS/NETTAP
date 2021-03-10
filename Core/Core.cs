@@ -101,28 +101,78 @@ namespace Core
             }
         }
 
-        public static void File(String Path, String General, String Specific)
+        public static Byte[] Detail(String General, Byte[] Specific, int Specific_Size)
         {
+
+            StringBuilder Detail_String = new StringBuilder(0);
+            int Detail_Length = 0;
+
+            List<Byte> Detail_List = new List<Byte>();
+            Byte[] Detail_Bytes = new Byte[0];
+
+            if (General.Length + Specific_Size != 0)
+            {
+                Detail_String.Append(DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " " + General);
+
+                switch (Specific_Size)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        Detail_String.Append(" " + Specific_Size + " Byte");
+                        break;
+                    default:
+                        Detail_String.Append(" " + Specific_Size + " Bytes");
+                        break;
+                }
+
+                Detail_Length = Detail_String.Length;
+
+                if (Specific_Size != 0)
+                {
+                    Detail_String.Append(Constant.CRLF);
+                    Detail_String.Append("".PadLeft(Detail_Length, '-'));
+                    Detail_String.Append(Constant.CRLF);
+                }
+
+                Detail_List.AddRange(Encoding.ASCII.GetBytes(Detail_String.ToString()));
+                Detail_List.AddRange(Specific.Take(Specific_Size));
+            }
+
+            return Detail_List.ToArray();
+        }
+        public static void File(String Path, String General, Byte[] Specific, int Specific_Size)
+        {
+            Byte[] Detail_Bytes = new Byte[0];
+
             if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\" + Path))
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\" + Path);
             }
 
-            StringBuilder Detail_String = Detail(General, Specific);
-            Detail_String.Append(Constant.CRLF);
-            Detail_String.Append(Constant.CRLF);
+            Write_To_File(Directory.GetCurrentDirectory() + @"\" + Path + @"\" + "LOG.txt", Detail(General, Specific, Specific_Size)).ConfigureAwait(false);
 
-            Write_To_File(Directory.GetCurrentDirectory() + @"\" + Path + @"\" + "LOG.txt", Encoding.ASCII.GetBytes(Detail_String.ToString())).ConfigureAwait(false);
+            Detail_Bytes = Append.Byte(Detail_Bytes, 10);
+            Detail_Bytes = Append.Byte(Detail_Bytes, 13);
+            Detail_Bytes = Append.Byte(Detail_Bytes, 10);
+            Detail_Bytes = Append.Byte(Detail_Bytes, 13);
+
+            Write_To_File(Directory.GetCurrentDirectory() + @"\" + Path + @"\" + "LOG.txt", Detail_Bytes).ConfigureAwait(false);
+
+            Terminal(General, Specific, Specific_Size);
         }
 
         public static void File(String Path, String General)
         {
-            File(Path, General, "");
+            Byte[] Specific_Bytes = new Byte[0];
+            File(Path, General, Specific_Bytes, Specific_Bytes.Length);
         }
 
-        public static void File(String Path, String General, Byte[] Specific, int Specific_Size)
+        public static void File(String Path, String General, String Specific)
         {
-            File(Path, General, System.Text.Encoding.ASCII.GetString(Specific, 0, Specific_Size));
+            Byte[] Specific_Bytes = new Byte[0];
+            Specific_Bytes = Encoding.ASCII.GetBytes(Specific);
+            File(Path, General, Specific_Bytes, Specific_Bytes.Length);
         }
     }
 

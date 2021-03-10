@@ -22,9 +22,6 @@ namespace LOG
         {
             String Path = Source.Address.ToString() + "_" + Source.Port + @"\";
             Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet, Packet_Size);
-
-            Log.Terminal(Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet, Packet_Size);
-
             return 0;
         }
     }

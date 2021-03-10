@@ -82,7 +82,7 @@ namespace Server
             }
             catch (Exception E)
             {
-                Log.Terminal("Initialize()", E.Message);
+                Log.File("System", "Initialize()", E.Message);
             }
         }
     }
@@ -107,7 +107,7 @@ namespace Server
             _Main_Socket.Bind(Local);
             _Main_Socket.Listen(0);
 
-            Log.Terminal(Local.Address.ToString() + ":" + Local.Port.ToString());
+            Log.File("System", Local.Address.ToString() + ":" + Local.Port.ToString());
 
             while (true)
             {
@@ -121,7 +121,7 @@ namespace Server
                 }
                 catch (Exception E)
                 {
-                    Log.Terminal("Start: Destination.Connect()", E.Message);
+                    Log.File("System", "Start: Destination.Connect()", E.Message);
                 }
 
                 Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
@@ -187,11 +187,11 @@ namespace Server
             }
             catch (Exception E)
             {
-                Log.Terminal("OnDataReceive", E.Message);
+                Log.File("System", "OnDataReceive", E.Message);
 
                 if (Packet_Size != 0)
                 {
-                    Log.Terminal("OnDataReceive: (Packet Loss)", State.Buffer, Packet_Size);
+                    Log.File("System", "OnDataReceive: (Packet Loss)", State.Buffer, Packet_Size);
                 }
 
                 State.Socket_Destination.Close();
