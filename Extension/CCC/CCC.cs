@@ -14,7 +14,7 @@ namespace CCC
         {
             Name = "CCC";
             Description = "This is the CCC extension.";
-            Priority = 0;
+            Priority = 10;
         }
 
         public int Execute(IPEndPoint Source, IPEndPoint Destination, ref Byte[] Packet, ref int Packet_Size)
@@ -62,9 +62,6 @@ namespace CCC
 
             Packet = Mutant;
             Packet_Size = Mutant.Length;
-
-            String Path = Source.Address.ToString() + "_" + Source.Port + @"\CCC";
-            Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet, Packet_Size);
 
             return 0;
         }
