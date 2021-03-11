@@ -172,14 +172,14 @@ namespace Server
 
                     foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 10 && Extension.Priority < 20))
                     {
-                        Extension.Execute(Source_Remote_IPEndPoint, Destination_Remote_IPEndPoint, State.Buffer, Packet_Size);
+                        Extension.Execute(Source_Remote_IPEndPoint, Destination_Remote_IPEndPoint, ref State.Buffer, ref Packet_Size);
                     }
 
                     State.Socket_Destination.Send(State.Buffer, Packet_Size, SocketFlags.None);
 
                     foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 20 && Extension.Priority < 30))
                     {
-                        Extension.Execute(Source_Remote_IPEndPoint, Destination_Remote_IPEndPoint, State.Buffer, Packet_Size);
+                        Extension.Execute(Source_Remote_IPEndPoint, Destination_Remote_IPEndPoint, ref State.Buffer, ref Packet_Size);
                     }
 
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);

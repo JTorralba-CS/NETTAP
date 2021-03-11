@@ -18,7 +18,7 @@ namespace LOG
             Priority = 20;
         }
 
-        public int Execute(IPEndPoint Source, IPEndPoint Destination, Byte[] Packet, int Packet_Size)
+        public int Execute(IPEndPoint Source, IPEndPoint Destination, ref Byte[] Packet, ref int Packet_Size)
         {
             String Path = Source.Address.ToString() + "_" + Source.Port + @"\";
             Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet, Packet_Size);
