@@ -311,4 +311,22 @@ namespace Core
             return Byte_Array_New;
         }
     }
+
+    public static class Find
+    {
+        public static int Byte(ref Byte[] SearchThis, ref Byte[] FindThis)
+        {
+            int C = SearchThis.Length - FindThis.Length + 1;
+            int J;
+
+            for (int I = 0; I < C; I++)
+            {
+                if (SearchThis[I] != FindThis[0]) continue;
+                for (J = FindThis.Length - 1; J >= 1 && SearchThis[I + J] == FindThis[J]; J--) ;
+                if (J == 0) return I;
+            }
+
+            return -1;
+        }
+    }
 }
