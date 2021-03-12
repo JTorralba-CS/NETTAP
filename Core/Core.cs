@@ -141,7 +141,7 @@ namespace Core
 
             return Detail_List.ToArray();
         }
-        public static void File(String Path, String General, Byte[] Specific, int Specific_Size)
+        public static void File(String Path, String General, Byte[] Specific)
         {
             Byte[] Detail_Bytes = new Byte[0];
 
@@ -150,7 +150,7 @@ namespace Core
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\" + Path);
             }
 
-            Write_To_File(Directory.GetCurrentDirectory() + @"\" + Path + @"\" + "LOG.txt", Detail(General, Specific, Specific_Size)).ConfigureAwait(false);
+            Write_To_File(Directory.GetCurrentDirectory() + @"\" + Path + @"\" + "LOG.txt", Detail(General, Specific, Specific.Length)).ConfigureAwait(false);
 
             Detail_Bytes = Append.Byte(Detail_Bytes, 10);
             Detail_Bytes = Append.Byte(Detail_Bytes, 13);
@@ -159,20 +159,20 @@ namespace Core
 
             Write_To_File(Directory.GetCurrentDirectory() + @"\" + Path + @"\" + "LOG.txt", Detail_Bytes).ConfigureAwait(false);
 
-            Terminal(General, Specific, Specific_Size);
+            Terminal(General, Specific, Specific.Length);
         }
 
         public static void File(String Path, String General)
         {
             Byte[] Specific_Bytes = new Byte[0];
-            File(Path, General, Specific_Bytes, Specific_Bytes.Length);
+            File(Path, General, Specific_Bytes);
         }
 
         public static void File(String Path, String General, String Specific)
         {
             Byte[] Specific_Bytes = new Byte[0];
             Specific_Bytes = Encoding.ASCII.GetBytes(Specific);
-            File(Path, General, Specific_Bytes, Specific_Bytes.Length);
+            File(Path, General, Specific_Bytes);
         }
     }
 

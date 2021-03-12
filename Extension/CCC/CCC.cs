@@ -17,13 +17,13 @@ namespace CCC
             Priority = 10;
         }
 
-        public int Execute(IPEndPoint Source, IPEndPoint Destination, ref Byte[] Packet, ref int Packet_Size)
+        public int Execute(IPEndPoint Source, IPEndPoint Destination, ref Byte[] Packet)
         {
             Byte[] Mutant = new Byte[0];
 
             int Index = 0;
 
-            while (Index < (Packet_Size))
+            while (Index < (Packet.Length))
             {
                 if (Packet[Index] != 10)
                 {
@@ -61,7 +61,6 @@ namespace CCC
             Array.Reverse(Mutant, 0, Mutant.Length);
 
             Packet = Mutant;
-            Packet_Size = Mutant.Length;
 
             return 0;
         }

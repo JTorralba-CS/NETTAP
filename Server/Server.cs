@@ -154,6 +154,7 @@ namespace Server
         {
             Socket_State State = (Socket_State)Result.AsyncState;
 
+            Byte[] Packet = null;
             int Packet_Size = 0;
 
             try
@@ -162,6 +163,9 @@ namespace Server
 
                 if (Packet_Size != 0)
                 {
+                    Packet = new byte[Packet_Size];
+                    Buffer.BlockCopy(State.Buffer, 0, Packet, 0, Packet_Size);
+
                     IPEndPoint Source_Remote_IPEndPoint = State.Socket_Source.RemoteEndPoint as IPEndPoint;
                     IPEndPoint Source_Local_IPEndPoint = State.Socket_Source.LocalEndPoint as IPEndPoint;
 
@@ -172,14 +176,14 @@ namespace Server
 
                     foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 10 && Extension.Priority < 20))
                     {
-                        Extension.Execute(Source_Remote_IPEndPoint, Destination_Remote_IPEndPoint, ref State.Buffer, ref Packet_Size);
+                        Extension.Execute(Source_Remote_IPEndPoint, Destination_Remote_IPEndPoint, ref Packet);
                     }
 
-                    State.Socket_Destination.Send(State.Buffer, Packet_Size, SocketFlags.None);
+                    State.Socket_Destination.Send(Packet, Packet.Length, SocketFlags.None);
 
                     foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 20 && Extension.Priority < 30))
                     {
-                        Extension.Execute(Source_Remote_IPEndPoint, Destination_Remote_IPEndPoint, ref State.Buffer, ref Packet_Size);
+                        Extension.Execute(Source_Remote_IPEndPoint, Destination_Remote_IPEndPoint, ref Packet);
                     }
 
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
@@ -191,7 +195,7 @@ namespace Server
 
                 if (Packet_Size != 0)
                 {
-                    Log.File("System\\Exception", "OnDataReceive: (Packet Loss)", State.Buffer, Packet_Size);
+                    Log.File("System\\Exception", "OnDataReceive: (Packet Loss)", Packet);
                 }
 
                 State.Socket_Destination.Close();

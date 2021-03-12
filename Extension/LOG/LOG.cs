@@ -18,10 +18,10 @@ namespace LOG
             Priority = 20;
         }
 
-        public int Execute(IPEndPoint Source, IPEndPoint Destination, ref Byte[] Packet, ref int Packet_Size)
+        public int Execute(IPEndPoint Source, IPEndPoint Destination, ref Byte[] Packet)
         {
             String Path = Source.Address.ToString() + "_" + Source.Port + @"\";
-            Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet, Packet_Size);
+            Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet);
             return 0;
         }
     }
