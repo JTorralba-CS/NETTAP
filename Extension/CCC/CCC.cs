@@ -23,43 +23,37 @@ namespace CCC
 
             int Index = 0;
 
-            while (Index < (Packet.Length))
+            for (int Counter = Packet.Length; --Counter > 0;)
             {
+                Index = Packet.Length - Counter;
+
                 if (Packet[Index] != 10)
                 {
-                    if (Packet[Index] == 44)
+                    switch (Packet[Index])
                     {
-                        // Convert COMMA To SPACEBAR
-                        Mutant = Append.Byte(Mutant, 32);
-                    }
-                    else
-                    {
-                        Mutant = Append.Byte(Mutant, Packet[Index]);
-                    }
-
-                    try
-                    {
-                        // ETX Check
-                        if (Packet[Index] == 3)
-                        {
-                            Packet[Index + 1] = 10;
-
-                            // Add EOL
+                        case 44:
+                            Mutant = Append.Byte(Mutant, 32);
+                            break;
+                        case 3:
+                            Mutant = Append.Byte(Mutant, 3);
                             Mutant = Append.Byte(Mutant, 13);
                             Mutant = Append.Byte(Mutant, 10);
-                        }
-                    }
-                    catch (Exception E)
-                    {
-                        Log.Terminal("CCC", E.Message);
+                            try
+                            {
+                                Packet[Index + 1] = 10;
+                            }
+                            catch
+                            {
+                            }
+                            break;
+                        default:
+                            Mutant = Append.Byte(Mutant, Packet[Index]);
+                            break;
                     }
                 }
-
-                Index++;
             }
 
             Array.Reverse(Mutant, 0, Mutant.Length);
-
             Packet = Mutant;
 
             return 0;
