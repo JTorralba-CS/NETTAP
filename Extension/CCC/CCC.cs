@@ -17,7 +17,7 @@ namespace CCC
             Priority = 10;
         }
 
-        public int Execute(IPEndPoint Source, IPEndPoint Destination, ref Byte[] Packet)
+        public int Execute(ref IPEndPoint Source, ref IPEndPoint Destination, ref Byte[] Packet)
         {
             Byte[] Mutant = new Byte[0];
 

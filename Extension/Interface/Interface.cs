@@ -9,6 +9,6 @@ namespace Interface
         String Description { get; }
         Byte Priority { get; set; }
 
-        int Execute(IPEndPoint Source, IPEndPoint Destination, ref Byte[] Packet);
+        int Execute(ref IPEndPoint Source, ref IPEndPoint Destination, ref Byte[] Packet);
     }
 }
