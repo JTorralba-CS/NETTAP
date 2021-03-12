@@ -17,7 +17,7 @@ namespace BUF
         {
             Name = "BUF";
             Description = "This is the BUF extension.";
-            Priority = 21;
+            Priority = 22;
 
             Max = 0;
         }
