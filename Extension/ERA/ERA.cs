@@ -11,13 +11,15 @@ namespace ERA
         public string Description { get; }
         public Byte Priority { get; set; }
 
-        public static Byte[] FindThis = Encoding.ASCII.GetBytes(Convert.ToChar(2).ToString() + Convert.ToChar(69).ToString());
+        public static Byte[] FindThis;
 
         public ERA()
         {
             Name = "ERA";
             Description = "This is the ERA extension.";
             Priority = 21;
+
+            FindThis = Encoding.ASCII.GetBytes(Convert.ToChar(2).ToString() + Convert.ToChar(69).ToString());
         }
 
         public int Execute(ref IPEndPoint Source, ref IPEndPoint Destination, ref Byte[] Packet)
