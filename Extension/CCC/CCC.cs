@@ -23,7 +23,7 @@ namespace CCC
 
             int Index = 0;
 
-            for (int Counter = Packet.Length; --Counter > 0;)
+            for (int Counter = Packet.Length; --Counter => 0;)
             {
                 Index = Packet.Length - Counter;
 
