@@ -186,6 +186,22 @@ namespace Server
                         Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref Packet);
                     }
 
+                    foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 30 && Extension.Priority < 40))
+                    {
+                        if (Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref Packet) == 1)
+                        {
+                            try
+                            {
+                                State.Socket_Source.Send(Packet, Packet.Length, SocketFlags.None);
+                                Log.File("System\\" + Extension.Name, Source_Local_IPEndPoint.Address + ":" + Source_Local_IPEndPoint.Port.ToString() + " ---> " + Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString(), Packet);
+                            }
+                            catch (Exception E)
+                            {
+                                Log.File("System\\Exception", "Extension Code Non-Zero", E.Message);
+                            }
+                        }
+                    }
+
                     State.Socket_Source.BeginReceive(State.Buffer, 0, State.Buffer.Length, 0, OnDataReceive, State);
                 }
             }
