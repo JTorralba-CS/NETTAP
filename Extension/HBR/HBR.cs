@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Text;
 using Core;
 
-namespace ACK
+namespace HBR
 {
     public class HBR : Interface.Extension
     {
         public string Name { get; }
         public string Description { get; }
         public Byte Priority { get; set; }
+
+        public static ExeConfigurationFileMap Settings_File;
+        public static Configuration Settings_Data;
 
         public static Byte[] FindThis;
         public static Byte[] HBA;
@@ -18,10 +23,14 @@ namespace ACK
         {
             Name = "HBR";
             Description = "This is the HBR extension.";
-            Priority = 30;
 
-            FindThis = Encoding.ASCII.GetBytes(Convert.ToChar(2).ToString() + Convert.ToChar(72).ToString() + Convert.ToChar(3).ToString());
-            HBA = Encoding.ASCII.GetBytes(Convert.ToChar(02).ToString() + Convert.ToChar(06).ToString() + Convert.ToChar(03).ToString());
+            String XML = Directory.GetCurrentDirectory() + @"\" + "Extension" + @"\" + this.GetType().Namespace + ".xml";
+            Settings_File = new ExeConfigurationFileMap { ExeConfigFilename = XML };
+            Settings_Data = ConfigurationManager.OpenMappedExeConfiguration(Settings_File, ConfigurationUserLevel.None);
+
+            Priority = Byte.Parse(Settings_Data.AppSettings.Settings["Priority"].Value);
+            FindThis = Encoding.ASCII.GetBytes(Settings_Data.AppSettings.Settings["FindThis"].Value);
+            HBA = Encoding.ASCII.GetBytes(Settings_Data.AppSettings.Settings["HBA"].Value);
         }
 
         public int Execute(ref IPEndPoint Source, ref IPEndPoint Destination, ref Byte[] Packet)
@@ -30,7 +39,7 @@ namespace ACK
 
             if (Find.Byte(ref Packet, ref FindThis) >= 0)
             {
-                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet);
+                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " " + Encoding.ASCII.GetString(Packet));
                 Packet = HBA;
                 return 1;
             }

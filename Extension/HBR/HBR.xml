@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="Priority" value="30"/>
+    <add key="FindThis" value="&#x2;H"/>
+    <add key="HBA" value="&#x2;&#x6;&#x3;"/>
+  </appSettings>
+</configuration>

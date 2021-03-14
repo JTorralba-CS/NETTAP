@@ -1,5 +1,7 @@
 ﻿using Core;
 using System;
+using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Text;
 
@@ -11,15 +13,22 @@ namespace ERA
         public string Description { get; }
         public Byte Priority { get; set; }
 
+        public static ExeConfigurationFileMap Settings_File;
+        public static Configuration Settings_Data;
+
         public static Byte[] FindThis;
 
         public ERA()
         {
             Name = "ERA";
             Description = "This is the ERA extension.";
-            Priority = 21;
 
-            FindThis = Encoding.ASCII.GetBytes(Convert.ToChar(2).ToString() + Convert.ToChar(69).ToString());
+            String XML = Directory.GetCurrentDirectory() + @"\" + "Extension" + @"\" + this.GetType().Namespace + ".xml";
+            Settings_File = new ExeConfigurationFileMap { ExeConfigFilename = XML };
+            Settings_Data = ConfigurationManager.OpenMappedExeConfiguration(Settings_File, ConfigurationUserLevel.None);
+
+            Priority = Byte.Parse(Settings_Data.AppSettings.Settings["Priority"].Value);
+            FindThis = Encoding.ASCII.GetBytes(Settings_Data.AppSettings.Settings["FindThis"].Value);
         }
 
         public int Execute(ref IPEndPoint Source, ref IPEndPoint Destination, ref Byte[] Packet)

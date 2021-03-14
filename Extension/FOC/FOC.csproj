@@ -5,12 +5,22 @@
   </PropertyGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)\NetTap\Extension\$(ProjectName).dll&quot;" />
+    <Exec Command="copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(SolutionDir)\NetTap\Extension\$(ProjectName).dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).xml&quot; &quot;$(SolutionDir)\NetTap\Extension\$(ProjectName).xml&quot;" />
   </Target>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj" />
     <ProjectReference Include="..\Interface\Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="FOC.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

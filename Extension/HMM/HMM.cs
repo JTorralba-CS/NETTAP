@@ -14,8 +14,8 @@ namespace HMM
         public string Description { get; }
         public Byte Priority { get; set; }
 
-        public static ExeConfigurationFileMap Settings_File = null;
-        public static Configuration Settings_Data = null;
+        public static ExeConfigurationFileMap Settings_File;
+        public static Configuration Settings_Data;
 
         public static Byte[] FindThis;
 
