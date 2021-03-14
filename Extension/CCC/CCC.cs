@@ -23,9 +23,8 @@ namespace CCC
 
             int Index = 0;
 
-            for (int Counter = Packet.Length; --Counter => 0;)
+            for (int Counter = Packet.Length; --Counter >= 0;)
             {
-                Index = Packet.Length - Counter;
 
                 if (Packet[Index] != 10)
                 {
@@ -42,7 +41,7 @@ namespace CCC
                             {
                                 Packet[Index + 1] = 10;
                             }
-                            catch
+                            catch (Exception E)
                             {
                             }
                             break;
@@ -51,6 +50,8 @@ namespace CCC
                             break;
                     }
                 }
+
+                Index = Packet.Length - Counter;
             }
 
             Array.Reverse(Mutant, 0, Mutant.Length);
