@@ -54,7 +54,7 @@ namespace HMM
         {
             String Path = Source.Address.ToString() + "_" + Source.Port + @"\HMM";
 
-            if (Find.Byte(ref Packet, ref FindThis) >= 0)
+            if (FindThis.Length != 0 && Find.Byte(ref Packet, ref FindThis) >= 0)
             {
                 Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet);
 

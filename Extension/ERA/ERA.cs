@@ -35,7 +35,7 @@ namespace ERA
         {
             String Path = Source.Address.ToString() + "_" + Source.Port + @"\ERA";
 
-            if (Find.Byte(ref Packet, ref FindThis) >= 0)
+            if (FindThis.Length !> 0 && Find.Byte(ref Packet, ref FindThis) >= 0)
             {
                 Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " " + Encoding.ASCII.GetString(Packet));
             }

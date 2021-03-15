@@ -2,6 +2,6 @@
 <configuration>
   <appSettings>
     <add key="Priority" value="23"/>
-    <add key="FindThis" value="VOIP"/>
+    <add key="FindThis" value=""/>
   </appSettings>
 </configuration>
