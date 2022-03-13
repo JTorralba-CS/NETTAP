@@ -29,7 +29,7 @@ When STX ASCII control code is initially detected the "CCC" (Clean-Control-Code)
 Windows 10 Professional\
 Visual Studio 2019 CE\
 C#\
-.NET Core 3.1
+.NET Core 6
 
 ## Usage:
 
