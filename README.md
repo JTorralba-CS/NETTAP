@@ -1,28 +1,29 @@
 ![Preview](Preview.png?raw=true "Preview")
 
 # NetTap
-TCP logger and forwarder.
+TCP packet logger and forwarder.
 
-What does NetTap do? 
+This utility is used as a troubleshooting tool to review and analyze packet data being passed between TCP systems. It listens and captures the data from source TCP system, then stores a copy of the data to a log file, then relays the data to the destination TCP system.
 
-This utility is used as a troubleshooting tool to review and analyze what data is being passed between TCP systems.  It listens and captures the data from source TCP system, stores the data to a log file (Packet_Raw.txt), then relays the data to the destination TCP system.
+What does the "CCC" plug-in do?
 
-What does the "CCC" feature process do?
+ESRI GeoEvent service was built for modern data communication. It has no native support for legacy serial data communication over TCP/IP that utilizes the STX & ETX ASCII control codes. With the "CCC" plug-in, the utility cleanses the inconsistent incoming ANIALI serial data. Basically, it takes the raw ANIALI data and makes it clean before the GeoEvent server can digest the ANIALI data for plotting on a map.
 
-ESRI GeoEvent service was built for modern data communication.  It has no native support for legacy serial data communication over TCP that utilizes the STC & ETX ASCII control codes.  With the "CCC" feature, the utility has been modified to adopt to the inconsistent ANIALI data coming from the vendors.  Basically, it takes the raw ANIALI data and makes it clean before the GeoEvent server can digest the ANIALI data for plotting on a map.
+The utility performs the following: 
 
-When STX ASCII control code is initially detected the "CCC" (Clean-Control-Code) feature will be automatically enabled. The utility performs the following: 
+1) Recieves packet data from source system.
 
-1) Strips LINE-FEED (LF) ASCII control code in between the START-OF-TEXT (STX) and the END-OF-TEXT (ETX) ASCII control codes. LN in the data causes issues for GeoEvent service parsing.
+2) Strips LINE-FEED (LF) ASCII control code in between the START-OF-TEXT (STX) and the END-OF-TEXT (ETX) ASCII control codes. LN in the data causes issues for GeoEvent service parsing process.
 
-2) Strips the BLOCK-CHECK-CHARACTER (BCC) that comes after the ETX. Sometimes the computed BCC value is another ASCII control code that causes issues for GeoEvent service parsing.
+3) Strips the BLOCK-CHECK-CHARACTER (BCC) that comes after the ETX. The computed BCC value could be another ASCII control code that causes issues for GeoEvent service parsing process.
 
-3) Converts "COMMA" to "SPACE". ("COMMA" as field separator used by GeoEvent service parsing.  Parsing process is setup to receive ANIALI as one long 512+ character field per record.  Required components are parsed from the long single field via fixed positioning.) 
+4) Converts COMMA character to SPACE character. The COMMA character is a field separator used by GeoEvent service parsing.  The process cannot tell if the COMMA character is being used as a delimiter or input data.
 
-4) Adds CARRAGIE-RETURN + LINE-FEED to minimize overlapping of received records causing extra processing for GeoEvent service.  GeoEvent service uses the ETX as record separator but sometimes receives short status messages like "STXE99ETX".
+5) Adds CARRAGIE-RETURN + LINE-FEED (CRLN) at the record end to minimize overlapping of received records causing extra processing for GeoEvent service.  GeoEvent service uses the ETX as record separator but sometimes receives short status messages like "STXE99ETX". The GeoEvent parsing process is setup to receive ANIALI as one long 512+ character field per record.  The required components are parsed from this long single field via fixed positioning.
 
-5) Stores the "cleansed" data in the Packet_CCC.txt file.
+6) Stores the "cleansed" data in a log file.
 
+7) Sends modified data to destination system.
 
 ## Stack:
 
