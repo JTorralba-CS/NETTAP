@@ -39,7 +39,7 @@ namespace HBR
 
             if (FindThis.Length != 0 && Find.Byte(ref Packet, ref FindThis) >= 0)
             {
-                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " " + Encoding.ASCII.GetString(Packet));
+                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + ">", Packet);
                 Packet = HBA;
                 return 1;
             }

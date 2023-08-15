@@ -1,10 +1,375 @@
-2133_|(111) 495-6004 VOIP 08/10 14:17_|CHILDREN'S HOSPITAL COLORADO_|      1111       P#111-211-0089_|   BRIARGATE PKWY        _|                    _|2ND FLOOR             261 05025_|CO COLORADO SPRINGS            _|                  TEL=LVL3 _|+38.965266  -104.752707      0 _|PSAP=CO SPRINGS VOIP_|_|VOIP 911 CALL_|VERIFY CALLERS LOCATION_|VERIFY EMS     
-2517_|(222) 632-4403 RESD 08/10 14:24_|BOBBITT  H L                _|      2222       P#222-632-4403_|E  SAN MIGUEL ST         _|                    _|                      261 00220_|CO COLORADO SPRINGS            _|                  TEL=CTLQ _|                               _|PSAP=CSPD--COLO SPGS      _|COLO SPGSPD      _|COLO SPGS FD      _|COLSPGS FD  
-2125_|(333) 511-4008 WPH2 08/10 17:27_|T-MOBILE USA                _|       333       P#333-511-4008_|   NORTH GATE BLVD - E SE_|CTOR                _|CALLBK=(303)523-3333  261 00311_|CO COLORADO SPRINGS            _|                  TEL=TMOB _|+39.024017  -104.823282     14 _|PSAP=CSPD--COLORADO SPRINGS WIRELESS_|VERIFY PD_|VERIFY FD_|VERIFY EMS         
-2209_|(444) 511-0463 WPH2 08/10 17:41_|VERIZON                     _|                 P#444-511-0463_|   4444 FOUNTAIN MESA RD _|- NE                _|CALLBK=(719)600-4444  261 02000_|CO COLORADO SPRINGS            _|                  TEL=VZW  _|+38.720455  -104.699299      5 _|PSAP=EPSO--EL PASO SHERIFF_|WIRELESS_|VERIFY PD_|VERIFY FD_|VERIFY EMS         
-2125_|(555) 511-4005 WPH1 08/10 17:49_|T-MOBILE USA                _|                 P#555-511-4005_|   55555 TEMPLETON GAP RO_|AD - SECTOR NW      _|CALLBK=(911)103-5555  261 00311_|CO COLORADO SPRINGS            _|                  TEL=TMOB _|+38.938798  -104.702218   3674 _|PSAP=CSPD--COLORADO SPRINGS WIRELESS_|VERIFY PD_|VERIFY FD_|VERIFY EMS         
-2000_|(666) 390-2149 PBXB 08/10 16:29_|CRIMINAL JUSTICE CTR        _|      6666       P#666-390-2149_|E  LAS VEGAS ST          _|                    _|SHERIFF               261 00220_|CO COLORADO SPRINGS            _|SHR - CJC - SHE   TEL=CTLQP_|                               _|PSAP=CSPD--COLO SPGS      _|COLO SPGSPD      _|COLO SPGS FD      _|COLSPGS FD  
-200_|(777) 390-2149 PBXB 08/10 16:29_|CRIMINAL JUSTICE CTR        _|      7777       P#719-390-2149_|E  LAS VEGAS ST          _|                    _|SHERIFF               261 00220_|CO COLORADO SPRINGS            _|SHR - CJC - SHE   TEL=CTLQP_|                               _|PSAP=CSPD--COLO SPGS      _|COLO SPGSPD      _|COLO SPGS FD      _|COLSPGS FD  
-E133
-H
-12345A1HB22HC333HD4444HE55555H67890
+2122
+(719) 511-4551 WPH2 08/14 13:59
+T-Mobile USA, Inc.          
+      3728       P#719-511-4551
+   Dalby DR              
+                    
+CALLBK=(719)661-7674  261 00311
+CO COLORADO SPRINGS            
+                  TEL=TMOB 
++38.924121  -104.719856      5 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         62119
+(719) 511-4563 WPH2 08/14 13:59
+T-MOBILE USA                
+      2460       P#719-511-4563
+   WAYNOKA RD - SW SECTOR
+                    
+CALLBK=(720)451-8713  262 00311
+CO COLORADO SPRINGS            
+                  TEL=TMOB 
++38.871442  -104.719920      6 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         p2119
+(719) 511-4563 WPH2 08/14 13:59
+T-MOBILE USA                
+      2460       P#719-511-4563
+   WAYNOKA RD - SW SECTOR
+                    
+CALLBK=(720)451-8713  262 00311
+CO COLORADO SPRINGS            
+                  TEL=TMOB 
++38.871441  -104.719917      6 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         w2517
+(719) 511-0462 WPH2 08/14 13:59
+VERIZON                     
+                 P#719-511-0462
+   7375 SOUTHMOOR DR - E 
+                    
+CALLBK=(956)238-0213  262 02000
+CO FOUNTAIN                    
+                  TEL=VZW  
++38.720756  -104.711101      6 
+PSAP=EPSO--EL PASO SHERIFF
+WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         bE130t2517
+(719) 495-8181 BUSN 08/14 13:59
+EL PASO COUNTY COLORADO SCHO
+     10255       P#719-495-2261
+   LAMBERT RD            
+                    
+                      261 00245
+CO FALCON                      
+                  TEL=CTLQ 
+                               
+PSAP=EPSO--FALCON
+EPSO
+FALCON FD
+FALCON AMB                                 HKHK2517
+(719) 211-3035 VOIP 08/14 14:00
+BANDWIDTH : 855.864.7776    
+                 P#719-211-3035
+   VOIP 9-1-1 CALLER     
+                    
+                      262 05025
+CO COLORADO SPRINGS PDFD       
+                  TEL=BAND 
+                               
+PSAP=CO SPRINGS VOIP
+
+VOIP 911 CALL
+VERIFY CALLERS LOCATION
+VERIFY EMS     h2517
+(719) 211-3035 VOIP 08/14 14:00
+BANDWIDTH : 855.864.7776    
+                 P#719-211-3035
+   VOIP 9-1-1 CALLER     
+                    
+                      261 05025
+CO COLORADO SPRINGS PDFD       
+                  TEL=BAND 
+                               
+PSAP=CO SPRINGS VOIP
+
+VOIP 911 CALL
+VERIFY CALLERS LOCATION
+VERIFY EMS     k2517
+(361) 792-4698 VOIP 08/14 14:00
+TCS                         
+                 P#719-211-1123
+   VOIP NOMADIC CALL XY O
+NLY                 
+                      262 05025
+CO COLORADO SPRINGS PDFD       
+                  TEL=ONVOY
++38.827347  -104.793842      0 
+PSAP=CO SPRINGS VOIP
+
+VOIP 911 CALL
+VERIFY CALLERS LOCATION
+VERIFY EMS     kHKHK2517
+(719) 555-9044 WPH1 08/14 14:01
+AT&T MOBIL-NO COOR DATA-REBI
+                 P#719-555-9044
+   WIRELESS CALL         
+                    
+                      261 00311
+CO COLORADO SPRINGS E911       
+                  TEL=ATTMO
+                               
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         2130
+(719) 385-4001 VOIP 08/14 14:01
+CITY OF COLORADO SPRINGS - C
+       217       P#719-211-0081
+S  WAHSATCH AVE          
+                    
+CITYOFCOLORADOSPRING  262 05025
+CO COLORADO SPRINGS            
+                  TEL=LVL3 
++38.830072  -104.817638      0 
+PSAP=CO SPRINGS VOIP
+
+VOIP 911 CALL
+VERIFY CALLERS LOCATION
+VERIFY EMS     v2517
+(719) 211-0091 VOIP 08/14 14:01
+VOIP CALLER                 
+                 P#719-211-0091
+   VOIP 9-1-1 CALLER     
+                    
+                      262 05035
+CO EL PASO COUNTY SHERIFF      
+                  TEL=TRDO 
+                               
+PSAP=EL PASO VOIP
+
+VOIP 911 CALL
+VERIFY CALLERS LOCATION
+VERIFY EMS        }2126
+(719) 387-3599 VOIP 08/14 14:01
+CITY OF COLORADO SPRINGS - C
+       705       P#719-211-0086
+S  NEVADA AVE            
+                    
+2ND FLOOR             261 05025
+CO COLORADO SPRINGS            
+                  TEL=LVL3 
++38.823870  -104.821200      0 
+PSAP=CO SPRINGS VOIP
+
+VOIP 911 CALL
+VERIFY CALLERS LOCATION
+VERIFY EMS     E122w2122
+(719) 511-4540 WRLS 08/14 14:01
+T-MOBILE USA                
+                 P#719-511-4540
+   1404 Manitou blvd - se
+ctor SW             
+CALLBK=(911)922-5860  262 00311
+CO COLORADO SPRINGS            
+                  TEL=TMOB 
++38.846605  -104.840298   2070 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         E131uHK2517
+(719) 265-4639 RESD 08/14 14:02
+THOMPSON, SABRINA           
+      7025       P#719-265-4639
+   OAK VALLEY DR         
+                    
+                      261 00220
+CO COLORADO SPRINGS            
+                  TEL=CTLQ 
+                               
+PSAP=CSPD--COLO SPGS      
+COLO SPGSPD      
+COLO SPGS FD      
+COLSPGS FD  HK2517
+(719) 511-4551 WPH2 08/14 14:02
+T-Mobile USA, Inc.          
+      3728       P#719-511-4551
+   Dalby DR              
+                    
+CALLBK=(719)661-7674  262 00311
+CO COLORADO SPRINGS            
+                  TEL=TMOB 
++38.924110  -104.719877      5 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         ?2517
+(719) 511-0410 WPH2 08/14 14:02
+VERIZON WIRELESS            
+                 P#719-511-0410
+   1318 KERN ST          
+                    
+CALLBK=(719)494-6020  261 00311
+CO COLORADO SPRINGS            
+                  TEL=VZW  
++38.853128  -104.740455     21 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         2517
+(719) 385-3360 PBXB 08/14 14:02
+COLORADO STATE GOVT         
+      1427       P#719-385-3360
+W  RIO GRANDE ST         
+                    
+                      262 00220
+CO COLORADO SPRINGS            
+PBX               TEL=CTLQ 
+                               
+PSAP=CSPD--COLO SPGS      
+COLO SPGSPD      
+COLO SPGS FD      
+COLSPGS FD  HKHK2517
+(719) 511-4551 WPH1 08/14 14:03
+T-MOBILE USA                
+      6135       P#719-511-4551
+   TEMPLETON GAP RD - NE 
+SECTOR              
+CALLBK=(719)661-7674  261 00311
+CO COLORADO SPRINGS            
+                  TEL=TMOB 
++38.935204  -104.719963   2278 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         2517
+(719) 277-8200 PBXB 08/14 14:03
+DEPARTMENT OF VETERANS AFFAI
+      3920       P#719-277-8200
+N  UNION BLVD            
+                    
+SUIT 200              262 00220
+CO COLORADO SPRINGS            
+PBX               TEL=CTLQ 
+                               
+PSAP=CSPD--COLO SPGS      
+COLO SPGSPD      
+COLO SPGS FD      
+COLSPGS FD  E119
+
+
+
+---------------------------------------
+
+
+
+2517
+(719) 495-8181 BUSN 08/14 13:59
+EL PASO COUNTY COLORADO SCHO
+     10255       P#719-495-2261
+   LAMBERT RD            
+                    
+                      261 00245
+CO FALCON                      
+                  TEL=CTLQ 
+                               
+PSAP=EPSO--FALCON
+EPSO
+FALCON FD
+FALCON AMB                                 2517
+(719) 555-9044 WPH1 08/14 14:01
+AT&T MOBIL-NO COOR DATA-REBI
+                 P#719-555-9044
+   WIRELESS CALL         
+                    
+                      261 00311
+CO COLORADO SPRINGS E911       
+                  TEL=ATTMO
+                               
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         2126
+(719) 387-3599 VOIP 08/14 14:01
+CITY OF COLORADO SPRINGS - C
+       705       P#719-211-0086
+S  NEVADA AVE            
+                    
+2ND FLOOR             261 05025
+CO COLORADO SPRINGS            
+                  TEL=LVL3 
++38.823870  -104.821200      0 
+PSAP=CO SPRINGS VOIP
+
+VOIP 911 CALL
+VERIFY CALLERS LOCATION
+VERIFY EMS     2517
+(719) 511-4551 WPH2 08/14 14:02
+T-Mobile USA, Inc.          
+      3728       P#719-511-4551
+   Dalby DR              
+                    
+CALLBK=(719)661-7674  262 00311
+CO COLORADO SPRINGS            
+                  TEL=TMOB 
++38.924110  -104.719877      5 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         ?2517
+(719) 385-3360 PBXB 08/14 14:02
+COLORADO STATE GOVT         
+      1427       P#719-385-3360
+W  RIO GRANDE ST         
+                    
+                      262 00220
+CO COLORADO SPRINGS            
+PBX               TEL=CTLQ 
+                               
+PSAP=CSPD--COLO SPGS      
+COLO SPGSPD      
+COLO SPGS FD      
+COLSPGS FD  2517
+(719) 277-8200 PBXB 08/14 14:03
+DEPARTMENT OF VETERANS AFFAI
+      3920       P#719-277-8200
+N  UNION BLVD            
+                    
+SUIT 200              262 00220
+CO COLORADO SPRINGS            
+PBX               TEL=CTLQ 
+                               
+PSAP=CSPD--COLO SPGS      
+COLO SPGSPD      
+COLO SPGS FD      
+COLSPGS FD  
+
+
+---------------------------------------
+
+2517
+(719) 511-4551 WPH2 08/14 14:02
+T-Mobile USA, Inc.          
+      3728       P#719-511-4551
+   Dalby DR              
+                    
+CALLBK=(719)661-7674  262 00311
+CO COLORADO SPRINGS            
+                  TEL=TMOB 
++38.924110  -104.719877      5 
+PSAP=CSPD--COLORADO SPRINGS WIRELESS
+VERIFY PD
+VERIFY FD
+VERIFY EMS         ?
+2126
+(719) 387-3599 VOIP 08/14 14:01
+CITY OF COLORADO SPRINGS - C
+       705       P#719-211-0086
+S  NEVADA AVE            
+                    
+2ND FLOOR             261 05025
+CO COLORADO SPRINGS            
+                  TEL=LVL3 
++38.823870  -104.821200      0 
+PSAP=CO SPRINGS VOIP
+
+VOIP 911 CALL
+VERIFY CALLERS LOCATION
+VERIFY EMS     

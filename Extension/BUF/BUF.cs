@@ -38,7 +38,7 @@ namespace BUF
             if (Packet.Length > Max)
             {
                 Max = Packet.Length;
-                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet);
+                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + ">", Packet);
             }
 
             return 0;

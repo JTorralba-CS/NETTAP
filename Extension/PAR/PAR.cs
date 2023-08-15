@@ -1,19 +1,39 @@
-﻿using System.Diagnostics;
-using System.Net.Sockets;
-using System.Text;
+﻿using System.Net;
+using System.Configuration;
 using System.Text.RegularExpressions;
+using System.Text;
 
-namespace Parse
+namespace PAR
 {
-    internal class Program
+    public class PAR : Interface.Extension
     {
-        static void Main(string[] args)
+        public string Name { get; }
+        public string Description { get; }
+        public Byte Priority { get; set; }
+
+        public static ExeConfigurationFileMap Settings_File;
+        public static Configuration Settings_Data;
+
+        public PAR()
+        {
+            Name = "PAR";
+            Description = "This is the PAR extension.";
+
+            String XML = Directory.GetCurrentDirectory() + @"\" + "Extension" + @"\" + this.GetType().Namespace + ".xml";
+            Settings_File = new ExeConfigurationFileMap { ExeConfigFilename = XML };
+            Settings_Data = ConfigurationManager.OpenMappedExeConfiguration(Settings_File, ConfigurationUserLevel.None);
+
+            Priority = Byte.Parse(Settings_Data.AppSettings.Settings["Priority"].Value);
+
+        }
+
+        public int Execute(ref IPEndPoint Source, ref IPEndPoint Destination, ref byte[] Packet)
         {
             String Output_String = "";
 
             Byte[] Output_Bytes = new byte[0];
 
-            String Input_String = "";
+            String Input_String = Encoding.Default.GetString(Packet).ToUpper();
 
             //Console.WriteLine();
             //Console.WriteLine("Input: " + Input_String);
@@ -63,7 +83,7 @@ namespace Parse
                                     Phone = Phone.Substring(0, 14);
 
                                     String Caller = RecordX.Substring(39, 28);
-
+                                    
 
                                     String Address_Number = RecordX.Substring(74, 12);
                                     String Address_Street_Prefix = RecordX.Substring(102, 3);
@@ -134,7 +154,7 @@ namespace Parse
                             {
                                 Fixed_String = String.Concat("\u0002", Fixed_String, "\u0003");
                                 //Console.WriteLine(Fixed_String);
-                                Console.WriteLine(Fixed_String + " <" + Fixed_String.Length.ToString() + ">");
+                                //Console.WriteLine(Fixed_String + " <" + Fixed_String.Length.ToString() + ">");
 
                                 Output_String = Output_String + Fixed_String;
                             }
@@ -144,6 +164,7 @@ namespace Parse
             }
 
             Output_Bytes = Encoding.Default.GetBytes(Output_String);
+            Packet = Output_Bytes;
 
             //using (StreamWriter Writer = new StreamWriter("DEBUG.txt"))
             //{
@@ -153,6 +174,8 @@ namespace Parse
 
             //String ReadText = File.ReadAllText("DEBUG.txt");
             //Console.WriteLine(ReadText);
+
+            return Output_Bytes.Length;
         }
     }
 }

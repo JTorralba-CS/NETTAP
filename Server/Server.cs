@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace Server
 {
@@ -157,6 +158,9 @@ namespace Server
             Byte[] Packet = null;
             int Packet_Size = 0;
 
+            Byte[] PacketX = null;
+            int Packet_SizeX = 0;
+
             try
             {
                 Packet_Size = State.Socket_Source.EndReceive(Result);
@@ -164,8 +168,10 @@ namespace Server
                 if (Packet_Size != 0)
                 {
                     Packet = new byte[Packet_Size];
-                    Buffer.BlockCopy(State.Buffer, 0, Packet, 0, Packet_Size);
+                    PacketX = new byte[Packet_SizeX];
 
+                    Buffer.BlockCopy(State.Buffer, 0, Packet, 0, Packet_Size);
+                    
                     IPEndPoint Source_Remote_IPEndPoint = State.Socket_Source.RemoteEndPoint as IPEndPoint;
                     IPEndPoint Source_Local_IPEndPoint = State.Socket_Source.LocalEndPoint as IPEndPoint;
 
@@ -176,28 +182,43 @@ namespace Server
 
                     foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 10 && Extension.Priority < 20))
                     {
-                        Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref Packet);
+                        Packet_SizeX = Packet_Size;
+                        PacketX = new byte[Packet_SizeX];
+                        Buffer.BlockCopy(Packet, 0, PacketX, 0, Packet_SizeX);
+
+                        //Console.WriteLine();
+                        //Console.WriteLine(Extension.Name + "-BEFORE: " + Packet_Size.ToString());
+                        Packet_SizeX = Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref PacketX);
+                        //Console.WriteLine(Extension.Name + "-AFTER: " + Packet_Size.ToString());
+                        //Console.WriteLine();
+
+                        Packet_Size = Packet_SizeX;
+                        Packet = new byte[Packet_Size];
+                        Buffer.BlockCopy(PacketX, 0, Packet, 0, Packet_Size);
                     }
 
-                    State.Socket_Destination.Send(Packet, Packet.Length, SocketFlags.None);
-
-                    foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 20 && Extension.Priority < 30))
+                    if (Packet_Size !=0)
                     {
-                        Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref Packet);
-                    }
+                        State.Socket_Destination.Send(Packet, Packet_Size, SocketFlags.None);
 
-                    foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 30 && Extension.Priority < 40))
-                    {
-                        if (Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref Packet) == 1)
+                        foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 20 && Extension.Priority < 30))
                         {
-                            try
+                            Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref Packet);
+                        }
+
+                        foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 30 && Extension.Priority < 40))
+                        {
+                            if (Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref Packet) == 1)
                             {
-                                State.Socket_Source.Send(Packet, Packet.Length, SocketFlags.None);
-                                Log.File("System\\" + Extension.Name, Source_Local_IPEndPoint.Address + ":" + Source_Local_IPEndPoint.Port.ToString() + " ---> " + Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString(), Packet);
-                            }
-                            catch (Exception E)
-                            {
-                                Log.File("System\\Exception", "Extension Code Non-Zero", E.Message);
+                                try
+                                {
+                                    State.Socket_Source.Send(Packet, Packet_Size, SocketFlags.None);
+                                    Log.File("System\\" + Extension.Name, Source_Local_IPEndPoint.Address + ":" + Source_Local_IPEndPoint.Port.ToString() + " ---> " + Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString(), Packet);
+                                }
+                                catch (Exception E)
+                                {
+                                    Log.File("System\\Exception", "Extension Code Non-Zero" + " <" + Extension.Name + ">", E.Message);
+                                }
                             }
                         }
                     }
@@ -207,7 +228,7 @@ namespace Server
             }
             catch (Exception E)
             {
-                Log.File("System\\Exception", "OnDataReceive", E.Message);
+                Log.File("System\\Exception", "OnDataReceive", E.ToString());
 
                 if (Packet_Size != 0)
                 {

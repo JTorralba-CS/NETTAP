@@ -56,9 +56,8 @@ namespace HMM
 
             if (FindThis.Length != 0 && Find.Byte(ref Packet, ref FindThis) >= 0)
             {
-                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Packet);
-
-                SMTP_Client.Send(SMTP_Sender, SMTP_Recipient, "Anomaly Detected", Log.Detail(Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString(), Encoding.ASCII.GetString(Packet)).ToString());
+                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + ">", Packet);
+                SMTP_Client.Send(SMTP_Sender, SMTP_Recipient, "Anomaly Detected", Log.Detail(Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + " <" + this.Name + ">" + ":" + Destination.Port.ToString(), Encoding.ASCII.GetString(Packet)).ToString());
             }
 
             return 0;

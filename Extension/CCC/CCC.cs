@@ -49,7 +49,8 @@ namespace CCC
                             Mutant = Append.Byte(Mutant, 10);
                             try
                             {
-                                Packet[Index + 1] = 10;
+                                if (Packet[Index + 1] != 2)
+                                    Packet[Index + 1] = 10;
                             }
                             catch (Exception E)
                             {
@@ -67,7 +68,7 @@ namespace CCC
             Array.Reverse(Mutant, 0, Mutant.Length);
             Packet = Mutant;
 
-            return 0;
+            return Mutant.Length;
         }
     }
 }
