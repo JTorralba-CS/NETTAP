@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Text.RegularExpressions;
 using System.Text;
+using Core;
 
 namespace PAR
 {
@@ -29,17 +30,25 @@ namespace PAR
 
         public int Execute(ref IPEndPoint Source, ref IPEndPoint Destination, ref byte[] Packet)
         {
+            String Path = Source.Address.ToString() + "_" + Source.Port + @"\";
+
+            Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Bytes>", Packet);
+
             String Output_String = "";
 
             Byte[] Output_Bytes = new byte[0];
 
             String Input_String = Encoding.Default.GetString(Packet).ToUpper();
+            Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " String>", Input_String);
 
             //Console.WriteLine();
             //Console.WriteLine("Input: " + Input_String);
             //Console.WriteLine();
 
             //Input_String = Regex.Replace(Input_String, @"\r|\n", " ");
+            Input_String = Regex.Replace(Input_String, @"\r", "<");
+            Input_String = Regex.Replace(Input_String, @"\n", ">");
+            Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Replace>", Input_String);
 
             String[] Strip_STX = Input_String.Split("\u0002");
 
@@ -51,6 +60,7 @@ namespace PAR
 
                     foreach (String Record in Strip_ETX)
                     {
+                        Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Record>", Record);
 
                         if (Record.Trim().Length != 0)
                         {
@@ -72,52 +82,53 @@ namespace PAR
 
                                 if (Station.Substring(0, 2) != "00")
                                 {
-                                    String Date_Time = RecordX.Substring(26, 11);
-                                    String Class_Of_Service = RecordX.Substring(21, 5);
-                                    String Carrier = RecordX.Substring(239, 5);
+                                    String Date_Time = RecordX.Substring(25, 11);
+                                    String Class_Of_Service = RecordX.Substring(20, 5);
+                                    String Carrier = RecordX.Substring(231, 5);
 
-                                    String CallBack_Wired = RecordX.Substring(6, 14);
-                                    String CallBack_Wireless = RecordX.Substring(158, 14);
+                                    String CallBack_Wired = RecordX.Substring(5, 15);
+                                    String CallBack_Wireless = RecordX.Substring(152, 15);
 
-                                    String Phone = CallBack_Wired.Replace(" ", "") + String.Concat(Enumerable.Repeat(" ", 14));
-                                    Phone = Phone.Substring(0, 14);
+                                    String Phone = CallBack_Wired.Replace(" ", "") + String.Concat(Enumerable.Repeat(" ", 15));
+                                    Phone = Phone.Substring(0, 15);
 
-                                    String Caller = RecordX.Substring(39, 28);
+                                    String Caller = RecordX.Substring(37, 28);
                                     
 
-                                    String Address_Number = RecordX.Substring(74, 12);
-                                    String Address_Street_Prefix = RecordX.Substring(102, 3);
-                                    String Address_Street = RecordX.Substring(105, 22);
-                                    String Address_Misc = RecordX.Substring(129, 20);
-                                    String Address = String.Concat(Address_Number.Trim(), " ", Address_Street_Prefix.Trim(), " ", Address_Street, Address_Misc.Trim()).Trim().Replace("  ", " ") + String.Concat(Enumerable.Repeat(" ", 60));
-                                    Address = Address.Substring(0, 60);
+                                    String Address_Number = RecordX.Substring(66, 17);
+                                    String Address_Street_Prefix = RecordX.Substring(98, 3);
+                                    String Address_Street = RecordX.Substring(101, 22);
+                                    String Address_Misc = RecordX.Substring(124, 20);
+
+                                    String Address = String.Concat(Address_Number.Trim(), " ", Address_Street_Prefix.Trim(), " ", Address_Street, Address_Misc.TrimEnd()).Trim().Replace("  ", " ") + String.Concat(Enumerable.Repeat(" ", 65));
+                                    Address = Address.Substring(0, 65);
                                     Address_Misc = String.Concat(Enumerable.Repeat(" ", 22)); ;
 
-                                    String City = RecordX.Substring(187, 28);
-                                    String State = RecordX.Substring(184, 2);
+                                    String City = RecordX.Substring(180, 28);
+                                    String State = RecordX.Substring(177, 3);
 
-                                    String Latitude = RecordX.Substring(246, 12);
-                                    String Longitude = RecordX.Substring(258, 12);
+                                    String Latitude = RecordX.Substring(237, 12);
+                                    String Longitude = RecordX.Substring(249, 12);
 
-                                    String Confidence = RecordX.Substring(269, 7).Trim() + String.Concat(Enumerable.Repeat(" ", 7));
+                                    String Confidence = RecordX.Substring(261, 7).Trim() + String.Concat(Enumerable.Repeat(" ", 7));
                                     Confidence = Confidence.Substring(0, 7);
 
                                     if (Class_Of_Service.Trim() == "WPH2")
                                     {
-                                        //Caller = String.Concat("WIRELESS CALLER (", Carrier.Trim(), ")") + String.Concat(Enumerable.Repeat(" ", 50));
+                                        //Caller = String.Concat("WIRELESS CALLER (", Carrier.Trim(), ")") + String.Concat(Enumerable.Repeat(" ", 28));
                                         //Caller = Caller.Substring(0, 28);
 
-                                        Phone = CallBack_Wireless.Replace(" ", "") + String.Concat(Enumerable.Repeat(" ", 14));
-                                        Phone = Phone.Substring(0, 14);
+                                        Phone = CallBack_Wireless.Replace(" ", "") + String.Concat(Enumerable.Repeat(" ", 15));
+                                        Phone = Phone.Substring(0, 15);
                                     }
                                     else
                                     {
-                                        CallBack_Wireless = String.Concat(Enumerable.Repeat(" ", 14));
+                                        CallBack_Wireless = String.Concat(Enumerable.Repeat(" ", 15));
                                     }
 
                                     if (Class_Of_Service.Trim() == "VOIP")
                                     {
-                                        Address_Misc = RecordX.Substring(151, 22);
+                                        Address_Misc = RecordX.Substring(145, 22);
                                     }
                                     else
                                     {
@@ -153,6 +164,8 @@ namespace PAR
                             if (Fixed_String.Length != 0)
                             {
                                 Fixed_String = String.Concat("\u0002", Fixed_String, "\u0003");
+                                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Fixed_String>", Fixed_String);
+
                                 //Console.WriteLine(Fixed_String);
                                 //Console.WriteLine(Fixed_String + " <" + Fixed_String.Length.ToString() + ">");
 

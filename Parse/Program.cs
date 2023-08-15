@@ -13,7 +13,7 @@ namespace Parse
 
             Byte[] Output_Bytes = new byte[0];
 
-            String Input_String = "";
+            String Input_String = "\u00022126\r\n(719) 555-9128 WPH2 08/14 21:22\r\nAT&T Mobility               \r\n      3690       P#719-555-9128\r\n   ASTROZONE BOULEVARD - \r\nN Sector            \r\nCALLBK=(719)344-1025  262 00311\r\nCO COLORADO SPRINGS            \r\n                  TEL=ATTMO\r\n+38.803314  -104.752107     19 \r\nPSAP=CSPD--COLORADO SPRINGS WIRELESS\r\nVERIFY PD\r\nVERIFY FD\r\nVERIFY EMS         \u0003`";
 
             //Console.WriteLine();
             //Console.WriteLine("Input: " + Input_String);
