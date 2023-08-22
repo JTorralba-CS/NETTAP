@@ -180,6 +180,11 @@ namespace Server
 
                     //Interface.Extension Extension = Extensions.FirstOrDefault(Extension => Extension.Name == "DEBUG");
 
+                    foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 1 && Extension.Priority < 10))
+                    {
+                        Extension.Execute(ref Source_Remote_IPEndPoint, ref Destination_Remote_IPEndPoint, ref Packet);
+                    }
+
                     foreach (Interface.Extension Extension in Extensions.Where(Extension => Extension.Priority >= 10 && Extension.Priority < 20))
                     {
                         Packet_SizeX = Packet_Size;
