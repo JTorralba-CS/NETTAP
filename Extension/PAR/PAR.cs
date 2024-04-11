@@ -39,16 +39,12 @@ namespace PAR
             Byte[] Output_Bytes = new byte[0];
 
             String Input_String = Encoding.Default.GetString(Packet).ToUpper();
-            Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " String>", Input_String);
-
-            //Console.WriteLine();
-            //Console.WriteLine("Input: " + Input_String);
-            //Console.WriteLine();
+            //Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " String>", Input_String);
 
             //Input_String = Regex.Replace(Input_String, @"\r|\n", " ");
-            Input_String = Regex.Replace(Input_String, @"\r", "<");
-            Input_String = Regex.Replace(Input_String, @"\n", ">");
-            Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Replace>", Input_String);
+            Input_String = Regex.Replace(Input_String, @"\r", " ");
+            Input_String = Regex.Replace(Input_String, @"\n", " ");
+            //Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Replace>", Input_String);
 
             String[] Strip_STX = Input_String.Split("\u0002");
 
@@ -60,103 +56,84 @@ namespace PAR
 
                     foreach (String Record in Strip_ETX)
                     {
-                        Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Record>", Record);
-
                         if (Record.Trim().Length != 0)
                         {
-                            //Console.WriteLine("Record: " + Record + " <" + Record.Length.ToString() + ">");
-
                             String Fixed_String = "";
 
                             String RecordX = Record + String.Concat(Enumerable.Repeat(" ", 1024));
 
-                            String Type = RecordX.Substring(0, 1);
+                            String Link_Status = RecordX.Substring(0, 1);
 
-                            //Console.WriteLine("Type  : " + Type);
-
-                            if (Type == "1" || Type == "2")
+                            if (Link_Status == "1" || Link_Status == "2")
                             {
                                 Fixed_String = "";
 
-                                String Station = RecordX.Substring(1, 3);
+                                String Position = RecordX.Substring(1, 3);
 
-                                if (Station.Substring(0, 2) != "00")
-                                {
-                                    String Date_Time = RecordX.Substring(25, 11);
-                                    String Class_Of_Service = RecordX.Substring(20, 5);
-                                    String Carrier = RecordX.Substring(231, 5);
+                                //if (Position.Substring(0, 3) != "000")
+                                //{
+                                    Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Record>", Record);
 
-                                    String CallBack_Wired = RecordX.Substring(5, 15);
-                                    String CallBack_Wireless = RecordX.Substring(152, 15);
+                                    String Class_Of_Service = RecordX.Substring(20, 4);
 
-                                    String Phone = CallBack_Wired.Replace(" ", "") + String.Concat(Enumerable.Repeat(" ", 15));
-                                    Phone = Phone.Substring(0, 15);
+                                    String ALI_Provider_ID = RecordX.Substring(231, 5);
 
-                                    String Caller = RecordX.Substring(37, 28);
-                                    
+                                    String ALI_Date = RecordX.Substring(25, 11);
 
-                                    String Address_Number = RecordX.Substring(66, 17);
-                                    String Address_Street_Prefix = RecordX.Substring(98, 3);
-                                    String Address_Street = RecordX.Substring(101, 22);
-                                    String Address_Misc = RecordX.Substring(124, 20);
+                                    String Callback_Number = RecordX.Substring(5, 14);
 
-                                    String Address = String.Concat(Address_Number.Trim(), " ", Address_Street_Prefix.Trim(), " ", Address_Street, Address_Misc.TrimEnd()).Trim().Replace("  ", " ") + String.Concat(Enumerable.Repeat(" ", 65));
-                                    Address = Address.Substring(0, 65);
-                                    Address_Misc = String.Concat(Enumerable.Repeat(" ", 22)); ;
+                                    String Customer_Name = RecordX.Substring(37, 28);
+
+                                    String House_Number = RecordX.Substring(72, 6);
+                                    String Direction = RecordX.Substring(98, 2);
+                                    String Street = RecordX.Substring(101, 22);
+                                    String Street_Line2 = RecordX.Substring(124, 20);
+
+                                    String Address = String.Concat(House_Number.Trim(), " ", Direction.Trim(), " ", Street, Street_Line2.Trim()).Trim().Replace("  ", " ") + String.Concat(Enumerable.Repeat(" ", 50));
+                                    Address = Address.Substring(0, 50);
+                                    Street_Line2 = String.Concat(Enumerable.Repeat(" ", 20)); ;
 
                                     String City = RecordX.Substring(180, 28);
-                                    String State = RecordX.Substring(177, 3);
+                                    String State = RecordX.Substring(177, 2);
 
-                                    String Latitude = RecordX.Substring(237, 12);
-                                    String Longitude = RecordX.Substring(249, 12);
+                                    String Latitude = RecordX.Substring(237, 10);
+                                    String Longitude = RecordX.Substring(249, 11);
 
-                                    String Confidence = RecordX.Substring(261, 7).Trim() + String.Concat(Enumerable.Repeat(" ", 7));
-                                    Confidence = Confidence.Substring(0, 7);
-
-                                    if (Class_Of_Service.Trim() == "WPH2")
-                                    {
-                                        //Caller = String.Concat("WIRELESS CALLER (", Carrier.Trim(), ")") + String.Concat(Enumerable.Repeat(" ", 28));
-                                        //Caller = Caller.Substring(0, 28);
-
-                                        Phone = CallBack_Wireless.Replace(" ", "") + String.Concat(Enumerable.Repeat(" ", 15));
-                                        Phone = Phone.Substring(0, 15);
-                                    }
-                                    else
-                                    {
-                                        CallBack_Wireless = String.Concat(Enumerable.Repeat(" ", 15));
-                                    }
+                                    String Confidence_Meters = RecordX.Substring(260, 7).Trim() + String.Concat(Enumerable.Repeat(" ", 7));
+                                    Confidence_Meters = Confidence_Meters.Substring(0, 7);
 
                                     if (Class_Of_Service.Trim() == "VOIP")
                                     {
-                                        Address_Misc = RecordX.Substring(145, 22);
+                                        Street_Line2 = RecordX.Substring(145, 22);
                                     }
                                     else
                                     {
                                     }
 
-                                    if (String.Concat(Date_Time, Class_Of_Service, Carrier, Phone).Trim().Length != 0)
+                                    if (String.Concat(ALI_Date, Class_Of_Service, ALI_Provider_ID, Callback_Number).Trim().Length != 0)
                                     {
-                                        Fixed_String = String.Concat(Station, Date_Time, Class_Of_Service, Carrier, Phone, Caller, Address_Misc, Address, City, State, Latitude, Longitude, Confidence);
+                                        Fixed_String = String.Concat(Link_Status, Position, Class_Of_Service, ALI_Provider_ID, ALI_Date, Callback_Number, Customer_Name, Address, Street_Line2, City, State, Latitude, Longitude, Confidence_Meters);
                                     }
 
+                                    //Console.WriteLine();
+                                    Console.WriteLine("Link_Status          = " + Link_Status + " <" + Link_Status.Length.ToString() + ">");
+                                    Console.WriteLine("Position             = " + Position + " <" + Position.Length.ToString() + ">");
+                                    Console.WriteLine("Class_Of_Service     = " + Class_Of_Service + " <" + Class_Of_Service.Length.ToString() + ">");
+                                    Console.WriteLine("ALI_Provider_ID      = " + ALI_Provider_ID + " <" + ALI_Provider_ID.Length.ToString() + ">");
+                                    Console.WriteLine("ALI_Date             = " + ALI_Date + " <" + ALI_Date.Length.ToString() + ">");
+                                    Console.WriteLine("Callback_Number      = " + Callback_Number + "<" + Callback_Number.Length.ToString() + ">");
+                                    Console.WriteLine("Customer_Name        = " + Customer_Name + " <" + Customer_Name.Length.ToString() + ">");
+                                    Console.WriteLine("Street_Line2         = " + Street_Line2 + " <" + Street_Line2.Length.ToString() + ">");
+                                    Console.WriteLine("Address              = " + Address + " <" + Address.Length.ToString() + ">");
+                                    Console.WriteLine("City                 = " + City + " <" + City.Length.ToString() + ">");
+                                    Console.WriteLine("State                = " + State + " <" + State.Length.ToString() + ">");
+                                    Console.WriteLine("Latitude             = " + Latitude + " <" + Latitude.Length.ToString() + ">");
+                                    Console.WriteLine("Longitude            = " + Longitude + " <" + Longitude.Length.ToString() + ">");
+                                    Console.WriteLine("Confidence_Meters    = " + Confidence_Meters + "<" + Confidence_Meters.Length.ToString() + ">");
                                     Console.WriteLine();
-                                    Console.WriteLine("Station          =" + Station + "<" + Station.Length.ToString() + ">");
-                                    Console.WriteLine("Date_Time        =" + Date_Time + "<" + Date_Time.Length.ToString() + ">");
-                                    Console.WriteLine("Class_Of_Service =" + Class_Of_Service + "<" + Class_Of_Service.Length.ToString() + ">");
-                                    Console.WriteLine("Carrier          =" + Carrier + "<" + Carrier.Length.ToString() + ">");
-                                    Console.WriteLine("Phone            =" + Phone + "<" + Phone.Length.ToString() + ">");
-                                    Console.WriteLine("Caller           =" + Caller + "<" + Caller.Length.ToString() + ">");
-                                    Console.WriteLine("Address_Misc     =" + Address_Misc + "<" + Address_Misc.Length.ToString() + ">");
-                                    Console.WriteLine("Address          =" + Address + "<" + Address.Length.ToString() + ">");
-                                    Console.WriteLine("City             =" + City + "<" + City.Length.ToString() + ">");
-                                    Console.WriteLine("State            =" + State + "<" + State.Length.ToString() + ">");
-                                    Console.WriteLine("Latitude         =" + Latitude + "<" + Latitude.Length.ToString() + ">");
-                                    Console.WriteLine("Longitude        =" + Longitude + "<" + Longitude.Length.ToString() + ">");
-                                    Console.WriteLine("Confidence       =" + Confidence + "<" + Confidence.Length.ToString() + ">");
-                                    Console.WriteLine();
-                                }
+                                //}
                             }
-                            else if (Type == "H" || Type == "E" || Type == "\u0006")
+                            else if (Link_Status == "H" || Link_Status == "E" || Link_Status == "\u0006")
                             {
                                 Fixed_String = RecordX.Trim();
                             }
@@ -164,7 +141,7 @@ namespace PAR
                             if (Fixed_String.Length != 0)
                             {
                                 Fixed_String = String.Concat("\u0002", Fixed_String, "\u0003");
-                                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Fixed_String>", Fixed_String);
+                                //Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Fixed_String>", Fixed_String);
 
                                 //Console.WriteLine(Fixed_String);
                                 //Console.WriteLine(Fixed_String + " <" + Fixed_String.Length.ToString() + ">");

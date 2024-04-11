@@ -25,6 +25,13 @@ The utility performs the following:
 
 7) Sends modified data to destination system.
 
+8) Extension Priority:
+
+1-9 Post Receive
+10-19 Modification
+20-29 Post Modification
+30-39 Pre Transmit
+
 ## Stack:
 
 Windows 10 Professional\
