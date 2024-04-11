@@ -72,7 +72,6 @@ namespace PAR
 
                                 //if (Position.Substring(0, 3) != "000")
                                 //{
-                                    Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Record>", Record);
 
                                     String Class_Of_Service = RecordX.Substring(20, 4);
 
@@ -109,28 +108,61 @@ namespace PAR
                                     else
                                     {
                                     }
+                               
+                                StringBuilder Detail_String = new StringBuilder(0);
 
-                                    if (String.Concat(ALI_Date, Class_Of_Service, ALI_Provider_ID, Callback_Number).Trim().Length != 0)
-                                    {
-                                        Fixed_String = String.Concat(Link_Status, Position, Class_Of_Service, ALI_Provider_ID, ALI_Date, Callback_Number, Customer_Name, Address, Street_Line2, City, State, Latitude, Longitude, Confidence_Meters);
-                                    }
+                                Detail_String.Append(Record);
+                                Detail_String.Append(Constant.CRLF);
+                                Detail_String.Append(Constant.CRLF);
 
-                                    //Console.WriteLine();
-                                    Console.WriteLine("Link_Status          = " + Link_Status + " <" + Link_Status.Length.ToString() + ">");
-                                    Console.WriteLine("Position             = " + Position + " <" + Position.Length.ToString() + ">");
-                                    Console.WriteLine("Class_Of_Service     = " + Class_Of_Service + " <" + Class_Of_Service.Length.ToString() + ">");
-                                    Console.WriteLine("ALI_Provider_ID      = " + ALI_Provider_ID + " <" + ALI_Provider_ID.Length.ToString() + ">");
-                                    Console.WriteLine("ALI_Date             = " + ALI_Date + " <" + ALI_Date.Length.ToString() + ">");
-                                    Console.WriteLine("Callback_Number      = " + Callback_Number + "<" + Callback_Number.Length.ToString() + ">");
-                                    Console.WriteLine("Customer_Name        = " + Customer_Name + " <" + Customer_Name.Length.ToString() + ">");
-                                    Console.WriteLine("Street_Line2         = " + Street_Line2 + " <" + Street_Line2.Length.ToString() + ">");
-                                    Console.WriteLine("Address              = " + Address + " <" + Address.Length.ToString() + ">");
-                                    Console.WriteLine("City                 = " + City + " <" + City.Length.ToString() + ">");
-                                    Console.WriteLine("State                = " + State + " <" + State.Length.ToString() + ">");
-                                    Console.WriteLine("Latitude             = " + Latitude + " <" + Latitude.Length.ToString() + ">");
-                                    Console.WriteLine("Longitude            = " + Longitude + " <" + Longitude.Length.ToString() + ">");
-                                    Console.WriteLine("Confidence_Meters    = " + Confidence_Meters + "<" + Confidence_Meters.Length.ToString() + ">");
-                                    Console.WriteLine();
+                                Detail_String.Append("Link_Status          = " + Link_Status + " <" + Link_Status.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Position             = " + Position + " <" + Position.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Class_Of_Service     = " + Class_Of_Service + " <" + Class_Of_Service.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("ALI_Provider_ID      = " + ALI_Provider_ID + " <" + ALI_Provider_ID.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("ALI_Date             = " + ALI_Date + " <" + ALI_Date.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Callback_Number      = " + Callback_Number + "<" + Callback_Number.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Customer_Name        = " + Customer_Name + " <" + Customer_Name.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Street_Line2         = " + Street_Line2 + " <" + Street_Line2.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Address              = " + Address + " <" + Address.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("City                 = " + City + " <" + City.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("State                = " + State + " <" + State.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Latitude             = " + Latitude + " <" + Latitude.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Longitude            = " + Longitude + " <" + Longitude.Length.ToString() + ">");
+                                Detail_String.Append(Constant.CRLF);
+
+                                Detail_String.Append("Confidence_Meters    = " + Confidence_Meters + "<" + Confidence_Meters.Length.ToString() + ">");
+
+                                Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Record>", Detail_String.ToString());
+
+                                if (String.Concat(ALI_Date, Class_Of_Service, ALI_Provider_ID, Callback_Number).Trim().Length != 0)
+                                {
+                                    Fixed_String = String.Concat(Link_Status, Position, Class_Of_Service, ALI_Provider_ID, ALI_Date, Callback_Number, Customer_Name, Address, Street_Line2, City, State, Latitude, Longitude, Confidence_Meters);
+                                }
+
                                 //}
                             }
                             else if (Link_Status == "H" || Link_Status == "E" || Link_Status == "\u0006")
