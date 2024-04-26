@@ -112,7 +112,7 @@ namespace Parse
                                 Detail_String.Append("ALI_Date             = " + ALI_Date + " <" + ALI_Date.Length.ToString() + ">");
                                 Detail_String.Append(Constant.CRLF);
 
-                                Detail_String.Append("Callback_Number      = " + Callback_Number + "<" + Callback_Number.Length.ToString() + ">");
+                                Detail_String.Append("Callback_Number      = " + Callback_Number + " <" + Callback_Number.Length.ToString() + ">");
                                 Detail_String.Append(Constant.CRLF);
 
                                 Detail_String.Append("Customer_Name        = " + Customer_Name + " <" + Customer_Name.Length.ToString() + ">");
@@ -136,7 +136,7 @@ namespace Parse
                                 Detail_String.Append("Longitude            = " + Longitude + " <" + Longitude.Length.ToString() + ">");
                                 Detail_String.Append(Constant.CRLF);
 
-                                Detail_String.Append("Confidence_Meters    = " + Confidence_Meters + "<" + Confidence_Meters.Length.ToString() + ">");
+                                Detail_String.Append("Confidence_Meters    = " + Confidence_Meters + " <" + Confidence_Meters.Length.ToString() + ">");
 
                                 Console.WriteLine(Detail_String.ToString());
                                 //Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Record>", Detail_String.ToString());
