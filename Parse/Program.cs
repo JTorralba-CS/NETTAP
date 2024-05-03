@@ -20,7 +20,7 @@ namespace Parse
 
             //String Input_String = "\u00022000\r(719) 111-1234 WPH2 04/10 15:36\rAT&T Mobility               \r      2886       P#719-555-9152\r   SOUTH CIRCLE DIRVE - S\rW Sector            \rCALLBK=(719)329-4319  261 00311\rCO COLORADO SPRINGS            \r                  TEL=ATTMO\r+38.794999  -104.807339      8 \rPSAP=CSPD--COLORADO SPRINGS WIRELESS\rVERIFY PD\r\nVERIFY FD\r\nVERIFY EMS         \u0003w";
             //String Input_String = "\u00022123\r(719) 222-1234 WPH2 04/10 15:35\rT-MOBILE                    \r      6760       P#719-555-9184\r   CORPORATE DRIVE - NE S\rector               \rCALLBK=(719)388-3178  261 00311\rCO COLORADO SPRINGS            \r                  TEL=ATTMO\r+38.935654  -104.812596      8 \rPSAP=CSPD--COLORADO SPRINGS WIRELESS\rVERIFY PD\r\nVERIFY FD\r\nVERIFY EMS         \u0003w";
-            //String Input_String = "\u00022137\r(719) 333-1234 WPH1 04/10 15:44\rVERIZON                     \r      3155       P#719-555-9068\r   NORTH CASCADE AVENUE -\r W Sector           \rCALLBK=(719)352-4342  261 00311\rCO COLORADO SPRINGS            \r                  TEL=ATTMO\r+38.877342  -104.821869      0 \rPSAP=CSPD--COLORADO SPRINGS WIRELESS\rVERIFY PD\r\nVERIFY FD\r\nVERIFY EMS         \u0003w";
+            //String Input_String = "\u00022137\r(719) 333-1234 WPH1 04/10 15:44\rVERIZON                     \r      3155       P#719-555-9068\r   NORTH CASCADE AVENUE -\r W Sector           \rCALLBK=(719)352-4342  261 00311\rCO COLORADO SPRINGS            \r                  TEL=ATTMO\r+38.87734   -104.821869      0 \rPSAP=CSPD--COLORADO SPRINGS WIRELESS\rVERIFY PD\r\nVERIFY FD\r\nVERIFY EMS         \u0003w";
 
             //Input_String = Regex.Replace(Input_String, @"\r|\n", "*");
             Input_String = Regex.Replace(Input_String, @"\r", " ");
@@ -77,18 +77,31 @@ namespace Parse
                                 String City = RecordX.Substring(180, 28);
                                 String State = RecordX.Substring(177, 2);
 
-                                String Latitude = RecordX.Substring(237, 10);
-                                String Longitude = RecordX.Substring(249, 11);
+                                String Latitude = RecordX.Substring(237, 10).Trim() + String.Concat(Enumerable.Repeat("0", 10));  
+                                Latitude = Latitude.Substring(0, 10);
+
+                                String Longitude = RecordX.Substring(249, 11).Trim() + String.Concat(Enumerable.Repeat("0", 11));
+                                Longitude = Longitude.Substring(0, 11);
 
                                 String Confidence_Meters = RecordX.Substring(260, 7).Trim() + String.Concat(Enumerable.Repeat(" ", 7));
                                 Confidence_Meters = Confidence_Meters.Substring(0, 7);
 
-                                if (Class_Of_Service.Trim() == "WPH2" || Class_Of_Service.Trim() == "WPH1" || Class_Of_Service.Trim() == "WRLS")
+                                if (Class_Of_Service.Trim() == "WPH2" || Class_Of_Service.Trim() == "WPH1" || Class_Of_Service.Trim() == "WRLS" || Class_Of_Service.Trim() == "VOIP")
                                 {
                                 }
                                 else
                                 {
+                                    Latitude = String.Concat(Enumerable.Repeat(" ", 10));
+                                    Longitude = String.Concat(Enumerable.Repeat(" ", 11));
+                                    Confidence_Meters = String.Concat(Enumerable.Repeat(" ", 7));
+                                }
+
+                                if (Class_Of_Service.Trim() == "VOIP")
+                                {
                                     Street_Line2 = RecordX.Substring(145, 22);
+                                }
+                                else
+                                {
                                 }
 
                                 StringBuilder Detail_String = new StringBuilder(0);

@@ -94,21 +94,34 @@ namespace PAR
 
                                     String City = RecordX.Substring(180, 28);
                                     String State = RecordX.Substring(177, 2);
+                                
+                                String Latitude = RecordX.Substring(237, 10).Trim() + String.Concat(Enumerable.Repeat("0", 10));
+                                Latitude = Latitude.Substring(0, 10);
 
-                                    String Latitude = RecordX.Substring(237, 10);
-                                    String Longitude = RecordX.Substring(249, 11);
+                                String Longitude = RecordX.Substring(249, 11).Trim() + String.Concat(Enumerable.Repeat("0", 11));
+                                Longitude = Longitude.Substring(0, 11);
 
-                                    String Confidence_Meters = RecordX.Substring(260, 7).Trim() + String.Concat(Enumerable.Repeat(" ", 7));
-                                    Confidence_Meters = Confidence_Meters.Substring(0, 7);
+                                String Confidence_Meters = RecordX.Substring(260, 7).Trim() + String.Concat(Enumerable.Repeat(" ", 7));
+                                Confidence_Meters = Confidence_Meters.Substring(0, 7);
 
-                                    if (Class_Of_Service.Trim() == "VOIP")
-                                    {
-                                        Street_Line2 = RecordX.Substring(145, 22);
-                                    }
-                                    else
-                                    {
-                                    }
-                               
+                                if (Class_Of_Service.Trim() == "WPH2" || Class_Of_Service.Trim() == "WPH1" || Class_Of_Service.Trim() == "WRLS" || Class_Of_Service.Trim() == "VOIP")
+                                {
+                                }
+                                else
+                                {
+                                    Latitude = String.Concat(Enumerable.Repeat(" ", 10));
+                                    Longitude = String.Concat(Enumerable.Repeat(" ", 11));
+                                    Confidence_Meters = String.Concat(Enumerable.Repeat(" ", 7));
+                                }
+
+                                if (Class_Of_Service.Trim() == "VOIP")
+                                {
+                                    Street_Line2 = RecordX.Substring(145, 22);
+                                }
+                                else
+                                {
+                                }
+
                                 StringBuilder Detail_String = new StringBuilder(0);
 
                                 Detail_String.Append(Record);
