@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -76,29 +77,7 @@ namespace Core
 
         public static async Task Write_To_File(String File, Byte[] Bytes)
         {
-            StringBuilder Detail_String = new StringBuilder(0);
-            int Detail_Length = 0;
-
-            try
-            {
-                using (FileStream Target = new FileStream(File, FileMode.Append, FileAccess.Write, FileShare.None, bufferSize: 32768, useAsync: true))
-                {
-                    await Target.WriteAsync(Bytes, 0, Bytes.Length);
-                }
-            }
-            catch (Exception E)
-            {
-                Detail_String.Append(DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.fff") + " Exception: Write_To_File");
-                Detail_Length = Detail_String.Length;
-
-                Detail_String.Append(Constant.CRLF);
-                Detail_String.Append("".PadLeft(Detail_Length, '-'));
-                Detail_String.Append(Constant.CRLF);
-                Detail_String.Append(E.Message);
-                Detail_String.Append(Constant.CRLF);
-                Detail_String.Append(Constant.CRLF);
-                Console.Write(Detail_String);
-            }
+            new WTF(File, Bytes);
         }
 
         public static Byte[] Detail(String General, Byte[] Specific, int Specific_Size)
