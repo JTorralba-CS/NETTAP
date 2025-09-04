@@ -1,10 +1,10 @@
-﻿using Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
+
+using Core;
 
 namespace Server
 {
@@ -217,6 +217,14 @@ namespace Server
                             {
                                 try
                                 {
+                                    if (Packet_Size != Packet.Length)
+                                    {
+                                        //Console.WriteLine($"Packet_Size = {Packet_Size}, Packet = {Packet.Length}");
+                                        //Console.WriteLine();
+
+                                        Packet_Size = Packet.Length;
+                                    }
+
                                     State.Socket_Source.Send(Packet, Packet_Size, SocketFlags.None);
                                     Log.File("System\\" + Extension.Name, Source_Local_IPEndPoint.Address + ":" + Source_Local_IPEndPoint.Port.ToString() + " ---> " + Source_Remote_IPEndPoint.Address + ":" + Source_Remote_IPEndPoint.Port.ToString(), Packet);
                                 }
