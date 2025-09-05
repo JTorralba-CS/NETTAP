@@ -2,8 +2,8 @@
 <configuration>
   <appSettings>
     <add key="Priority" value="30"/>
-    <add key="FindThis" value="&#x2;&#72;&#x3;"/>
-	<add key="HB" value="&#x2;&#72;&#x3;"/>
-    <add key="HBA" value="&#x2;&#6;&#x3;"/>
+    <add key="FindThis" value="&#x2;H"/>
+	<add key="HB" value="&#x2;&#x72;&#x3;"/>
+    <add key="HBA" value="&#x2;&#x6;&#x3;"/>
   </appSettings>
 </configuration>

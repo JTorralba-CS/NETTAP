@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
   <appSettings>
-    <add key="Priority" value="0"/>
-    <add key="FindThis" value="&#x2;E"/>
+    <add key="Priority" value="21"/>
+    <add key="FindThis" value="&#x2;&#x69;&#x3;"/>
   </appSettings>
 </configuration>
