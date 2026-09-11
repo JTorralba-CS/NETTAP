@@ -64,8 +64,6 @@ namespace PAR
 
                             String Link_Status = RecordX.Substring(0, 1);
 
-                            if (Link_Status == "1" || Link_Status == "2")
-                            {
                                 Fixed_String = "";
 
                                 String Position = RecordX.Substring(1, 3);
@@ -170,22 +168,12 @@ namespace PAR
                                 Detail_String.Append("Confidence_Meters    = " + Confidence_Meters + " <" + Confidence_Meters.Length.ToString() + ">");
 
                                 Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Record>", Detail_String.ToString());
+                            
+                            Fixed_String = String.Concat(Link_Status, '|', Position, '|', Class_Of_Service, '|', ALI_Provider_ID, '|', ALI_Date, '|', Callback_Number, '|', Customer_Name, '|', Address, '|', Street_Line2, '|', City, '|', State, '|', Latitude, '|', Longitude, '|', Confidence_Meters, '\n');
+                                
 
-                                if (String.Concat(ALI_Date, Class_Of_Service, ALI_Provider_ID, Callback_Number).Trim().Length != 0)
-                                {
-                                    Fixed_String = String.Concat(Link_Status, Position, Class_Of_Service, ALI_Provider_ID, ALI_Date, Callback_Number, Customer_Name, Address, Street_Line2, City, State, Latitude, Longitude, Confidence_Meters);
-                                }
-
-                                //}
-                            }
-                            else if (Link_Status == "H" || Link_Status == "E" || Link_Status == "\u0006")
+                        if (Fixed_String.Length != 0)
                             {
-                                Fixed_String = RecordX.Trim();
-                            }
-
-                            if (Fixed_String.Length != 0)
-                            {
-                                Fixed_String = String.Concat("\u0002", Fixed_String, "\u0003");
                                 //Log.File(Path, Source.Address + ":" + Source.Port.ToString() + " ---> " + Destination.Address + ":" + Destination.Port.ToString() + " <" + this.Name + " Fixed_String>", Fixed_String);
 
                                 //Console.WriteLine(Fixed_String);

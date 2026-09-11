@@ -2,6 +2,6 @@
 <configuration>
   <appSettings>
     <add key="Priority" value="21"/>
-    <add key="FindThis" value="&#x2;&#x69;&#x3;"/>
+    <add key="FindThis" value="&#x2;E"/>
   </appSettings>
 </configuration>
