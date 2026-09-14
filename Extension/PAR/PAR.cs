@@ -112,7 +112,7 @@ namespace PAR
                                     Confidence_Meters = String.Concat(Enumerable.Repeat(" ", 7));
                                 }
 
-                                if (Class_Of_Service.Trim() == "VOIP")
+                                if (Class_Of_Service.Trim() != "WPH2" || Class_Of_Service.Trim() != "WPH1" || Class_Of_Service.Trim() != "WRLS")
                                 {
                                     Street_Line2 = RecordX.Substring(145, 22);
                                 }
