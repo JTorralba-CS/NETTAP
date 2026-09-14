@@ -88,7 +88,7 @@ namespace PAR
 
                                     String Address = String.Concat(House_Number.Trim(), " ", Direction.Trim(), " ", Street, Street_Line2.Trim()).Trim().Replace("  ", " ") + String.Concat(Enumerable.Repeat(" ", 50));
                                     Address = Address.Substring(0, 50);
-                                    Street_Line2 = String.Concat(Enumerable.Repeat(" ", 20)); ;
+                                    Street_Line2 = String.Concat(Enumerable.Repeat(" ", 22)); ;
 
                                     String City = RecordX.Substring(180, 28);
                                     String State = RecordX.Substring(177, 2);
