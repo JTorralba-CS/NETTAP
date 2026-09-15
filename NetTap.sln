@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34003.232
+# Visual Studio Version 18
+VisualStudioVersion = 18.10.12201.205 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCPF", "TCPF\TCPF.csproj", "{FD453D67-96B7-41D2-9F40-47371244FE8C}"
 EndProject
@@ -32,6 +32,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parse", "Parse\Parse.csproj", "{223FF427-4070-4229-9363-A53AB25DCCAE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PAR", "Extension\PAR\PAR.csproj", "{36B50947-AB2C-4102-A2E6-D55D6216FD1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESRI", "ESRI\ESRI.csproj", "{6D6A9DFF-A2FA-4C3E-B451-593F7F1AE9AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{36B50947-AB2C-4102-A2E6-D55D6216FD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36B50947-AB2C-4102-A2E6-D55D6216FD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36B50947-AB2C-4102-A2E6-D55D6216FD1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D6A9DFF-A2FA-4C3E-B451-593F7F1AE9AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D6A9DFF-A2FA-4C3E-B451-593F7F1AE9AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D6A9DFF-A2FA-4C3E-B451-593F7F1AE9AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D6A9DFF-A2FA-4C3E-B451-593F7F1AE9AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

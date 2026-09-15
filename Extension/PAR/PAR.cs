@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 using System.Text;
 using Core;
 
+using ESRI;
+
 namespace PAR
 {
     public class PAR : Interface.Extension
@@ -115,6 +117,22 @@ namespace PAR
                                 if (Class_Of_Service.Trim() != "WPH2" || Class_Of_Service.Trim() != "WPH1" || Class_Of_Service.Trim() != "WRLS")
                                 {
                                     Street_Line2 = RecordX.Substring(145, 22);
+
+                                    if (!string.IsNullOrWhiteSpace(Class_Of_Service))
+                                    {
+                                        var Location = $"{Address.Trim()}, {City.Trim()}, {State.Trim()}";
+
+                                        var Result = GEOCODE.GetLATLON(Location).Result;
+                                    
+                                        Thread.Sleep(250);
+
+                                        if (Result.Latitude != null && Result.Longitude != null)
+                                        {
+                                            Latitude = $"+{Result.Latitude}".Substring(0, 10);
+                                            Longitude = $"{Result.Longitude}".Substring(0, 11);
+                                            Log.File(Path, $"GetLATLON({Location})", $"{Latitude}, {Longitude}");
+                                        }
+                                    }
                                 }
                                 else
                                 {
