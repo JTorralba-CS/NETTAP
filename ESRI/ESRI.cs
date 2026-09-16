@@ -4,7 +4,11 @@ namespace ESRI
 {
     public static class GEOCODE
     {
-        private const string GeocodeUrl = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates";
+        //ESRI
+        //private const string GeocodeUrl = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates";
+
+        //AUTH
+        private const string GeocodeUrl = "https://maps.eptc911.org/server/rest/services/TACMap/MultiRole/GeocodeServer/findAddressCandidates";
 
         public static async Task<(double? Latitude, double? Longitude)> GetLATLON(string address)
         {

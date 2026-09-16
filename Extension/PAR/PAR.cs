@@ -114,11 +114,26 @@ namespace PAR
                                     Confidence_Meters = String.Concat(Enumerable.Repeat(" ", 7));
                                 }
 
-                                if (Class_Of_Service.Trim() != "WPH2" || Class_Of_Service.Trim() != "WPH1" || Class_Of_Service.Trim() != "WRLS")
+                                bool NonWirelessHasLATLON = false;
+
+                                    if (double.TryParse(Latitude, out double latitude))
+                                    {
+                                        if (double.TryParse(Longitude, out double longitude))
+                                        {
+                                            if (latitude != 0 && longitude != 0)
+                                            {
+                                            NonWirelessHasLATLON = true;
+                                            }
+                                        }
+                                    }
+  
+                            Log.File(Path, "NonWirelessHasLATLON", $"{NonWirelessHasLATLON}");
+
+                            if (Class_Of_Service.Trim() != "WPH2" || Class_Of_Service.Trim() != "WPH1" || Class_Of_Service.Trim() != "WRLS")
                                 {
                                     Street_Line2 = RecordX.Substring(145, 22);
 
-                                    if (!string.IsNullOrWhiteSpace(Class_Of_Service))
+                                    if (!NonWirelessHasLATLON && !Address.Trim().ToUpper().Contains("VOIP 9-1-1 CALLER") && !string.IsNullOrWhiteSpace(Class_Of_Service))
                                     {
                                         var Location = $"{Address.Trim()}, {City.Trim()}, {State.Trim()}";
 
