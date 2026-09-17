@@ -83,7 +83,7 @@ namespace PAR
 
                                     String Customer_Name = RecordX.Substring(37, 28);
 
-                                    String House_Number = RecordX.Substring(72, 6);
+                                    String House_Number = RecordX.Substring(71, 6);
                                     String Direction = RecordX.Substring(98, 2);
                                     String Street = RecordX.Substring(101, 22);
                                     String Street_Line2 = RecordX.Substring(124, 20);
@@ -135,9 +135,8 @@ namespace PAR
 
                                     if (!NonWirelessHasLATLON && !Address.Trim().ToUpper().Contains("VOIP 9-1-1 CALLER") && !string.IsNullOrWhiteSpace(Class_Of_Service))
                                     {
-                                        var Location = $"{Address.Trim()}, {City.Trim()}, {State.Trim()}";
 
-                                        var Result = GEOCODE.GetLATLON(Location).Result;
+                                    var Result = GEOCODE.GetLATLON(Address.Trim(), City.Trim()).Result;
                                     
                                         Thread.Sleep(250);
 
@@ -145,7 +144,7 @@ namespace PAR
                                         {
                                             Latitude = $"+{Result.Latitude}".Substring(0, 10);
                                             Longitude = $"{Result.Longitude}".Substring(0, 11);
-                                            Log.File(Path, $"GetLATLON({Location})", $"{Latitude}, {Longitude}");
+                                            Log.File(Path, $"GetLATLON({Address.Trim()}, {City.Trim()})", $"{Latitude}, {Longitude}");
                                         }
                                     }
                                 }

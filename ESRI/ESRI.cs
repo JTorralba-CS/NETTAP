@@ -10,12 +10,16 @@ namespace ESRI
         //AUTH
         private const string GeocodeUrl = "https://maps.eptc911.org/server/rest/services/TACMap/MultiRole/GeocodeServer/findAddressCandidates";
 
-        public static async Task<(double? Latitude, double? Longitude)> GetLATLON(string address)
+        public static async Task<(double? Latitude, double? Longitude)> GetLATLON(string address, string city)
         {
             using var client = new HttpClient();
 
             // Build request URL
-            var requestUrl = $"{GeocodeUrl}?f=json&singleLine={Uri.EscapeDataString(address)}&maxLocations=1";
+            //var requestUrl = $"{GeocodeUrl}?f=json&singleLine={Uri.EscapeDataString(address)}&maxLocations=1";
+
+            var requestUrl = $"{GeocodeUrl}?Address={Uri.EscapeDataString(address)}&City={Uri.EscapeDataString(city)}&maxLocations=1&f=json";
+
+            Console.WriteLine($"{requestUrl}\r\n");
 
             HttpResponseMessage response = await client.GetAsync(requestUrl);
             response.EnsureSuccessStatusCode();
